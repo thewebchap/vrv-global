@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Source Serif 4", Georgia, serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-white text-ink antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    @apply text-ink;
+  }
+
+  ::selection {
+    @apply bg-brand text-white;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-white;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-container px-5 sm:px-8 lg:px-12;
+  }
+
+  /* Eyebrow — small, uppercase, maroon, with a short gold flourish */
+  .eyebrow {
+    @apply inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-label text-brand;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply h-px w-6 bg-gold;
+  }
+  .eyebrow.no-flourish::before { content: none; }
+
+  /* Thin gold rule used as a refined divider */
+  .gold-rule {
+    @apply h-px w-16 bg-gradient-to-r from-gold to-transparent;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  /* Hide scrollbars while keeping the element scrollable (auto-moving ledger). */
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* Faint world-dot / trade-route pattern (light surfaces) */
+  .route-pattern {
+    background-image: radial-gradient(rgba(21, 114, 78, 0.07) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+  .route-pattern-ink {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  /* Sustainability gradients — green→blue, used sparingly on hero/CTA panels */
+  .bg-eco {
+    background-image: linear-gradient(135deg, #0B472F 0%, #15724E 45%, #14587A 100%);
+  }
+  .bg-eco-soft {
+    background-image: linear-gradient(135deg, #EAF5EF 0%, #F7FAF8 55%, #E9F2F7 100%);
+  }
+  .text-gradient-eco {
+    background-image: linear-gradient(100deg, #15724E, #14587A);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Faint contour / topographic lines for eco hero backgrounds */
+  .leaf-grid {
+    background-image:
+      linear-gradient(rgba(21, 114, 78, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(20, 88, 122, 0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

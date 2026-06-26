@@ -1,0 +1,42 @@
+{
+  "name": "vrv-global",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VRV Global — Integrated, traceable global supply-chain company. Marketing website.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@deck.gl/core": "^9.3.4",
+    "@deck.gl/layers": "^9.3.4",
+    "@deck.gl/mapbox": "^9.3.4",
+    "@deck.gl/react": "^9.3.4",
+    "d3-geo": "^3.1.1",
+    "framer-motion": "^11.18.2",
+    "maplibre-gl": "^5.24.0",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-globe.gl": "^2.38.0",
+    "react-map-gl": "^8.1.1",
+    "server-only": "^0.0.1",
+    "three": "^0.184.0",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/d3-geo": "^3.1.0",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/three": "^0.184.1",
+    "@types/topojson-client": "^3.1.5",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.7",
+    "typescript": "^5.5.4"
+  }
+}
