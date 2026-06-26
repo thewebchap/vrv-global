@@ -1,13 +1,18 @@
-/node_modules
-/.next
-/out
-/build
+node_modules/
+.next/
+dist/
+build/
+.vercel/
+.cache/
+.env
+.env.local
+.env.production
 .DS_Store
-*.pem
-.env*.local
-.vercel
-*.tsbuildinfo
-next-env.d.ts
+*.zip
+*.mp4
+*.mov
+*.psd
+*.ai
 
 # Original full-res source photos (optimized copies live in /public/pictures)
 /pictures
