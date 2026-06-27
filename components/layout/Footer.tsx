@@ -75,6 +75,8 @@ export function Footer() {
             {legalNav.map((l) => (
               <Link key={l.href} href={l.href} className="hover:text-gold">{l.label}</Link>
             ))}
+            {/* Internal review tool — discreet link, intentionally not in main nav. */}
+            <Link href="/design-feedback" className="hover:text-gold">Design Feedback</Link>
             <a href={site.linkedin} target="_blank" rel="noreferrer" className="hover:text-gold">LinkedIn</a>
           </div>
         </Container>

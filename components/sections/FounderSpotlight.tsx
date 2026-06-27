@@ -46,6 +46,19 @@ export function FounderSpotlight({ image = founder.mainImage }: { image?: string
             <h3 className="font-serif text-2xl text-white">{founder.name}</h3>
             <p className="mt-1 text-sm font-medium text-emerald-300">{founder.role}</p>
             <p className="mt-4 text-[14px] leading-relaxed text-white/60">{founder.bio}</p>
+            {/* LinkedIn — shown only when a valid (non-placeholder) URL exists. */}
+            {founder.linkedin && founder.linkedin !== "#" && (
+              <a
+                href={founder.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`View ${founder.name} on LinkedIn`}
+                className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-medium text-white/80 transition-colors hover:border-emerald-300 hover:text-emerald-300"
+              >
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold">in</span>
+                LinkedIn
+              </a>
+            )}
           </div>
         </div>
 

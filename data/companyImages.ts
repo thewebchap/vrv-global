@@ -34,7 +34,7 @@ export const leadershipImages: LeadershipImage[] = [
     image: "/pictures/team/manoj.jpg",
     bio: "[Short approved bio to be added.]",
     focus: "Group strategy and sustainable supply chains",
-    linkedin: "#",
+    linkedin: "https://www.linkedin.com/in/manoj-vembu-b8349914",
   },
   {
     name: "Riaz",
