@@ -10,45 +10,35 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const unauthorized = () =>
-  NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
+  NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-/** GET — read & parse the Markdown file, return feedback as JSON. */
+/** GET — return all feedback items from KV as JSON. */
 export async function GET(req: Request) {
   if (!isFeedbackRequestAuthorized(req)) return unauthorized();
   try {
     const items = await getFeedbackItems();
     return NextResponse.json(
-      { ok: true, items, passwordRequired: feedbackPasswordRequired() },
+      { success: true, items, passwordRequired: feedbackPasswordRequired() },
       { headers: { "Cache-Control": "no-store" } },
     );
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "Could not read the feedback file." },
-      { status: 500 },
-    );
+  } catch (error) {
+    console.error("Failed to read design feedback:", error);
+    return NextResponse.json({ error: "Failed to read design feedback" }, { status: 500 });
   }
 }
 
-/** POST — add a new feedback item to the Markdown file. */
+/** POST — add a new feedback item to KV. */
 export async function POST(req: Request) {
   if (!isFeedbackRequestAuthorized(req)) return unauthorized();
-
-  const body = (await req.json().catch(() => null)) as { feedback?: string; page?: string } | null;
-  const feedback = (body?.feedback || "").trim();
-  if (!feedback) {
-    return NextResponse.json(
-      { ok: false, error: "Feedback text is required." },
-      { status: 400 },
-    );
-  }
-
   try {
-    const item = await addFeedbackItem({ feedback, page: body?.page });
-    return NextResponse.json({ ok: true, item }, { status: 201 });
-  } catch {
-    return NextResponse.json(
-      { ok: false, error: "Could not save feedback. Please try again." },
-      { status: 500 },
-    );
+    const body = await req.json().catch(() => null);
+    if (!body?.feedback || !String(body.feedback).trim()) {
+      return NextResponse.json({ error: "Feedback is required" }, { status: 400 });
+    }
+    const item = await addFeedbackItem({ feedback: body.feedback, page: body.page });
+    return NextResponse.json({ success: true, item }, { status: 201 });
+  } catch (error) {
+    console.error("Failed to add design feedback:", error);
+    return NextResponse.json({ error: "Failed to add design feedback" }, { status: 500 });
   }
 }

@@ -1,14 +1,23 @@
 import "server-only";
-import { promises as fs } from "fs";
-import path from "path";
+import { kv } from "@vercel/kv";
 
 /**
- * Design Feedback storage — reads/writes a human-readable Markdown file at
- * /content/design-feedback.md. Internal review tool.
+ * Design Feedback storage — Vercel KV (Upstash Redis) backed.
+ * ------------------------------------------------------------------
+ * Feedback items are stored as a single JSON array under FEEDBACK_KEY. This
+ * persists across requests and deployments on Vercel, unlike filesystem writes
+ * which are not durable on serverless platforms.
  *
- * Note: Markdown file writes work in local development or persistent server
- * environments. For production on serverless platforms like Vercel, use a
- * database, GitHub API, CMS, or persistent storage instead of the filesystem.
+ * Local development: if KV env vars are not configured, an in-memory store is
+ * used so the page still works (ephemeral — resets when the dev server
+ * restarts). Connect a KV database (or set KV_REST_API_URL / KV_REST_API_TOKEN)
+ * for durable storage. No filesystem writes are used anywhere.
+ *
+ * Vercel setup:
+ *   1. Vercel dashboard → Storage → Create Database → KV.
+ *   2. Connect it to this project.
+ *   3. Vercel injects KV_REST_API_URL / KV_REST_API_TOKEN automatically.
+ *   4. Redeploy.
  */
 
 export type FeedbackStatus = "Pending" | "Completed";
@@ -23,11 +32,9 @@ export type DesignFeedbackItem = {
 
 export const FEEDBACK_STATUSES: FeedbackStatus[] = ["Pending", "Completed"];
 
-/**
- * Optional internal protection. If DESIGN_FEEDBACK_PASSWORD is set, requests
- * must send a matching `x-feedback-password` header. If it is empty/missing,
- * access is open (so local development is never blocked).
- */
+const FEEDBACK_KEY = "vrv:design-feedback";
+
+/* ── Optional internal protection (unchanged) ─────────────────────────── */
 export function feedbackPasswordRequired(): boolean {
   return !!(process.env.DESIGN_FEEDBACK_PASSWORD || "").trim();
 }
@@ -38,110 +45,58 @@ export function isFeedbackRequestAuthorized(req: Request): boolean {
   return req.headers.get("x-feedback-password") === pw;
 }
 
-const CONTENT_DIR = path.join(process.cwd(), "content");
-const FEEDBACK_PATH = path.join(CONTENT_DIR, "design-feedback.md");
+/* ── Storage backend: KV when configured, in-memory fallback otherwise ─── */
+const kvConfigured = !!(
+  process.env.KV_REST_API_URL ||
+  process.env.UPSTASH_REDIS_REST_URL ||
+  process.env.KV_URL
+);
 
-const FILE_HEADER = "# Design Feedback\n\n## Feedback Items\n";
+// Process-local fallback for local dev without KV. `null` = never written yet.
+let memoryStore: DesignFeedbackItem[] | null = null;
 
-/** Read the raw Markdown file, creating an empty one if it does not exist. */
-export async function readFeedbackMarkdown(): Promise<string> {
-  try {
-    return await fs.readFile(FEEDBACK_PATH, "utf8");
-  } catch (err: unknown) {
-    if ((err as NodeJS.ErrnoException)?.code === "ENOENT") {
-      await fs.mkdir(CONTENT_DIR, { recursive: true });
-      await fs.writeFile(FEEDBACK_PATH, FILE_HEADER, "utf8");
-      return FILE_HEADER;
-    }
-    throw err;
+/** Demo items shown until the store has been written for the first time. */
+const SEED_ITEMS: DesignFeedbackItem[] = [
+  { id: "FB-001", status: "Pending", page: "Home Hero", created: "2026-06-27", feedback: "Replace static hero images with animated supply chain diagram." },
+  { id: "FB-002", status: "Completed", page: "Products", created: "2026-06-27", feedback: "Re-segment products into Agro Commodities, Industrial Metals, and Mining." },
+];
+
+async function readStore(): Promise<DesignFeedbackItem[] | null> {
+  if (kvConfigured) {
+    const items = await kv.get<DesignFeedbackItem[]>(FEEDBACK_KEY);
+    return Array.isArray(items) ? items : null;
+  }
+  return memoryStore;
+}
+
+async function writeStore(items: DesignFeedbackItem[]): Promise<void> {
+  if (kvConfigured) {
+    await kv.set(FEEDBACK_KEY, items);
+  } else {
+    memoryStore = items;
   }
 }
 
-/** Parse the structured Markdown into feedback items. Tolerant of spacing. */
-export function parseFeedbackMarkdown(markdown: string): DesignFeedbackItem[] {
-  const items: DesignFeedbackItem[] = [];
-  // Each item starts at a "### FB-xxx" heading and runs to the next heading.
-  const blocks = markdown.split(/^###\s+/m).slice(1);
-
-  for (const block of blocks) {
-    const lines = block.split("\n");
-    const id = (lines[0] || "").trim();
-    if (!id) continue;
-
-    const field = (key: string): string | undefined => {
-      const re = new RegExp(`^\\s*-\\s*${key}\\s*:\\s*(.*)$`, "i");
-      for (const line of lines) {
-        const m = line.match(re);
-        if (m) return m[1].trim();
-      }
-      return undefined;
-    };
-
-    const statusRaw = (field("Status") || "Pending").toLowerCase();
-    const status: FeedbackStatus = statusRaw === "completed" ? "Completed" : "Pending";
-    const page = field("Page");
-    const created = field("Created") || "";
-    const feedback = field("Feedback") || "";
-
-    if (!feedback) continue; // skip malformed items without feedback text
-
-    items.push({
-      id,
-      status,
-      ...(page ? { page } : {}),
-      created,
-      feedback,
-    });
-  }
-
-  return items;
-}
-
-/** Serialize items back into the stable Markdown format. */
-export function serializeFeedbackMarkdown(items: DesignFeedbackItem[]): string {
-  const body = items
-    .map((it) => {
-      const lines = [
-        `### ${it.id}`,
-        "", // blank line after heading (markdownlint MD022/MD032)
-        `- Status: ${it.status}`,
-        `- Page: ${it.page?.trim() || "—"}`,
-        `- Created: ${it.created}`,
-        // Keep feedback on a single line for a stable, human-readable format.
-        `- Feedback: ${it.feedback.replace(/\s*\n\s*/g, " ").trim()}`,
-      ];
-      return lines.join("\n");
-    })
-    .join("\n\n");
-
-  return `${FILE_HEADER}\n${body}${body ? "\n" : ""}`;
-}
-
-/** Write items to disk. Throws on failure so callers can surface an error. */
-export async function writeFeedbackMarkdown(items: DesignFeedbackItem[]): Promise<void> {
-  await fs.mkdir(CONTENT_DIR, { recursive: true });
-  await fs.writeFile(FEEDBACK_PATH, serializeFeedbackMarkdown(items), "utf8");
-}
-
-/** Convenience: read + parse. */
+/* ── Public API ───────────────────────────────────────────────────────── */
 export async function getFeedbackItems(): Promise<DesignFeedbackItem[]> {
-  return parseFeedbackMarkdown(await readFeedbackMarkdown());
+  const items = await readStore();
+  // Seed the list on first read so the tracker is never empty by default.
+  return items ?? SEED_ITEMS;
 }
 
-/** Next sequential id, e.g. FB-001 → FB-002. */
+export async function saveFeedbackItems(items: DesignFeedbackItem[]): Promise<void> {
+  await writeStore(items);
+}
+
 export function getNextFeedbackId(items: DesignFeedbackItem[]): string {
-  const max = items.reduce((acc, it) => {
-    const m = it.id.match(/FB-(\d+)/i);
-    return m ? Math.max(acc, parseInt(m[1], 10)) : acc;
+  const maxNumber = items.reduce((max, item) => {
+    const match = item.id.match(/^FB-(\d+)$/);
+    const n = match ? Number(match[1]) : 0;
+    return Math.max(max, n);
   }, 0);
-  return `FB-${String(max + 1).padStart(3, "0")}`;
+  return `FB-${String(maxNumber + 1).padStart(3, "0")}`;
 }
 
-function todayISO(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
-/** Add a new feedback item; returns the created item. */
 export async function addFeedbackItem(input: {
   feedback: string;
   page?: string;
@@ -150,19 +105,19 @@ export async function addFeedbackItem(input: {
   if (!feedback) throw new Error("Feedback text is required.");
 
   const items = await getFeedbackItems();
-  const item: DesignFeedbackItem = {
+  const page = input.page?.trim();
+  const newItem: DesignFeedbackItem = {
     id: getNextFeedbackId(items),
     status: "Pending",
-    ...(input.page && input.page.trim() ? { page: input.page.trim() } : {}),
-    created: todayISO(),
+    ...(page ? { page } : {}),
+    created: new Date().toISOString().slice(0, 10),
     feedback,
   };
-  items.push(item);
-  await writeFeedbackMarkdown(items);
-  return item;
+
+  await saveFeedbackItems([newItem, ...items]);
+  return newItem;
 }
 
-/** Update an item's status; returns the updated item or null if not found. */
 export async function updateFeedbackStatus(
   id: string,
   status: FeedbackStatus,
@@ -171,9 +126,10 @@ export async function updateFeedbackStatus(
     throw new Error("Invalid status.");
   }
   const items = await getFeedbackItems();
-  const idx = items.findIndex((it) => it.id.toLowerCase() === id.toLowerCase());
-  if (idx === -1) return null;
-  items[idx] = { ...items[idx], status };
-  await writeFeedbackMarkdown(items);
-  return items[idx];
+  const index = items.findIndex((item) => item.id === id);
+  if (index === -1) return null;
+
+  items[index] = { ...items[index], status };
+  await saveFeedbackItems(items);
+  return items[index];
 }

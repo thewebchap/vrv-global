@@ -33,7 +33,7 @@ export function FeedbackForm({
   return (
     <form onSubmit={handleSubmit} className="rounded-2xl border border-line bg-white p-5 shadow-soft sm:p-6">
       <h2 className="font-serif text-lg text-ink">Add design feedback</h2>
-      <p className="mt-1 text-[13px] text-ink/55">Logged to <code className="rounded bg-paper px-1 py-0.5 text-[12px] text-ink/70">/content/design-feedback.md</code></p>
+      <p className="mt-1 text-[13px] text-ink/55">Saved to <code className="rounded bg-paper px-1 py-0.5 text-[12px] text-ink/70">Vercel KV</code> · export as Markdown anytime</p>
 
       <div className="mt-5 grid grid-cols-1 gap-5">
         <Field label="Feedback" htmlFor="fb-text" required>

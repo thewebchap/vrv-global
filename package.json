@@ -14,6 +14,7 @@
     "@deck.gl/layers": "^9.3.4",
     "@deck.gl/mapbox": "^9.3.4",
     "@deck.gl/react": "^9.3.4",
+    "@vercel/kv": "^3.0.0",
     "d3-geo": "^3.1.1",
     "framer-motion": "^11.18.2",
     "maplibre-gl": "^5.24.0",

@@ -10,6 +10,7 @@ import { FeedbackList } from "@/components/design-feedback/FeedbackList";
 import { FeedbackFilters } from "@/components/design-feedback/FeedbackFilters";
 import { FeedbackStats } from "@/components/design-feedback/FeedbackStats";
 import type { DesignFeedbackItem, FeedbackFilter } from "@/components/design-feedback/types";
+import { downloadFeedbackMarkdown } from "@/components/design-feedback/markdown";
 
 const idNum = (id: string) => parseInt(id.replace(/\D/g, ""), 10) || 0;
 
@@ -202,13 +203,23 @@ export default function DesignFeedbackPage() {
             <div className="space-y-5">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <FeedbackFilters value={filter} onChange={setFilter} counts={counts} />
-                <button
-                  type="button"
-                  onClick={() => load()}
-                  className="inline-flex items-center gap-1.5 self-start rounded-full border border-line bg-white px-3.5 py-2 text-sm font-medium text-ink/70 transition-colors hover:border-brand/40 hover:text-brand"
-                >
-                  <Icon name="route" className="h-4 w-4" /> Refresh
-                </button>
+                <div className="flex items-center gap-2 self-start">
+                  <button
+                    type="button"
+                    onClick={() => downloadFeedbackMarkdown([...items].sort((a, b) => idNum(a.id) - idNum(b.id)))}
+                    disabled={items.length === 0}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3.5 py-2 text-sm font-medium text-ink/70 transition-colors hover:border-brand/40 hover:text-brand disabled:opacity-50"
+                  >
+                    <Icon name="doc" className="h-4 w-4" /> Export as Markdown
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => load()}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3.5 py-2 text-sm font-medium text-ink/70 transition-colors hover:border-brand/40 hover:text-brand"
+                  >
+                    <Icon name="route" className="h-4 w-4" /> Refresh
+                  </button>
+                </div>
               </div>
 
               {error && (

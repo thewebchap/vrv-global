@@ -125,3 +125,26 @@ Two distinct, premium maps share one data source (**`data/commodityNetwork.ts`**
 - The InvestorRequestForm warns (non-blocking) when a **free email domain** is used and requires a **consent** checkbox.
 - **Capital-markets language:** any public-market ambition is intentionally phrased only as *“future listing readiness / capital-markets roadmap”* with an offer/solicitation disclaimer. Do not change to firm listing claims without approved wording.
 - Image hosts are allow-listed in `next.config.mjs` (`images.remotePatterns`); add your CDN there if you move images.
+
+## Design Feedback tracker (`/design-feedback`)
+
+Internal tool for logging website design feedback (Pending / Completed). Storage
+is **Vercel KV (Upstash Redis)** so changes persist across requests and
+deployments — filesystem writes are **not** durable on serverless.
+
+- Data lives in KV under the key `vrv:design-feedback` (a JSON array).
+- API: `GET`/`POST /api/design-feedback`, `PATCH /api/design-feedback/[id]`.
+- **Export as Markdown** generates the Markdown in the browser for download
+  (nothing is written to the deployed filesystem).
+- Optional gate: set `DESIGN_FEEDBACK_PASSWORD` to require a password; leave
+  empty for open access (local dev is never blocked).
+
+### Enable KV on Vercel
+1. Vercel project dashboard → **Storage**.
+2. **Create Database** → **KV**.
+3. **Connect** it to this project.
+4. Vercel injects `KV_REST_API_URL` / `KV_REST_API_TOKEN` automatically.
+5. **Redeploy**.
+
+Locally, if no KV env vars are set, an in-memory fallback is used (resets on dev
+server restart) so the page still works without external setup.
