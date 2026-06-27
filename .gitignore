@@ -13,6 +13,7 @@ build/
 *.mov
 *.psd
 *.ai
+public/
 
 # Original full-res source photos (optimized copies live in /public/pictures)
 /pictures
