@@ -24,14 +24,15 @@ export const productCategoryNav: NavLink[] = (
 }));
 
 export const mainNav: NavItem[] = [
+  { label: "Home", href: "/" },
   {
-    label: "Company",
+    label: "About",
     href: "/about",
     children: [
       { label: "About Us", href: "/about", desc: "Mission, vision, values and story" },
       { label: "Leadership", href: "/about#leadership", desc: "The team behind VRV Global" },
       { label: "Milestones", href: "/about#milestones", desc: "Our journey since 2012" },
-      { label: "Careers", href: "/careers", desc: "Build purpose-led global trade" },
+      { label: "Technology & Traceability", href: "/technology", desc: "Visibility from source to delivery" },
     ],
   },
   { label: "Products", href: "/products", mega: "products" },
@@ -46,9 +47,19 @@ export const mainNav: NavItem[] = [
       { label: "Reports & Metrics", href: "/sustainability#reports", desc: "ESG reports & data" },
     ],
   },
-  { label: "Technology & Traceability", href: "/technology" },
-  { label: "Investor Relations", href: "/investors" },
+  {
+    label: "Ventures",
+    href: "/ventures",
+    children: [
+      { label: "Mining & Resource Ventures", href: "/ventures/mining", desc: "Upstream industrial & precious metals" },
+      { label: "Natural Rubber Processing", href: "/ventures/natural-rubber-processing", desc: "Origin-linked rubber processing" },
+      { label: "Circular Economy Materials", href: "/ventures/circular-economy", desc: "Recovered & recycled flows" },
+      { label: "Regional Expansion", href: "/ventures/regional-expansion", desc: "Africa, Asia & strategic geographies" },
+      { label: "Supply Chain Infrastructure", href: "/ventures/supply-chain-infrastructure", desc: "Processing, logistics & quality" },
+    ],
+  },
   { label: "News & Insights", href: "/news" },
+  { label: "Careers", href: "/careers" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -78,10 +89,12 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
     ],
   },
   {
-    heading: "Investors & More",
+    heading: "Ventures",
     links: [
-      { label: "Investor Relations", href: "/investors" },
-      { label: "Corporate Governance", href: "/investors#governance" },
+      { label: "Ventures Overview", href: "/ventures" },
+      { label: "Mining & Resource Ventures", href: "/ventures/mining" },
+      { label: "Natural Rubber Processing", href: "/ventures/natural-rubber-processing" },
+      { label: "Circular Economy Materials", href: "/ventures/circular-economy" },
       { label: "News & Insights", href: "/news" },
       { label: "Contact Us", href: "/contact" },
     ],

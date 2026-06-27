@@ -9,6 +9,10 @@ import { TickList } from "@/components/ui/TickList";
 import { Media } from "@/components/ui/Media";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
+import { QuickAnswer } from "@/components/seo/QuickAnswer";
+import { EntitySummary } from "@/components/seo/EntitySummary";
+import { Definitions } from "@/components/seo/Definitions";
+import { quickAnswers, sustainabilityDefinitions } from "@/data/aeo";
 import { images } from "@/lib/images";
 import { pageMeta } from "@/lib/seo";
 import {
@@ -77,6 +81,18 @@ export default function SustainabilityPage() {
         crumbs={[{ label: "Sustainability" }]}
       />
 
+      {/* Quick answer + entity summary (AEO/GEO) */}
+      <Section tone="white" className="!pb-0">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <QuickAnswer question={quickAnswers.sustainability.question} answer={quickAnswers.sustainability.answer} />
+          <EntitySummary links={[{ label: "Explore products", href: "/products" }, { label: "Strategic ventures", href: "/ventures" }]} />
+        </div>
+        <div className="mt-10">
+          <Eyebrow>Key terms</Eyebrow>
+          <Definitions items={sustainabilityDefinitions} className="mt-5" />
+        </div>
+      </Section>
+
       {/* 1 — Commitment */}
       <Section tone="white">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
@@ -96,8 +112,8 @@ export default function SustainabilityPage() {
               <Button href="/technology" variant="royal" withArrow>
                 Explore our traceability technology
               </Button>
-              <Button href="/investors" variant="outline">
-                ESG for investors
+              <Button href="/ventures" variant="outline">
+                Ventures & partners
               </Button>
             </div>
           </Reveal>
@@ -333,8 +349,8 @@ export default function SustainabilityPage() {
             sustainability-led model is built for long-term value creation.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button href="/investors" variant="primary" withArrow>
-              ESG for investors
+            <Button href="/ventures" variant="primary" withArrow>
+              Ventures & partners
             </Button>
             <Button href="/contact" variant="outlineLight">
               Talk to our team

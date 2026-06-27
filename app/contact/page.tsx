@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { QuickAnswer } from "@/components/seo/QuickAnswer";
+import { quickAnswers } from "@/data/aeo";
 import { site } from "@/lib/site";
 import { pageMeta } from "@/lib/seo";
 
@@ -15,7 +17,7 @@ export const metadata = pageMeta({
 });
 
 const shortcuts: { title: string; body: string; href: string }[] = [
-  { title: "Investor Relations", body: "Request investor materials, governance and ESG documents.", href: "/investors#request" },
+  { title: "Ventures & Partnerships", body: "Explore strategic ventures, partnerships and investor opportunities.", href: "/ventures#enquiry" },
   { title: "Product Inquiry", body: "Specifications, availability and trade enquiries.", href: "#contact-form" },
   { title: "Sustainability / ESG", body: "Responsible sourcing, traceability and ESG topics.", href: "/sustainability" },
   { title: "Careers", body: "Open roles and speculative applications.", href: "/careers" },
@@ -23,7 +25,7 @@ const shortcuts: { title: string; body: string; href: string }[] = [
 
 const departments: { title: string; body: string; icon: IconName }[] = [
   { title: "Product Inquiry", body: "Specifications, grades, availability, pricing and trade enquiries across agro, metals and circular products.", icon: "cube" },
-  { title: "Investor Relations", body: "Company profile, financials, ESG reports, investor presentation, governance and capital-markets roadmap.", icon: "chart" },
+  { title: "Ventures & Partnerships", body: "Strategic ventures, supply chain partnerships, company profile and long-term value creation.", icon: "chart" },
   { title: "Sustainability / ESG", body: "Responsible sourcing, material traceability, supplier compliance and ESG-aligned practices.", icon: "leaf" },
   { title: "Careers", body: "Job opportunities, speculative applications and questions for our people team.", icon: "users" },
   { title: "Media", body: "Press, interviews, media kits and communications requests.", icon: "doc" },
@@ -47,7 +49,7 @@ const contactPointSchema = {
     },
     {
       "@type": "ContactPoint",
-      contactType: "Investor Relations",
+      contactType: "Ventures & Partnerships",
       email: site.investorEmail,
       areaServed: "Global",
     },
@@ -65,9 +67,13 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Contact"
         title="Talk to VRV Global"
-        intro="Reach the right team directly — for product inquiries, investor relations, sustainability and ESG, careers and media. We respond from our Singapore headquarters."
+        intro="Reach the right team directly — for product inquiries, ventures and partnerships, sustainability and ESG, careers and media. We respond from our Singapore headquarters."
         crumbs={[{ label: "Contact" }]}
       />
+
+      <Section tone="white" className="!pb-0">
+        <QuickAnswer question={quickAnswers.contact.question} answer={quickAnswers.contact.answer} className="max-w-3xl" />
+      </Section>
 
       <Section tone="white">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start">
@@ -214,8 +220,8 @@ export default function ContactPage() {
           ))}
         </div>
         <div className="mt-12">
-          <Button href="/investors#request" variant="link" withArrow>
-            Investor information request
+          <Button href="/ventures#enquiry" variant="link" withArrow>
+            Ventures &amp; partnership enquiry
           </Button>
         </div>
       </Section>

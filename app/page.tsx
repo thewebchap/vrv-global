@@ -3,6 +3,11 @@ import Link from "next/link";
 import { EcoHero } from "@/components/sections/EcoHero";
 import { ProductEcosystem } from "@/components/sections/ProductEcosystem";
 import { TraceabilityFlow } from "@/components/sections/TraceabilityFlow";
+import { CommodityFlow } from "@/components/sections/CommodityFlow";
+import { QuickAnswer } from "@/components/seo/QuickAnswer";
+import { EntitySummary } from "@/components/seo/EntitySummary";
+import { Faq } from "@/components/seo/Faq";
+import { quickAnswers, homeFaqs } from "@/data/aeo";
 import { SingaporeHub } from "@/components/sections/SingaporeHub";
 import { MarketSnapshot } from "@/components/market/MarketSnapshot";
 import { GlobeSection } from "@/components/map/globe/GlobeSection";
@@ -30,6 +35,20 @@ export default function HomePage() {
   return (
     <>
       <EcoHero />
+
+      {/* Quick answer + entity summary (AEO/GEO) */}
+      <Section tone="white">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <QuickAnswer question={quickAnswers.home.question} answer={quickAnswers.home.answer} />
+          <EntitySummary
+            links={[
+              { label: "Products", href: "/products" },
+              { label: "Sustainability", href: "/sustainability" },
+              { label: "Ventures", href: "/ventures" },
+            ]}
+          />
+        </div>
+      </Section>
 
       {/* 2 — Sustainable Approach: 3 pillars */}
       <Section tone="white" bordered>
@@ -82,8 +101,8 @@ export default function HomePage() {
             </p>
             <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/50">
               From Singapore, VRV Global coordinates a diversified network of agro commodity and metals relationships
-              across Asia, Africa, Europe, the Middle East and the Americas. The map highlights our purchase and sales
-              geographies through clean, rotating commodity corridors.
+              across Asia, Africa, Europe, the Middle East and the Americas. The globe highlights our purchase and sales
+              geographies as a clean global-presence map — not specific shipment routes.
             </p>
             <StatCards tone="dark" className="mt-9 max-w-xl" />
             <div className="mt-9 flex flex-wrap gap-3">
@@ -99,36 +118,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4 — Impact & Innovation */}
+      {/* 4 — Impact & Innovation: the VRV Commodity Flow */}
       <Section tone="white" bordered>
         <SectionHeading
           eyebrow="Impact & innovation"
-          title="Impact & Innovation Across Every Trade"
-          intro="VRV Global integrates sustainability, traceability and circular economy principles into the way commodities are sourced, moved and delivered."
+          title="The VRV Commodity Flow"
+          intro="From sourcing to global delivery, VRV Global connects commodities, partners, logistics, and markets through a disciplined and transparent supply chain process."
         />
-        <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-start">
-          <div>
-            <p className="text-[16px] leading-relaxed text-ink/70">
-              {"VRV is committed to building responsible and transparent supply chains across agri commodities and metals. From farmer mapping in rubber to responsible sourcing of biomass and circular flows in metals, we integrate sustainability into every trade. Our goal is to create traceable, future-ready markets that deliver value for communities, clients and investors alike."}
-            </p>
-            <div className="mt-8">
-              <Button href="/sustainability" variant="primary" withArrow>Explore Sustainability</Button>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <FeatureCard icon="route" title="Sustainable Supply Chains">
-              {"VRV Global builds sustainable supply chains by combining responsible sourcing, supplier engagement, commercial discipline and long-term partnerships across agro commodities and metals."}
-            </FeatureCard>
-            <FeatureCard icon="link" title="Traceability of Materials">
-              {"Traceability of materials at VRV Global ensures every product's journey is transparent, ethical and accountable from source to destination."}
-            </FeatureCard>
-            <FeatureCard icon="recycle" title="Circular Economy Solutions">
-              {"Circular economy solutions at VRV Global promote resource efficiency by reducing waste, reusing materials and driving sustainable growth."}
-            </FeatureCard>
-            <FeatureCard icon="scale" title="VRV's Philosophy">
-              {"VRV Global's philosophy is to balance growth with responsibility by fostering sustainable, transparent and ethical trade practices through its products, partnerships and supply chains."}
-            </FeatureCard>
-          </div>
+        <div className="mt-14">
+          <CommodityFlow />
         </div>
       </Section>
 
@@ -162,7 +160,7 @@ export default function HomePage() {
               ))}
             </div>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Button href="/products/sustainable-natural-rubber" variant="primary">View case study</Button>
+              <Button href="/products/natural-rubber" variant="primary">View case study</Button>
               <Button href="/news" variant="link">More case studies</Button>
             </div>
           </div>
@@ -174,9 +172,9 @@ export default function HomePage() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.3fr] lg:items-center">
           <SectionHeading
             tone="white"
-            eyebrow="Investor highlights"
-            title="Sustainability as a long-term value driver"
-            intro="VRV Global pairs diversified commodity exposure with sustainability-led positioning — building resilience, ESG-aligned growth and future capital-markets readiness."
+            eyebrow="Ventures & partners"
+            title="Strategic ventures for long-term value"
+            intro="Beyond trading, VRV Global invests in ventures that strengthen supply chains, unlock new markets and build long-term value — working with strategic partners, investors and long-term counterparties."
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {investmentHighlights.slice(0, 6).map((h) => (
@@ -190,11 +188,11 @@ export default function HomePage() {
           </div>
         </div>
         <div className="mt-10 flex flex-wrap gap-4">
-          <Button href="/investors" variant="primary">Learn more about investing</Button>
-          <Button href="/investors#request" variant="outlineLight">Request investor presentation</Button>
+          <Button href="/ventures" variant="primary">Explore Strategic Ventures</Button>
+          <Button href="/ventures#enquiry" variant="outlineLight">Partner with VRV</Button>
         </div>
         <p className="mt-6 max-w-2xl text-xs text-white/40">
-          Any reference to public-market ambition is described as future listing readiness / capital-markets roadmap and does not constitute an offer or solicitation.
+          VRV Global engages strategic partners, investors and long-term counterparties. Forward-looking venture details are confirmed before publication and do not constitute an offer or solicitation.
         </p>
       </Section>
 
@@ -231,7 +229,7 @@ export default function HomePage() {
             title="Market-aware commodity intelligence"
             intro="Indicative prices across rubber, metals and recycled materials — from SGX/SICOM and LME-referenced benchmarks. Connect a licensed feed for live data."
           />
-          <Button href="/investors" variant="outline" className="shrink-0">Investor Relations</Button>
+          <Button href="/ventures" variant="outline" className="shrink-0">Explore Ventures</Button>
         </div>
         <div className="mt-12">
           <MarketSnapshot limit={6} />
@@ -270,6 +268,19 @@ export default function HomePage() {
         </div>
       </Section>
 
+      {/* FAQs (AEO + FAQPage schema) */}
+      <Section tone="white" bordered>
+        <SectionHeading
+          align="center"
+          eyebrow="FAQs"
+          title="Frequently asked questions"
+          intro="Quick, factual answers about VRV Global — what we do, where we are based, and how to work with us."
+        />
+        <div className="mt-12">
+          <Faq items={homeFaqs} idBase="home-faq" />
+        </div>
+      </Section>
+
       {/* Final CTA */}
       <section className="bg-eco">
         <div className="container-x grid grid-cols-1 gap-8 py-16 md:grid-cols-[1.4fr_1fr] md:items-center lg:py-20">
@@ -281,7 +292,7 @@ export default function HomePage() {
           </div>
           <div className="flex flex-wrap gap-4 md:justify-end">
             <Button href="/contact" variant="primary" size="lg">Contact Us</Button>
-            <Button href="/investors" variant="outlineLight" size="lg">Investor Relations</Button>
+            <Button href="/ventures" variant="outlineLight" size="lg">Partner with VRV</Button>
           </div>
         </div>
       </section>

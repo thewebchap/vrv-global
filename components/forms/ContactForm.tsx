@@ -15,7 +15,7 @@ import { cn } from "@/lib/cn";
 
 export const DEPARTMENTS = [
   "Product Inquiry",
-  "Investor Relations",
+  "Ventures & Partnerships",
   "Sustainability / ESG",
   "Careers",
   "Media",

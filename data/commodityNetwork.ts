@@ -199,7 +199,7 @@ export const netColors = {
 } as const;
 
 export const MAP_DISCLAIMER =
-  "Map routes are illustrative and represent VRV Global's purchase geographies, sales geographies, and indicative commercial relationships. Animated links are temporary visualizations and do not represent fixed, permanent, or exact shipment paths.";
+  "Map markers represent VRV Global's headquarters, sales geographies, and purchase geographies. They do not represent exact shipment routes or permanent trade paths.";
 
 /* ── split-screen "Global Commodity Footprint" helpers ── */
 

@@ -15,7 +15,7 @@
     "unit": "kg",
     "change": 1.2,
     "changePercent": 0.72,
-    "sourceUrl": "https://www.sgx.com/derivatives/products/tsr20",
+    "sourceUrl": "https://www.sgx.com/derivatives/products/natural-rubber20",
     "licenseNote": "SGX/SICOM market data is licensed; indicative sample shown.",
     "trend": [
       161,
@@ -43,7 +43,7 @@
     "unit": "kg",
     "change": -0.9,
     "changePercent": -0.44,
-    "sourceUrl": "https://www.sgx.com/derivatives/products/rss3",
+    "sourceUrl": "https://www.sgx.com/derivatives/products/natural-rubber3",
     "licenseNote": "SGX/SICOM market data is licensed; indicative sample shown.",
     "trend": [
       206,
@@ -71,7 +71,7 @@
     "unit": "kg",
     "change": null,
     "changePercent": null,
-    "sourceUrl": "/products/sustainable-natural-rubber",
+    "sourceUrl": "/products/natural-rubber",
     "licenseNote": "No official live feed exists yet for sustainable natural rubber — placeholder benchmark.",
     "trend": []
   },
@@ -175,7 +175,7 @@
     "unit": "tonne",
     "change": 30,
     "changePercent": 0.35,
-    "sourceUrl": "/products/copper-scrap",
+    "sourceUrl": "/products#industrial-metals",
     "licenseNote": "Recycled-metal prices are indicative; connect a licensed scrap-index feed.",
     "trend": [
       8500,
@@ -203,7 +203,7 @@
     "unit": "tonne",
     "change": -3,
     "changePercent": -0.72,
-    "sourceUrl": "/products/bushelling-scrap",
+    "sourceUrl": "/products#industrial-metals",
     "licenseNote": "Recycled-metal prices are indicative; connect a licensed scrap-index feed.",
     "trend": [
       420,
@@ -231,7 +231,7 @@
     "unit": "tonne",
     "change": 2,
     "changePercent": 0.51,
-    "sourceUrl": "/products/pns-scrap",
+    "sourceUrl": "/products#industrial-metals",
     "licenseNote": "Recycled-metal prices are indicative; connect a licensed scrap-index feed.",
     "trend": [
       392,
@@ -259,7 +259,7 @@
     "unit": "m³",
     "change": null,
     "changePercent": null,
-    "sourceUrl": "/products/mdf",
+    "sourceUrl": "/products",
     "licenseNote": "No reliable public live benchmark — placeholder; update manually in admin.",
     "trend": []
   }

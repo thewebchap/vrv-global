@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
-import { products } from "@/lib/products";
+import { productDetails } from "@/data/productDetails";
+import { ventures } from "@/data/ventures";
 import { articles } from "@/lib/news";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -18,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/products", changeFrequency: "monthly", priority: 0.9 },
     { path: "/sustainability", changeFrequency: "monthly", priority: 0.8 },
     { path: "/technology", changeFrequency: "monthly", priority: 0.7 },
-    { path: "/investors", changeFrequency: "monthly", priority: 0.7 },
+    { path: "/ventures", changeFrequency: "monthly", priority: 0.8 },
     { path: "/news", changeFrequency: "weekly", priority: 0.8 },
     { path: "/careers", changeFrequency: "monthly", priority: 0.6 },
     { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
@@ -33,12 +34,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: r.priority,
   }));
 
-  const productPages: MetadataRoute.Sitemap = products.map((p) => ({
+  const productPages: MetadataRoute.Sitemap = productDetails.map((p) => ({
     url: `${site.url}/products/${p.slug}`,
     lastModified: now,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
+
+  const venturePages: MetadataRoute.Sitemap = [
+    { url: `${site.url}/ventures`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    ...ventures.map((v) => ({
+      url: `${site.url}/ventures/${v.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  ];
 
   const newsPages: MetadataRoute.Sitemap = articles.map((a) => ({
     url: `${site.url}/news/${a.slug}`,
@@ -47,5 +58,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...productPages, ...newsPages];
+  return [...staticPages, ...productPages, ...venturePages, ...newsPages];
 }

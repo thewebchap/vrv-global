@@ -248,8 +248,8 @@ export default function TechnologyPage() {
                 operational rigour into measurable trust — and trust into long-term value.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button href="/investors" variant="royal" withArrow>
-                  Investor & partner case
+                <Button href="/ventures" variant="royal" withArrow>
+                  Ventures & partnerships
                 </Button>
                 <Button href="/sustainability" variant="outline">
                   See our ESG approach

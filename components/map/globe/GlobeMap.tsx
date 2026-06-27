@@ -7,9 +7,7 @@ import { useReducedMotion } from "framer-motion";
 import { countryFeatures } from "@/lib/map/worldFeatures";
 import {
   commodityCountries,
-  temporaryCommodityRoutes,
   countryById,
-  routesForCountry,
   roleSummary,
   netColors,
   isMultiRole,
@@ -34,25 +32,12 @@ function colorFor(c: CommodityCountry): string {
 }
 
 const SG = countryById.singapore.coordinates; // [lon, lat]
-const hexRgba = (hex: string, a: number) => {
-  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
-  return `rgba(${r},${g},${b},${a})`;
-};
-const rand = (lo: number, hi: number) => lo + Math.random() * (hi - lo);
-function pickRandom<T>(arr: T[], n: number): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a.slice(0, n);
-}
-
 /**
  * Homepage cinematic globe (react-globe.gl / three.js). Slow auto-rotation,
- * soft country markers, a highlighted Singapore HQ with a pulse ring, and
- * 3–5 temporary arcs that cycle. Click a country to focus its related arcs.
- * Client-only; loaded via dynamic(ssr:false). Respects reduced motion.
+ * soft country markers and a highlighted Singapore HQ with a pulse ring — a
+ * clean global-presence visual with no route lines or shipment corridors.
+ * Click a country to highlight it. Client-only; loaded via dynamic(ssr:false).
+ * Respects reduced motion.
  */
 export function GlobeMap() {
   const reduce = useReducedMotion() ?? false;
@@ -90,43 +75,6 @@ export function GlobeMap() {
     }
     return list;
   }, [selected]);
-
-  // Cycling temporary arcs (3–5), or related arcs when a country is selected.
-  const pool = useMemo(() => (selected ? routesForCountry(selected) : temporaryCommodityRoutes), [selected]);
-  const poolKey = pool.map((r) => r.id).join(",");
-  const [activeIds, setActiveIds] = useState<string[]>([]);
-  const isMobile = size.w > 0 && size.w < 640;
-  useEffect(() => {
-    if (pool.length === 0) {
-      setActiveIds([]);
-      return;
-    }
-    // 4–7 corridors on desktop, 2–4 on mobile; all related when a country is focused.
-    const hi = isMobile ? 4 : 7;
-    const lo = isMobile ? 2 : 4;
-    const cap = Math.min(selected ? pool.length : hi, pool.length);
-    setActiveIds(pickRandom(pool, cap).map((r) => r.id));
-    if (reduce || selected || pool.length <= cap) return;
-    const t = setInterval(() => {
-      setActiveIds(pickRandom(pool, Math.round(rand(lo, hi))).map((r) => r.id));
-    }, 4800);
-    return () => clearInterval(t);
-  }, [poolKey, reduce, selected, isMobile]);
-
-  const arcs = useMemo(
-    () =>
-      activeIds
-        .map((id) => temporaryCommodityRoutes.find((r) => r.id === id))
-        .filter(Boolean)
-        .map((r) => {
-          const a = countryById[r!.from];
-          const b = countryById[r!.to];
-          const col = r!.segment === "agro" ? netColors.agro : netColors.metals;
-          // soft gradient: stronger at source → fading toward destination
-          return { startLat: a.coordinates[1], startLng: a.coordinates[0], endLat: b.coordinates[1], endLng: b.coordinates[0], color: [hexRgba(col, 0.95), hexRgba(col, 0.32)] };
-        }),
-    [activeIds],
-  );
 
   // Deep-ocean globe material (navy) — strong contrast under the sage land polygons.
   const globeMaterial = useMemo(() => new THREE.MeshPhongMaterial({ color: "#0B2238", shininess: 6 }), []);
@@ -190,14 +138,6 @@ export function GlobeMap() {
         ringMaxRadius="maxR"
         ringPropagationSpeed="speed"
         ringRepeatPeriod="period"
-        arcsData={arcs}
-        arcColor="color"
-        arcStroke={0.5}
-        arcDashLength={0.4}
-        arcDashGap={0.18}
-        arcDashAnimateTime={reduce ? 0 : 4500}
-        arcAltitudeAutoScale={0.45}
-        arcsTransitionDuration={1500}
       />
     </div>
   );

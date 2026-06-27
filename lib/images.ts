@@ -38,21 +38,24 @@ export const images: Record<string, Img> = {
   logistics: { src: ux("1578575437130-527eed3abbec", 900), alt: "Logistics — cargo trucks and containers", credit: "Unsplash", where: "Supply chain: Logistics" },
   destination: { src: ux("1605902711622-cfb43c4437b5", 900), alt: "Destination port terminal with stacked containers", credit: "Unsplash", where: "Supply chain: Destination markets" },
 
-  // — Product images: Agro
-  agro: { src: ux("1574323347407-f5e1ad6d020b", 1200), alt: "Agricultural commodities — harvested crops", credit: "Unsplash", where: "Category: Agro Commodities" },
-  rubber: { src: ux("1597916829826-02e5bb4a54e0", 1200), alt: "Natural rubber latex collection at origin", credit: "Unsplash", where: "Product: Natural Rubber" },
+  // — Product images: Agro (local, business-relevant — see public/images/CREDITS.md)
+  agro: { src: "/images/products/agro-commodities.jpg", alt: "Worker collecting latex in a natural rubber plantation", credit: "Wikimedia Commons (CC BY-SA)", where: "Category: Agro Commodities" },
+  rubber: { src: "/images/hero/natural-rubber.jpg", alt: "Latex collected from tapped trees in a natural rubber plantation", credit: "Wikimedia Commons (CC BY-SA 4.0)", where: "Product: Natural Rubber" },
+  biomass: { src: "/images/products/biomass.jpg", alt: "Pile of wood chips used as biomass feedstock", credit: "Wikimedia Commons (CC BY-SA 4.0)", where: "Product: Biomass" },
+  nutsSpices: { src: "/images/products/nuts-spices.jpg", alt: "Market display of spices, pulses and agricultural products", credit: "Wikimedia Commons (CC BY-SA 4.0)", where: "Product: Nuts, Beans, Pulses & Spices" },
   sustainableRubber: { src: "/images/hero/natural-rubber.jpg", alt: "Latex collected in a managed natural rubber plantation — sustainable, traceable sourcing", credit: "Wikimedia Commons (CC BY-SA 4.0)", where: "Product: Sustainable Natural Rubber" },
   woodchips: { src: ux("1416879595882-3373a0480b5b", 1200), alt: "Woodchips and forestry biomass", credit: "Unsplash", where: "Product: Woodchips" },
   woodpulp: { src: ux("1605000797499-95a51c5269ae", 1200), alt: "Paper and pulp rolls in an industrial mill", credit: "Unsplash", where: "Product: Wood Pulp" },
 
-  // — Product images: Metals
-  metals: { src: ux("1518709268805-4e9042af9f23", 1200), alt: "Molten industrial metal in a steel works", credit: "Unsplash", where: "Category: Metals" },
+  // — Product images: Metals (local, business-relevant — see public/images/CREDITS.md)
+  metals: { src: "/images/products/metals.jpg", alt: "Stacked aluminium billets in a metals warehouse", credit: "Wikimedia Commons (CC BY-SA 4.0)", where: "Category: Metals / Non-Ferrous Metals" },
+  ferrousMetals: { src: "/images/products/ferrous-metals.jpg", alt: "Steel coils in an industrial warehouse", credit: "Wikimedia Commons (CC BY-SA 2.0)", where: "Product: Ferrous Metals" },
   copper: { src: ux("1605000797499-95a51c5269ae", 1200), alt: "Copper wire and refined metal", credit: "Unsplash", where: "Product: Copper" },
   aluminum: { src: ux("1605557202138-c8d3e6f0a0d4", 1200), alt: "Aluminium ingots and rolled metal", credit: "Unsplash", where: "Product: Aluminum" },
   nickel: { src: ux("1535813547-99c456a41d4a", 1200), alt: "Refined industrial metal briquettes", credit: "Unsplash", where: "Product: Nickel" },
 
-  // — Product images: Circular economy
-  circular: { src: ux("1532996122724-e3c354a0b15b", 1200), alt: "Recycling and circular economy materials", credit: "Unsplash", where: "Category: Circular Economy" },
+  // — Product images: Circular economy (local, business-relevant — see public/images/CREDITS.md)
+  circular: { src: "/images/products/circular-economy.jpg", alt: "Recovered scrap metal at a recycling yard — circular material flows", credit: "Wikimedia Commons (CC0)", where: "Category: Circular Economy / Recycled Metals" },
   ferrousScrap: { src: ux("1567789884554-0b844b597180", 1200), alt: "Recycled ferrous metal scrap ready for steelmaking", credit: "Unsplash", where: "Product: PNS / Bushelling scrap" },
   copperScrap: { src: ux("1605557202138-c8d3e6f0a0d4", 1200), alt: "Recycled copper scrap and wire", credit: "Unsplash", where: "Product: Copper Scrap" },
   mdf: { src: ux("1503602642458-232111445657", 1200), alt: "Engineered wood panels and boards", credit: "Unsplash", where: "Product: MDF" },

@@ -2,31 +2,67 @@
 
 import { useMemo, useState } from "react";
 import DeckGL from "@deck.gl/react";
-import { ArcLayer, ScatterplotLayer } from "@deck.gl/layers";
+import { ScatterplotLayer } from "@deck.gl/layers";
 import { Map } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import {
   commodityCountries,
-  temporaryCommodityRoutes,
   countryById,
-  routesForCountry,
-  relatedCountryIds,
   roleSummary,
   ROLE_LABEL,
   netColors,
   isMultiRole,
+  isHighlighted,
   MAP_DISCLAIMER,
   type CommodityCountry,
 } from "@/data/commodityNetwork";
-import { useRouteCycle } from "../useRouteCycle";
 import { MapFilters, type FilterOption } from "../MapFilters";
 import { Icon } from "@/components/ui/Icon";
 
-type Tab = "agro" | "metals" | "all";
-const TABS: FilterOption<Tab>[] = [
+/** The six footprint filters (subset of NetFilter, excluding the legacy "active"). */
+type FilterKey = "all" | "agro" | "metals" | "sales" | "purchase" | "headquarters";
+
+const TABS: FilterOption<FilterKey>[] = [
+  { key: "all", label: "All" },
   { key: "agro", label: "Agro Commodities" },
   { key: "metals", label: "Metals" },
-  { key: "all", label: "Combined Network" },
+  { key: "sales", label: "Sales Geographies" },
+  { key: "purchase", label: "Purchase Geographies" },
+  { key: "headquarters", label: "Headquarters" },
+];
+
+const PANEL: Record<FilterKey, { title: string; blurb: string }> = {
+  all: {
+    title: "Global commodity footprint",
+    blurb: "Every agro and metals geography, coordinated from VRV Global's Singapore headquarters.",
+  },
+  agro: {
+    title: "Agro commodity geographies",
+    blurb: "Purchase and sales geographies for natural rubber, biomass and agricultural products.",
+  },
+  metals: {
+    title: "Metals geographies",
+    blurb: "Purchase and sales geographies for ferrous, non-ferrous and recycled metals.",
+  },
+  sales: {
+    title: "Sales geographies",
+    blurb: "Destination markets where VRV Global delivers agro commodities and metals.",
+  },
+  purchase: {
+    title: "Purchase geographies",
+    blurb: "Sourcing geographies engaged through responsible-sourcing relationships.",
+  },
+  headquarters: {
+    title: "Headquarters",
+    blurb: "Singapore — strategic coordination, governance, investor relations and global trade management.",
+  },
+};
+
+const LEGEND = [
+  { label: "Headquarters", color: netColors.hq },
+  { label: "Agro Commodities", color: netColors.agro },
+  { label: "Metals", color: netColors.metals },
+  { label: "Multiple roles", color: netColors.multi },
 ];
 
 const MAP_STYLE = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
@@ -42,43 +78,18 @@ function colorFor(c: CommodityCountry): [number, number, number] {
   return hexRgb(c.roles[0].startsWith("agro") ? netColors.agro : netColors.metals);
 }
 
-/** Analytical commodities footprint: deck.gl ArcLayer over MapLibre + side panel. */
+/**
+ * Global commodity footprint — a clean location map (deck.gl ScatterplotLayer
+ * over MapLibre). Shows only location dots and highlighted geographies: no
+ * route lines, arcs or corridors. Filters emphasise relevant markers and dim
+ * the rest; hovering a marker shows its country, segment and role.
+ */
 export function FootprintMap() {
-  const [tab, setTab] = useState<Tab>("agro");
+  const [filter, setFilter] = useState<FilterKey>("all");
   const [selected, setSelected] = useState<string | null>(null);
 
-  const pool = useMemo(
-    () => (selected ? routesForCountry(selected) : tab === "all" ? temporaryCommodityRoutes : temporaryCommodityRoutes.filter((r) => r.segment === tab)),
-    [tab, selected],
-  );
-  const { active } = useRouteCycle(pool, selected ? 99 : 4);
-  const relatedIds = selected ? relatedCountryIds(selected) : null;
-
-  const highlighted = (c: CommodityCountry) =>
-    relatedIds ? relatedIds.has(c.id) : tab === "all" ? true : c.segments.includes(tab);
-
-  const layers = useMemo(() => {
-    const arcs = active
-      .map((r) => {
-        const a = countryById[r.from];
-        const b = countryById[r.to];
-        const col = hexRgb(r.segment === "agro" ? netColors.agro : netColors.metals);
-        return { from: r.from, to: r.to, source: a.coordinates, target: b.coordinates, color: col, route: r };
-      });
-
-    return [
-      new ArcLayer({
-        id: "routes",
-        data: arcs,
-        greatCircle: true,
-        getSourcePosition: (d: any) => d.source,
-        getTargetPosition: (d: any) => d.target,
-        getSourceColor: (d: any) => [...d.color, 230] as any,
-        getTargetColor: (d: any) => [...d.color, 230] as any,
-        getWidth: 1.6,
-        getHeight: 0.5,
-        pickable: true,
-      }),
+  const layers = useMemo(
+    () => [
       new ScatterplotLayer({
         id: "markers",
         data: commodityCountries,
@@ -87,8 +98,8 @@ export function FootprintMap() {
         radiusUnits: "pixels",
         getFillColor: (d: CommodityCountry) => {
           const c = colorFor(d);
-          const on = highlighted(d) || d.roles.includes("headquarters");
-          return [...c, on ? 235 : 60] as any;
+          const on = isHighlighted(d, filter) || d.roles.includes("headquarters");
+          return [...c, on ? 235 : 55] as any;
         },
         getLineColor: (d: CommodityCountry) => (selected === d.id ? hexRgb(netColors.hq) : [255, 255, 255]) as any,
         getLineWidth: (d: CommodityCountry) => (selected === d.id ? 2.5 : 1),
@@ -96,17 +107,19 @@ export function FootprintMap() {
         stroked: true,
         pickable: true,
         updateTriggers: {
-          getFillColor: [tab, selected, relatedIds],
+          getFillColor: [filter, selected],
           getRadius: [selected],
           getLineColor: [selected],
           getLineWidth: [selected],
         },
       }),
-    ];
-  }, [active, tab, selected]); // eslint-disable-line react-hooks/exhaustive-deps
+    ],
+    [filter, selected],
+  );
 
-  const listCountries = tab === "all" ? commodityCountries : commodityCountries.filter((c) => c.segments.includes(tab));
+  const listCountries = commodityCountries.filter((c) => isHighlighted(c, filter));
   const selCountry = selected ? countryById[selected] : null;
+  const panel = PANEL[filter];
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.55fr_1fr]">
@@ -118,14 +131,9 @@ export function FootprintMap() {
             controller={{ dragRotate: false, touchRotate: false }}
             layers={layers}
             getTooltip={({ object }: any) => {
-              if (!object) return null;
-              if (object.c || object.coordinates) {
-                const c: CommodityCountry = object.coordinates ? object : object.c;
-                const { title, lines } = roleSummary(c);
-                return { html: `<b>${title}</b>${lines.map((l) => `<div style="opacity:.7">${l}</div>`).join("")}` };
-              }
-              if (object.route) return { html: `<b>${object.route.label}</b>` };
-              return null;
+              if (!object || !object.coordinates) return null;
+              const { title, lines } = roleSummary(object as CommodityCountry);
+              return { html: `<b>${title}</b>${lines.map((l) => `<div style="opacity:.7">${l}</div>`).join("")}` };
             }}
             onClick={(info: any) => {
               if (info.object && info.object.coordinates) setSelected((s) => (s === info.object.id ? null : info.object.id));
@@ -134,18 +142,30 @@ export function FootprintMap() {
           >
             <Map reuseMaps mapStyle={MAP_STYLE} attributionControl={false} />
           </DeckGL>
+
+          {/* Legend */}
+          <div className="pointer-events-none absolute bottom-3 left-3 rounded-xl border border-line bg-white/90 px-3 py-2.5 shadow-soft backdrop-blur">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+              {LEGEND.map((l) => (
+                <div key={l.label} className="flex items-center gap-1.5">
+                  <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ backgroundColor: l.color }} />
+                  <span className="text-[11px] font-medium text-ink/70">{l.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         <p className="mt-4 text-[11px] leading-relaxed text-ink/40">{MAP_DISCLAIMER}</p>
       </div>
 
       {/* Side panel */}
       <div className="flex flex-col">
-        <MapFilters options={TABS} value={tab} onChange={(k) => { setTab(k); setSelected(null); }} />
+        <MapFilters options={TABS} value={filter} onChange={(k) => { setFilter(k); setSelected(null); }} />
 
         {selCountry ? (
           <div className="mt-5 rounded-2xl border border-line bg-paper p-6">
             <button onClick={() => setSelected(null)} className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-600">
-              <Icon name="arrowRight" className="h-4 w-4 rotate-180" /> Back to {TABS.find((t) => t.key === tab)?.label}
+              <Icon name="arrowRight" className="h-4 w-4 rotate-180" /> Back to {TABS.find((t) => t.key === filter)?.label}
             </button>
             <h3 className="mt-4 font-serif text-xl text-ink">{selCountry.label}</h3>
             <p className="text-sm text-ink/55">{selCountry.country}</p>
@@ -154,33 +174,18 @@ export function FootprintMap() {
                 <span key={r} className="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700">{ROLE_LABEL[r]}</span>
               ))}
             </div>
-            <p className="mt-5 text-[11px] font-semibold uppercase tracking-label text-ink/55">Related corridors</p>
-            <ul className="mt-3 space-y-2">
-              {routesForCountry(selCountry.id).map((r) => (
-                <li key={r.id} className="flex items-center gap-2 text-sm text-ink/70">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ backgroundColor: r.segment === "agro" ? netColors.agro : netColors.metals }} />
-                  {countryById[r.from].label} → {countryById[r.to].label}
-                </li>
+            <div className="mt-5 space-y-1.5 border-t border-line pt-5">
+              {roleSummary(selCountry).lines.map((l) => (
+                <p key={l} className="text-sm text-ink/70">{l}</p>
               ))}
-              {routesForCountry(selCountry.id).length === 0 && (
-                <li className="text-sm text-ink/50">No illustrative corridors for this geography yet.</li>
-              )}
-            </ul>
+            </div>
           </div>
         ) : (
           <div className="mt-5 rounded-2xl border border-line bg-paper p-6">
-            <h3 className="font-serif text-xl text-ink">
-              {tab === "agro" ? "Agro commodity network" : tab === "metals" ? "Metals network" : "Combined network"}
-            </h3>
-            <p className="mt-2 text-[15px] leading-relaxed text-ink/65">
-              {tab === "agro"
-                ? "Sourcing across West Africa, Southeast Asia and Brazil; sales across Asia, Europe, the Middle East and North America."
-                : tab === "metals"
-                  ? "Sourcing across Australia, Southeast Asia and Africa; sales across East Asia, India, Europe and North America."
-                  : "Every agro and metals geography, with Singapore as the coordination headquarters."}
-            </p>
+            <h3 className="font-serif text-xl text-ink">{panel.title}</h3>
+            <p className="mt-2 text-[15px] leading-relaxed text-ink/65">{panel.blurb}</p>
             <p className="mt-4 text-[11px] font-semibold uppercase tracking-label text-ink/55">
-              Geographies ({listCountries.length}) — click to see related routes
+              Geographies ({listCountries.length}) — select for details
             </p>
             <div className="mt-3 max-h-[320px] overflow-y-auto pr-1 [scrollbar-width:thin]">
               <ul className="flex flex-wrap gap-1.5">

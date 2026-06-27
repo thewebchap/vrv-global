@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { mainNav, type NavItem } from "@/lib/nav";
-import { products, categoryMeta, categories } from "@/lib/products";
+import { productDetails, productDetailsBySegment } from "@/data/productDetails";
 import { site } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/layout/Logo";
@@ -85,7 +85,7 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 xl:flex">
-          <Button href="/investors" variant="outline" size="md">Investor Relations</Button>
+          <Button href="/ventures" variant="outline" size="md">Ventures</Button>
           <Button href="/contact" variant="primary" size="md">Contact Us</Button>
         </div>
 
@@ -110,7 +110,7 @@ export function Header() {
           <nav className="container-x max-h-[calc(100vh-70px)] space-y-1 overflow-y-auto py-4" aria-label="Mobile">
             {mainNav.map((item) => {
               const children = item.mega === "products"
-                ? products.map((p) => ({ label: p.name, href: `/products/${p.slug}` }))
+                ? productDetails.map((p) => ({ label: p.title, href: `/products/${p.slug}` }))
                 : item.children;
               return (
                 <div key={item.label}>
@@ -133,7 +133,7 @@ export function Header() {
               );
             })}
             <div className="grid grid-cols-2 gap-3 px-3 pt-3">
-              <Button href="/investors" variant="outline" size="lg" className="w-full">Investors</Button>
+              <Button href="/ventures" variant="outline" size="lg" className="w-full">Ventures</Button>
               <Button href="/contact" variant="primary" size="lg" className="w-full">Contact</Button>
             </div>
           </nav>
@@ -158,27 +158,31 @@ function Dropdown({ item }: { item: NavItem }) {
   );
 }
 
+const segmentAnchor: Record<string, string> = {
+  "Agro Commodities": "agro-commodities",
+  "Industrial Metals": "industrial-metals",
+  Mining: "mining",
+};
+
 function ProductsMega() {
   return (
     <div className="absolute left-1/2 top-full z-50 w-[min(960px,94vw)] -translate-x-1/2 pt-3">
       <div className="grid grid-cols-1 gap-2 rounded-xl border border-line bg-white p-4 shadow-hover md:grid-cols-3">
-        {categories.map((cat) => (
-          <div key={cat} className="rounded-lg p-3">
-            <Link href={`/products#${cat}`} className="eyebrow no-flourish !text-brand hover:opacity-80">
-              {categoryMeta[cat].title}
+        {productDetailsBySegment.map(({ segment, items }) => (
+          <div key={segment} className="rounded-lg p-3">
+            <Link href={`/products#${segmentAnchor[segment]}`} className="eyebrow no-flourish !text-brand hover:opacity-80">
+              {segment}
             </Link>
             <div className="mt-3 space-y-0.5">
-              {products
-                .filter((p) => p.category === cat)
-                .map((p) => (
-                  <Link
-                    key={p.slug}
-                    href={`/products/${p.slug}`}
-                    className="group/item block rounded-md px-2.5 py-2 transition-colors hover:bg-paper"
-                  >
-                    <span className="block text-[13px] font-medium text-ink group-hover/item:text-brand">{p.name}</span>
-                  </Link>
-                ))}
+              {items.map((p) => (
+                <Link
+                  key={p.slug}
+                  href={`/products/${p.slug}`}
+                  className="group/item block rounded-md px-2.5 py-2 transition-colors hover:bg-paper"
+                >
+                  <span className="block text-[13px] font-medium text-ink group-hover/item:text-brand">{p.title}</span>
+                </Link>
+              ))}
             </div>
           </div>
         ))}

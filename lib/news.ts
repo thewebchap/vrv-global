@@ -84,6 +84,102 @@ export const articles: Article[] = [
     readTime: "5 min read",
     date: "2026-01-15",
   },
+
+  /* ── Topic clusters — rubber ─────────────────────────────────────────── */
+  {
+    slug: "cuplumps-natural-rubber-supply-chains",
+    title: "What Are Cuplumps in Natural Rubber Supply Chains?",
+    category: "Agro Commodities",
+    excerpt: "Cuplumps are an early-stage form of natural rubber collected at origin — and a key point for quality consistency and traceability.",
+    readTime: "5 min read",
+    date: "2026-06-10",
+  },
+  {
+    slug: "tsr-block-rubber-explained",
+    title: "TSR and Block Rubber: Standardized Natural Rubber for Industry",
+    category: "Agro Commodities",
+    excerpt: "How Technically Specified Rubber grades give tyre and industrial manufacturers consistent, dependable natural rubber inputs.",
+    readTime: "5 min read",
+    date: "2026-06-05",
+  },
+  {
+    slug: "traceability-in-natural-rubber",
+    title: "Why Traceability Matters in Natural Rubber",
+    category: "Sustainable Supply Chains",
+    excerpt: "From cuplump to block rubber, origin visibility is becoming essential to responsible, deforestation-conscious rubber supply.",
+    readTime: "5 min read",
+    date: "2026-05-30",
+  },
+
+  /* ── Topic clusters — metals ─────────────────────────────────────────── */
+  {
+    slug: "aluminium-lightweight-manufacturing",
+    title: "Aluminium in Lightweight Manufacturing",
+    category: "Metals & Industrial Transformation",
+    excerpt: "Why aluminium's strength-to-weight ratio and recyclability make it central to transport, construction and packaging.",
+    readTime: "4 min read",
+    date: "2026-05-22",
+  },
+  {
+    slug: "zinc-and-galvanization",
+    title: "Zinc and the Economics of Galvanization",
+    category: "Metals & Industrial Transformation",
+    excerpt: "How zinc protects steel from corrosion, and where galvanization and alloy demand are heading.",
+    readTime: "4 min read",
+    date: "2026-05-14",
+  },
+  {
+    slug: "lead-industrial-applications",
+    title: "Lead in Industrial Applications",
+    category: "Metals & Industrial Transformation",
+    excerpt: "From batteries to shielding, where lead remains essential — and why compliance-led sourcing matters.",
+    readTime: "4 min read",
+    date: "2026-05-06",
+  },
+  {
+    slug: "silico-ferro-manganese-steelmaking",
+    title: "Silico-Manganese and Ferro-Manganese in Steelmaking",
+    category: "Metals & Industrial Transformation",
+    excerpt: "The manganese alloys that act as essential deoxidizing and alloying inputs in steel production.",
+    readTime: "5 min read",
+    date: "2026-04-28",
+  },
+
+  /* ── Topic clusters — sustainability ─────────────────────────────────── */
+  {
+    slug: "responsible-sourcing-commodity-supply-chains",
+    title: "Responsible Sourcing in Commodity Supply Chains",
+    category: "Sustainable Supply Chains",
+    excerpt: "What credible responsible sourcing looks like across agro commodities and industrial metals — and why buyers increasingly require it.",
+    readTime: "5 min read",
+    date: "2026-04-18",
+  },
+
+  /* ── Topic clusters — ventures ───────────────────────────────────────── */
+  {
+    slug: "why-commodity-companies-move-upstream",
+    title: "Why Commodity Companies Move Upstream",
+    category: "Global Commodity Trends",
+    excerpt: "The strategic logic behind integrating into resource-linked ventures for supply security and long-term value.",
+    readTime: "5 min read",
+    date: "2026-04-04",
+  },
+  {
+    slug: "mining-ventures-tanzania-zambia",
+    title: "Mining Ventures in Tanzania and Zambia",
+    category: "Global Commodity Trends",
+    excerpt: "Why these African resource geographies are central to an upstream strategy in industrial and precious metals.",
+    readTime: "5 min read",
+    date: "2026-03-26",
+  },
+  {
+    slug: "copper-and-gold-strategic-resources",
+    title: "Copper and Gold as Strategic Resource Opportunities",
+    category: "Metals & Industrial Transformation",
+    excerpt: "How electrification and precious-metals demand shape a copper and gold resource focus.",
+    readTime: "5 min read",
+    date: "2026-03-12",
+  },
 ];
 
 export const articleBySlug = (slug: string) => articles.find((a) => a.slug === slug);

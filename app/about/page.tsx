@@ -14,6 +14,9 @@ import { journeyMilestones } from "@/data/journey";
 import { values } from "@/lib/leadership";
 import { aboutGroupImages } from "@/data/companyImages";
 import { leadershipTeam } from "@/data/leadershipTeam";
+import { QuickAnswer } from "@/components/seo/QuickAnswer";
+import { EntitySummary } from "@/components/seo/EntitySummary";
+import { quickAnswers } from "@/data/aeo";
 import { site } from "@/lib/site";
 import { pageMeta } from "@/lib/seo";
 
@@ -67,6 +70,14 @@ export default function AboutPage() {
         intro="VRV Global is a diversified trading house connecting agri-commodities and metals across Asia, Africa and beyond — combining experienced traders, customer insight and sourcing expertise to deliver reliable, integrated supply chains."
         crumbs={[{ label: "About" }]}
       />
+
+      {/* Quick answer + entity summary (AEO/GEO) */}
+      <Section tone="white" className="!pb-0">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <QuickAnswer question={quickAnswers.about.question} answer={quickAnswers.about.answer} />
+          <EntitySummary links={[{ label: "Leadership team", href: "/about#leadership" }, { label: "Ventures", href: "/ventures" }]} />
+        </div>
+      </Section>
 
       {/* Intro */}
       <Section tone="white">
@@ -309,7 +320,7 @@ export default function AboutPage() {
             </ul>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button href="/sustainability" variant="royal" withArrow>Explore Our Sustainability Initiatives</Button>
-              <Button href="/investors" variant="outline" withArrow>Investor Relations</Button>
+              <Button href="/ventures" variant="outline" withArrow>Ventures</Button>
             </div>
           </div>
         </div>
@@ -328,8 +339,8 @@ export default function AboutPage() {
             <Button href="/sustainability" variant="primary" withArrow>
               Explore Our Sustainability Initiatives
             </Button>
-            <Button href="/investors" variant="outlineLight" withArrow>
-              Investor Relations
+            <Button href="/ventures" variant="outlineLight" withArrow>
+              Ventures
             </Button>
           </div>
         </div>

@@ -12,6 +12,14 @@ const nextConfig = {
       { protocol: "https", hostname: "vrv.campaigntag.com" },
     ],
   },
+  async redirects() {
+    return [
+      // Investor Relations is superseded by Ventures.
+      { source: "/investors", destination: "/ventures", permanent: false },
+      { source: "/investors/:path*", destination: "/ventures", permanent: false },
+      { source: "/investor-relations", destination: "/ventures", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

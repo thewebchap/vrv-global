@@ -1,0 +1,36 @@
+# VRV Global
+
+VRV Global Pte Ltd is a Singapore-based commodity trading and integrated supply chain company.
+
+## Core Pages
+- Home: /
+- About: /about
+- Products: /products
+- Sustainability: /sustainability
+- Ventures: /ventures
+- Contact: /contact
+
+## Product Pages
+- Natural Rubber: /products/natural-rubber
+- Block Rubber / TSR: /products/block-rubber
+- Copper: /products/copper
+- Aluminium: /products/aluminium
+- Lead: /products/lead
+- Zinc: /products/zinc
+- Silico & Ferro Manganese: /products/silico-ferro-manganese
+- Industrial & Precious Metals: /products/industrial-precious-metals
+
+## Venture Pages
+- Mining & Resource Ventures: /ventures/mining
+- Natural Rubber Processing: /ventures/natural-rubber-processing
+- Circular Economy Materials: /ventures/circular-economy
+- Regional Expansion: /ventures/regional-expansion
+- Supply Chain Infrastructure: /ventures/supply-chain-infrastructure
+
+## Business Summary
+VRV Global operates across agro commodities, natural rubber, block rubber / TSR, industrial metals, mining ventures, and circular economy materials. The company focuses on responsible sourcing, traceability, sustainability, and long-term commodity supply chain partnerships.
+
+## Contact
+- Website: https://www.vrvglobal.com
+- LinkedIn: https://www.linkedin.com/company/vrv-global
+- Headquarters: Singapore
