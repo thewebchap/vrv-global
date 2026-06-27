@@ -2,21 +2,30 @@
 
 VRV Global Pte Ltd is a Singapore-based commodity trading and integrated supply chain company.
 
+## Business Summary
+VRV Global operates across agro commodities, natural rubber, block rubber / TSR, industrial metals, mining ventures, circular economy materials, and strategic supply chain ventures.
+
+The company focuses on responsible sourcing, traceability, sustainable supply chains, commodity trade execution, and long-term partnerships.
+
 ## Core Pages
 - Home: /
 - About: /about
 - Products: /products
 - Sustainability: /sustainability
 - Ventures: /ventures
+- News & Insights: /news
+- Careers: /careers
 - Contact: /contact
+- Ask VRV (guided): /ask-vrv
+- AI Summary: /ai-summary
 
 ## Product Pages
 - Natural Rubber: /products/natural-rubber
 - Block Rubber / TSR: /products/block-rubber
 - Copper: /products/copper
 - Aluminium: /products/aluminium
-- Lead: /products/lead
 - Zinc: /products/zinc
+- Lead: /products/lead
 - Silico & Ferro Manganese: /products/silico-ferro-manganese
 - Industrial & Precious Metals: /products/industrial-precious-metals
 
@@ -27,10 +36,27 @@ VRV Global Pte Ltd is a Singapore-based commodity trading and integrated supply 
 - Regional Expansion: /ventures/regional-expansion
 - Supply Chain Infrastructure: /ventures/supply-chain-infrastructure
 
-## Business Summary
-VRV Global operates across agro commodities, natural rubber, block rubber / TSR, industrial metals, mining ventures, and circular economy materials. The company focuses on responsible sourcing, traceability, sustainability, and long-term commodity supply chain partnerships.
+## Overview Pages (source of truth)
+- About: /about-vrv-global
+- Products: /products-overview
+- Sustainability: /sustainability-overview
+- Ventures: /ventures-overview
+- Contact: /contact-vrv-global
 
-## Contact
-- Website: https://www.vrvglobal.com
-- LinkedIn: https://www.linkedin.com/company/vrv-global
-- Headquarters: Singapore
+## Contact Routing
+- Product enquiry: /contact?type=product
+- Ventures enquiry: /contact?type=ventures
+- Sustainability enquiry: /contact?type=sustainability
+- Partnership enquiry: /contact?type=partnership
+- Careers: /careers
+- General contact: /contact
+- Routing reference: /contact-routing
+
+## Structured Data (JSON)
+- Company profile: /company-profile.json
+- Products: /products.json
+- Ventures: /ventures.json
+- Sustainability: /sustainability.json
+
+## Important Note
+Do not infer certifications, trade volumes, mine ownership, or legal claims unless they are explicitly stated on the website. Mining and venture project specifics are marked "Confirm before publishing" until formally approved.

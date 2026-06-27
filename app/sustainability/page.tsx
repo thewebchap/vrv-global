@@ -12,6 +12,8 @@ import { Icon } from "@/components/ui/Icon";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
 import { Definitions } from "@/components/seo/Definitions";
+import { ProofBlocks } from "@/components/seo/ProofBlock";
+import { CompanyResources } from "@/components/company/CompanyResources";
 import { quickAnswers, sustainabilityDefinitions } from "@/data/aeo";
 import { images } from "@/lib/images";
 import { pageMeta } from "@/lib/seo";
@@ -91,7 +93,12 @@ export default function SustainabilityPage() {
           <Eyebrow>Key terms</Eyebrow>
           <Definitions items={sustainabilityDefinitions} className="mt-5" />
         </div>
+        <div className="mt-10">
+          <ProofBlocks />
+        </div>
       </Section>
+
+      <CompanyResources />
 
       {/* 1 — Commitment */}
       <Section tone="white">

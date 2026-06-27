@@ -29,10 +29,11 @@ export const mainNav: NavItem[] = [
     label: "About",
     href: "/about",
     children: [
-      { label: "About Us", href: "/about", desc: "Mission, vision, values and story" },
+      { label: "Company Overview", href: "/about", desc: "Mission, vision, values and story" },
+      { label: "Our Journey", href: "/about#milestones", desc: "Milestones since 2012" },
       { label: "Leadership", href: "/about#leadership", desc: "The team behind VRV Global" },
-      { label: "Milestones", href: "/about#milestones", desc: "Our journey since 2012" },
-      { label: "Technology & Traceability", href: "/technology", desc: "Visibility from source to delivery" },
+      { label: "Ethics & Governance", href: "/about#ethics-governance", desc: "Conduct, policies and compliance" },
+      { label: "Careers", href: "/careers", desc: "Build purpose-led global trade" },
     ],
   },
   { label: "Products", href: "/products", mega: "products" },
@@ -69,7 +70,7 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
     links: [
       { label: "About Us", href: "/about" },
       { label: "Leadership", href: "/about#leadership" },
-      { label: "Milestones", href: "/about#milestones" },
+      { label: "Ethics & Governance", href: "/ethics-governance" },
       { label: "Technology & Traceability", href: "/technology" },
       { label: "Careers", href: "/careers" },
     ],
@@ -97,6 +98,15 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
       { label: "Circular Economy Materials", href: "/ventures/circular-economy" },
       { label: "News & Insights", href: "/news" },
       { label: "Contact Us", href: "/contact" },
+    ],
+  },
+  {
+    heading: "Resources",
+    links: [
+      { label: "Ask VRV", href: "/ask-vrv" },
+      { label: "Company Resources", href: "/about#resources" },
+      { label: "Contact Routing", href: "/contact-routing" },
+      { label: "AI Summary", href: "/ai-summary" },
     ],
   },
 ];

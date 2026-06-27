@@ -16,6 +16,10 @@ import { aboutGroupImages } from "@/data/companyImages";
 import { leadershipTeam } from "@/data/leadershipTeam";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
+import { ProofBlocks } from "@/components/seo/ProofBlock";
+import { CompanyResources } from "@/components/company/CompanyResources";
+import { EthicsGovernance } from "@/components/governance/EthicsGovernance";
+import { ethicsPdfExists, ETHICS_PDF_PATH } from "@/lib/policyPdf";
 import { quickAnswers } from "@/data/aeo";
 import { site } from "@/lib/site";
 import { pageMeta } from "@/lib/seo";
@@ -71,11 +75,14 @@ export default function AboutPage() {
         crumbs={[{ label: "About" }]}
       />
 
-      {/* Quick answer + entity summary (AEO/GEO) */}
+      {/* Quick answer + entity summary + proof (AEO/GEO) */}
       <Section tone="white" className="!pb-0">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <QuickAnswer question={quickAnswers.about.question} answer={quickAnswers.about.answer} />
           <EntitySummary links={[{ label: "Leadership team", href: "/about#leadership" }, { label: "Ventures", href: "/ventures" }]} />
+        </div>
+        <div className="mt-6">
+          <ProofBlocks />
         </div>
       </Section>
 
@@ -325,6 +332,11 @@ export default function AboutPage() {
           </div>
         </div>
       </Section>
+
+      {/* Ethics & Governance */}
+      <EthicsGovernance pdfExists={ethicsPdfExists()} pdfHref={ETHICS_PDF_PATH} />
+
+      <CompanyResources />
 
       {/* Final CTA */}
       <Section tone="ink">

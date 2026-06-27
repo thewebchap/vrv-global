@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { GovernanceEnquiryForm } from "@/components/forms/GovernanceEnquiryForm";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { quickAnswers } from "@/data/aeo";
 import { site } from "@/lib/site";
@@ -56,7 +57,42 @@ const contactPointSchema = {
   ],
 };
 
-export default function ContactPage() {
+/** Tailors the contact form heading + default department by ?type=. */
+const INTENTS: Record<string, { department: string; title: string; intro: string }> = {
+  product: {
+    department: "Product Inquiry",
+    title: "Product enquiry",
+    intro: "Share your product, grade, volume, destination port, Incoterm and timeline. Our trade desk will respond with availability and terms.",
+  },
+  ventures: {
+    department: "Ventures & Partnerships",
+    title: "Ventures enquiry",
+    intro: "Tell us about the venture, geography and partnership interest. Our ventures team will follow up.",
+  },
+  partnership: {
+    department: "Ventures & Partnerships",
+    title: "Partnership enquiry",
+    intro: "Strategic partners, investors and long-term counterparties — tell us how you'd like to work with VRV Global.",
+  },
+  sustainability: {
+    department: "Sustainability / ESG",
+    title: "Sustainability enquiry",
+    intro: "Responsible sourcing, traceability and ESG documentation requests. Tell us what you need and the relevant product area.",
+  },
+  governance: {
+    department: "",
+    title: "Governance & compliance enquiry",
+    intro: "Raise a concern related to sourcing practices, supplier conduct, compliance, documentation or ethical business conduct. Handled responsibly and with confidentiality where possible.",
+  },
+  general: {
+    department: "",
+    title: "How can we help?",
+    intro: "Choose a department so your message reaches the right team. Required fields are marked with an asterisk.",
+  },
+};
+
+export default function ContactPage({ searchParams }: { searchParams?: { type?: string } }) {
+  const intent = INTENTS[searchParams?.type ?? "general"] ?? INTENTS.general;
   return (
     <>
       <script
@@ -186,11 +222,15 @@ export default function ContactPage() {
             <div className="rounded-2xl border border-line bg-white p-7 shadow-card sm:p-9">
               <SectionHeading
                 eyebrow="Send a message"
-                title="How can we help?"
-                intro="Choose a department so your message reaches the right team. Required fields are marked with an asterisk."
+                title={intent.title}
+                intro={intent.intro}
               />
               <div className="mt-8">
-                <ContactForm />
+                {searchParams?.type === "governance" ? (
+                  <GovernanceEnquiryForm />
+                ) : (
+                  <ContactForm defaultDepartment={intent.department} />
+                )}
               </div>
             </div>
           </div>

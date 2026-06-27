@@ -7,6 +7,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { VentureEnquiryForm } from "@/components/forms/VentureEnquiryForm";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
+import { ProofBlocks } from "@/components/seo/ProofBlock";
+import { CompanyResources } from "@/components/company/CompanyResources";
 import { Faq } from "@/components/seo/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ventures, featuredVentures, ventureRegions } from "@/data/ventures";
@@ -59,11 +61,14 @@ export default function VenturesPage() {
         </div>
       </section>
 
-      {/* Quick answer + entity summary (AEO/GEO) */}
+      {/* Quick answer + entity summary + proof (AEO/GEO) */}
       <Section tone="white" className="!pb-0">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <QuickAnswer question={quickAnswers.ventures.question} answer={quickAnswers.ventures.answer} />
           <EntitySummary links={[{ label: "Explore products", href: "/products" }, { label: "Sustainability", href: "/sustainability" }]} />
+        </div>
+        <div className="mt-6">
+          <ProofBlocks />
         </div>
       </Section>
 
@@ -235,6 +240,8 @@ export default function VenturesPage() {
           </div>
         </div>
       </Section>
+
+      <CompanyResources tone="white" />
 
       {/* FAQs (AEO + FAQPage schema) */}
       <Section tone="paper" bordered>

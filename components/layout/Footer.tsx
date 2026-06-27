@@ -39,7 +39,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5">
           {footerNav.map((col) => (
             <div key={col.heading}>
               <h3 className="text-[11px] font-semibold uppercase tracking-label text-white/40">{col.heading}</h3>
@@ -75,6 +75,8 @@ export function Footer() {
             {legalNav.map((l) => (
               <Link key={l.href} href={l.href} className="hover:text-gold">{l.label}</Link>
             ))}
+            {/* Machine-readable AI guide (static file → plain anchor). */}
+            <a href="/llms.txt" className="hover:text-gold">llms.txt</a>
             {/* Internal review tool — discreet link, intentionally not in main nav. */}
             <Link href="/design-feedback" className="hover:text-gold">Design Feedback</Link>
             <a href={site.linkedin} target="_blank" rel="noreferrer" className="hover:text-gold">LinkedIn</a>

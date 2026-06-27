@@ -3,9 +3,11 @@ import Link from "next/link";
 import { EcoHero } from "@/components/sections/EcoHero";
 import { ProductEcosystem } from "@/components/sections/ProductEcosystem";
 import { TraceabilityFlow } from "@/components/sections/TraceabilityFlow";
-import { CommodityFlow } from "@/components/sections/CommodityFlow";
+import { SupplyChainOperatingModel } from "@/components/sections/SupplyChainOperatingModel";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
+import { ProofBlocks } from "@/components/seo/ProofBlock";
+import { DecisionPathCTA } from "@/components/seo/DecisionPathCTA";
 import { Faq } from "@/components/seo/Faq";
 import { quickAnswers, homeFaqs } from "@/data/aeo";
 import { SingaporeHub } from "@/components/sections/SingaporeHub";
@@ -36,7 +38,7 @@ export default function HomePage() {
     <>
       <EcoHero />
 
-      {/* Quick answer + entity summary (AEO/GEO) */}
+      {/* Quick answer + entity summary + proof blocks (AEO/GEO) */}
       <Section tone="white">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <QuickAnswer question={quickAnswers.home.question} answer={quickAnswers.home.answer} />
@@ -47,6 +49,9 @@ export default function HomePage() {
               { label: "Ventures", href: "/ventures" },
             ]}
           />
+        </div>
+        <div className="mt-6">
+          <ProofBlocks />
         </div>
       </Section>
 
@@ -91,7 +96,6 @@ export default function HomePage() {
         <span aria-hidden className="pointer-events-none absolute -left-32 top-0 h-96 w-96 rounded-full bg-brand/20 blur-3xl" />
         <span aria-hidden className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-ocean/20 blur-3xl" />
         <div className="container-x relative grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-center">
-          {/* Left — label, title, subtitle, stats, CTAs */}
           <div className="order-1">
             <p className="eyebrow !text-gold">Global footprint</p>
             <h2 className="mt-5 text-h2 text-white text-balance">Global commodity flows, coordinated from Singapore</h2>
@@ -111,22 +115,21 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Right — 3D globe */}
           <div className="order-2">
             <GlobeSection />
           </div>
         </div>
       </section>
 
-      {/* 4 — Impact & Innovation: the VRV Commodity Flow */}
+      {/* 4 — The VRV Supply Chain Operating Model */}
       <Section tone="white" bordered>
         <SectionHeading
-          eyebrow="Impact & innovation"
-          title="The VRV Commodity Flow"
-          intro="From sourcing to global delivery, VRV Global connects commodities, partners, logistics, and markets through a disciplined and transparent supply chain process."
+          eyebrow="Operating model"
+          title="The VRV Supply Chain Operating Model"
+          intro="From origin relationships to customer markets, VRV Global connects sourcing, processing, quality, trade finance, logistics, traceability, and delivery."
         />
         <div className="mt-14">
-          <CommodityFlow />
+          <SupplyChainOperatingModel />
         </div>
       </Section>
 
@@ -167,7 +170,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* 6 — Investor Highlights */}
+      {/* 6 — Ventures & partners */}
       <Section tone="ink">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.3fr] lg:items-center">
           <SectionHeading
@@ -238,6 +241,21 @@ export default function HomePage() {
 
       {/* Singapore positioning */}
       <SingaporeHub />
+
+      {/* Ask VRV — guided decision paths */}
+      <Section tone="paper" bordered>
+        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+          <SectionHeading
+            eyebrow="Ask VRV"
+            title="Find the right product, venture, or partnership path"
+            intro="Tell us what you need and we'll point you to the right page or team — for customers, partners, investors and AI agents."
+          />
+          <Button href="/ask-vrv" variant="primary" className="shrink-0" withArrow>Open Ask VRV</Button>
+        </div>
+        <div className="mt-10">
+          <DecisionPathCTA title="" />
+        </div>
+      </Section>
 
       {/* 8 — News & Insights */}
       <Section tone="paper">

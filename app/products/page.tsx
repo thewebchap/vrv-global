@@ -11,6 +11,8 @@ import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
 import { Definitions } from "@/components/seo/Definitions";
 import { Faq } from "@/components/seo/Faq";
+import { ProofBlocks } from "@/components/seo/ProofBlock";
+import { SupplyChainOperatingModel } from "@/components/sections/SupplyChainOperatingModel";
 import {
   productSegments,
   naturalRubberGrades,
@@ -213,6 +215,9 @@ export default function ProductsPage() {
           <SectionHeading eyebrow="Key terms" title="Commodity definitions" />
           <Definitions items={productDefinitions} className="mt-8" />
         </div>
+        <div className="mt-10">
+          <ProofBlocks />
+        </div>
       </Section>
 
       {/* Sticky anchor navigation */}
@@ -279,6 +284,18 @@ export default function ProductsPage() {
           ))}
         </section>
       ))}
+
+      {/* Supply chain operating model */}
+      <Section tone="white" bordered>
+        <SectionHeading
+          eyebrow="Operating model"
+          title="The VRV Supply Chain Operating Model"
+          intro="From origin relationships to customer markets, VRV Global connects sourcing, processing, quality, trade finance, logistics, traceability, and delivery."
+        />
+        <div className="mt-14">
+          <SupplyChainOperatingModel />
+        </div>
+      </Section>
 
       {/* 6 — Global commodity footprint map */}
       <Section tone="paper" bordered id="footprint" className="scroll-mt-32">
