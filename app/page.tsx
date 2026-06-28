@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { EcoHero } from "@/components/sections/EcoHero";
+import { HeroVideoBackground } from "@/components/sections/HeroVideoBackground";
 import { ProductEcosystem } from "@/components/sections/ProductEcosystem";
 import { TraceabilityFlow } from "@/components/sections/TraceabilityFlow";
 import { SupplyChainOperatingModel } from "@/components/sections/SupplyChainOperatingModel";
@@ -36,10 +36,10 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <EcoHero />
+      <HeroVideoBackground />
 
       {/* Quick answer + entity summary + proof blocks (AEO/GEO) */}
-      <Section tone="white">
+      <Section tone="white" id="main-content" className="scroll-mt-20">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <QuickAnswer question={quickAnswers.home.question} answer={quickAnswers.home.answer} />
           <EntitySummary

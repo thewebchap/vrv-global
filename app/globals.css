@@ -93,6 +93,18 @@
       linear-gradient(90deg, rgba(20, 88, 122, 0.05) 1px, transparent 1px);
     background-size: 48px 48px;
   }
+
+  /* Slow cinematic "Ken Burns" drift for the hero storyboard scenes. */
+  .ken-burns {
+    transform-origin: center;
+    will-change: transform;
+    animation: kenburns 24s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes kenburns {
+  from { transform: scale(1.03) translate3d(0, 0, 0); }
+  to { transform: scale(1.13) translate3d(-1.5%, -1.2%, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
