@@ -38,7 +38,7 @@ export function ProductEcosystem() {
               ))}
             </div>
             <Link
-              href={`/products#${c.category}`}
+              href={c.href}
               className="mt-6 inline-flex items-center gap-1.5 border-t border-line pt-4 text-sm font-semibold text-brand"
             >
               Explore {c.title}

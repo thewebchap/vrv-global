@@ -2,9 +2,13 @@
  * Home "Product ecosystem" cards — three category cards with business-relevant,
  * free-to-use imagery (local; Wikimedia Commons — see public/images/CREDITS.md).
  * Layout is image-top / content-bottom so text never overlaps the image.
+ *
+ * Homepage ecosystem shows three top-level segments only: Agro Products,
+ * Industrial Metals and Mining. (Circular Economy is intentionally not a
+ * homepage product-ecosystem segment; it lives under Ventures/Products.)
  */
 export type ProductEcosystemCard = {
-  category: "agro" | "metals" | "circular";
+  category: "agro" | "metals" | "mining";
   title: string;
   description: string;
   tags: string[];
@@ -13,43 +17,47 @@ export type ProductEcosystemCard = {
   imageCredit: string;
   imageSource: string;
   imagePosition: string;
+  href: string;
 };
 
 export const productEcosystem: ProductEcosystemCard[] = [
   {
     category: "agro",
-    title: "Agro Commodities",
+    title: "Agro Products",
     description:
-      "Natural rubber, sustainable rubber, biomass, woodchips, wood pulp, nuts, pulses, beans and spices sourced through responsible supply relationships.",
-    tags: ["Natural Rubber", "Biomass", "Woodchips", "Pulses", "Spices"],
+      "Natural rubber, cuplumps, block rubber / TSR and selected agro-origin supply chains supported by responsible sourcing and quality discipline.",
+    tags: ["Natural Rubber", "Cuplumps", "Block Rubber / TSR", "Agro-Origin"],
     image: "/images/products/agro-commodities.jpg",
-    imageAlt: "Worker collecting latex in a natural rubber plantation — sustainable agro sourcing",
+    imageAlt: "Worker collecting latex in a natural rubber plantation — responsible agro sourcing",
     imageCredit: "Manukrishnan80 (CC BY-SA 4.0)",
     imageSource: "https://commons.wikimedia.org/wiki/File:Rubber_tapping_(15056).jpg",
     imagePosition: "center",
+    href: "/products#agro",
   },
   {
     category: "metals",
-    title: "Metals",
+    title: "Industrial Metals",
     description:
-      "Ferrous, non-ferrous and industrial metals including copper, aluminium and nickel for manufacturing and global industrial demand.",
-    tags: ["Copper", "Aluminium", "Nickel", "Ferrous", "Non-Ferrous"],
+      "Copper, aluminium, zinc, lead, manganese alloys and other industrial metals connected through sourcing relationships, quality focus and disciplined trade execution.",
+    tags: ["Copper", "Aluminium", "Zinc", "Lead", "Silico/Ferro-Manganese"],
     image: "/images/products/metals.jpg",
     imageAlt: "Stacked aluminium billets in a metals warehouse, ready for industrial markets",
     imageCredit: "Albasmelter (CC BY-SA 4.0)",
     imageSource: "https://commons.wikimedia.org/wiki/File:Alba%27s_Products_-_Billets.jpg",
     imagePosition: "center",
+    href: "/products#metals",
   },
   {
-    category: "circular",
-    title: "Circular Economy Products",
+    category: "mining",
+    title: "Mining",
     description:
-      "Recycled metals, scrap materials, MDF and recovered industrial products that support resource efficiency and lower-waste material flows.",
-    tags: ["PNS Scrap", "Bushelling Scrap", "Copper Scrap", "MDF"],
-    image: "/images/products/circular-economy.jpg",
-    imageAlt: "Recovered scrap metal at a recycling yard representing circular material flows",
-    imageCredit: "Digitura (CC0)",
-    imageSource: "https://commons.wikimedia.org/wiki/File:Scrap_metal_yard.jpg",
+      "Mining-linked industrial and precious metals opportunities focused on responsible resource access, long-term supply security and strategic upstream integration. [Confirm before publishing]",
+    tags: ["Industrial Metals", "Precious Metals", "Copper & Gold", "Tanzania & Zambia [Confirm]"],
+    image: "/images/hero/responsible-metals.jpg",
+    imageAlt: "Industrial metals and ore representing mining-linked upstream resource ventures",
+    imageCredit: "Wikimedia Commons (CC BY-SA)",
+    imageSource: "https://commons.wikimedia.org/",
     imagePosition: "center",
+    href: "/ventures/mining",
   },
 ];

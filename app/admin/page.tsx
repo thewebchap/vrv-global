@@ -88,6 +88,10 @@ export default function AdminPage() {
             Sign in
           </button>
           {msg && <p className="mt-3 text-sm text-flame-600" role="alert">{msg}</p>}
+          {/* Discreet link to the separate (testing-only) case studies tool — not in public nav. */}
+          <a href="/admin/case-studies" className="mt-5 block text-center text-xs text-ink/40 hover:text-brand">
+            Case Studies admin →
+          </a>
         </div>
       </Container>
     );

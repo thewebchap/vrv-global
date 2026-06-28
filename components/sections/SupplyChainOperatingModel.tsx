@@ -15,13 +15,12 @@ import { cn } from "@/lib/cn";
 type Stage = { title: string; detail: string; icon: IconName };
 
 const STAGES: Stage[] = [
-  { title: "Origin", detail: "Producers, plantations and mines", icon: "leaf" },
-  { title: "Aggregation", detail: "Cuplumps, ore and raw material gathering", icon: "cube" },
-  { title: "Processing", detail: "Tolling, refining and value-add", icon: "factory" },
-  { title: "Quality", detail: "Grade, inspection and documentation", icon: "search" },
-  { title: "Trade Finance", detail: "Structuring, payment flows and risk control", icon: "scale" },
-  { title: "Logistics", detail: "Warehousing, ports and shipping", icon: "truck" },
-  { title: "Customer", detail: "Industrial buyers and global markets", icon: "globe" },
+  { title: "Source", detail: "Origin relationships across rubber, agro commodities, metals and mining-linked materials", icon: "leaf" },
+  { title: "Process / Toll", detail: "Processing, tolling, refining, packing and value-added transformation", icon: "factory" },
+  { title: "Finance / Structure", detail: "Commodity flows structured with commercial discipline, documentation and trade execution", icon: "scale" },
+  { title: "Quality / Document", detail: "Specifications, inspections, records and shipment readiness linked together", icon: "search" },
+  { title: "Move / Deliver", detail: "Logistics, counterparties, ports, warehouses and customer delivery", icon: "truck" },
+  { title: "Trace / Report", detail: "Traceability-ready information, ESG data capture and audit-oriented reporting", icon: "route" },
 ];
 
 const N = STAGES.length;
@@ -45,7 +44,7 @@ export function SupplyChainOperatingModel() {
     <div
       className="relative"
       role="img"
-      aria-label="VRV supply chain operating model: origin, aggregation, processing, quality, trade finance, logistics and customer markets, framed by a sustainability loop."
+      aria-label="VRV integrated operating model: source, process and toll, finance and structure, quality and document, move and deliver, and trace and report, framed by a sustainability loop."
     >
       <span aria-hidden className="pointer-events-none absolute inset-0 route-pattern opacity-50" />
 
@@ -57,7 +56,7 @@ export function SupplyChainOperatingModel() {
 
       {/* DESKTOP — horizontal */}
       <div className="relative z-10 hidden lg:block">
-        <div aria-hidden className="absolute left-[7.143%] right-[7.143%] top-7 -translate-y-1/2">
+        <div aria-hidden className="absolute left-[8.333%] right-[8.333%] top-7 -translate-y-1/2">
           <div className="h-0.5 w-full rounded-full bg-line" />
           <motion.div
             className="absolute left-0 top-0 h-0.5 rounded-full bg-gradient-to-r from-brand to-gold"
@@ -75,7 +74,7 @@ export function SupplyChainOperatingModel() {
             transition={{ type: "spring", stiffness: 55, damping: 16 }}
           />
         )}
-        <div className="grid grid-cols-7 gap-3">
+        <div className="grid grid-cols-6 gap-3">
           {STAGES.map((s, i) => (
             <StageCard key={s.title} stage={s} index={i} active={activeIndex === i} expanded={focus === i || activeIndex === i} reduce={!!reduce} onEnter={() => setFocus(i)} onLeave={() => setFocus(null)} layout="h" />
           ))}

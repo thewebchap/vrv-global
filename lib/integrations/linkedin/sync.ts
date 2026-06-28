@@ -77,6 +77,16 @@ export async function getPublishedPosts(): Promise<NewsPost[]> {
   return (await getAllPosts()).filter((p) => p.status === "published");
 }
 
+/**
+ * Latest approved LinkedIn-sourced posts (LinkedIn or manual), newest first.
+ * Same data source the News page uses — no browser-side fetching/scraping.
+ */
+export async function getLatestLinkedInPosts(limit = 2): Promise<NewsPost[]> {
+  return (await getPublishedPosts())
+    .filter((p) => p.source === "linkedin" || p.source === "manual")
+    .slice(0, limit);
+}
+
 function slugify(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
 }
