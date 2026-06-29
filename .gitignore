@@ -9,7 +9,6 @@ build/
 .env.production
 .DS_Store
 *.zip
-*.mp4
 *.mov
 *.psd
 *.ai
