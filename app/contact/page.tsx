@@ -1,8 +1,6 @@
 import { PageHero } from "@/components/sections/PageHero";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { Button } from "@/components/ui/Button";
-import { Reveal } from "@/components/ui/Reveal";
-import { Icon, type IconName } from "@/components/ui/Icon";
+import { Icon } from "@/components/ui/Icon";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { GovernanceEnquiryForm } from "@/components/forms/GovernanceEnquiryForm";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
@@ -22,15 +20,6 @@ const shortcuts: { title: string; body: string; href: string }[] = [
   { title: "Product Inquiry", body: "Specifications, availability and trade enquiries.", href: "#contact-form" },
   { title: "Sustainability / ESG", body: "Responsible sourcing, traceability and ESG topics.", href: "/sustainability" },
   { title: "Careers", body: "Open roles and speculative applications.", href: "/careers" },
-];
-
-const departments: { title: string; body: string; icon: IconName }[] = [
-  { title: "Product Inquiry", body: "Specifications, grades, availability, pricing and trade enquiries across agro, metals and circular products.", icon: "cube" },
-  { title: "Ventures & Partnerships", body: "Strategic ventures, supply chain partnerships, company profile and long-term value creation.", icon: "chart" },
-  { title: "Sustainability / ESG", body: "Responsible sourcing, material traceability, supplier compliance and ESG-aligned practices.", icon: "leaf" },
-  { title: "Careers", body: "Job opportunities, speculative applications and questions for our people team.", icon: "users" },
-  { title: "Media", body: "Press, interviews, media kits and communications requests.", icon: "doc" },
-  { title: "General", body: "Anything else — we'll route your message to the right team.", icon: "handshake" },
 ];
 
 const contactPointSchema = {
@@ -237,34 +226,6 @@ export default function ContactPage({ searchParams }: { searchParams?: { type?: 
         </div>
       </Section>
 
-      {/* Department routing descriptions */}
-      <Section tone="paper">
-        <SectionHeading
-          eyebrow="Where your message goes"
-          title="Department routing"
-          intro="Select the department that best fits your enquiry so we can respond quickly and accurately."
-        />
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {departments.map((d, i) => (
-            <Reveal key={d.title} delay={(i % 3) * 0.06}>
-              <div className="flex h-full gap-4 rounded-2xl border border-line bg-white p-6 shadow-soft">
-                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand">
-                  <Icon name={d.icon} className="h-5 w-5" />
-                </span>
-                <div>
-                  <h3 className="text-base font-medium text-ink">{d.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink/60">{d.body}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-        <div className="mt-12">
-          <Button href="/ventures#enquiry" variant="link" withArrow>
-            Ventures &amp; partnership enquiry
-          </Button>
-        </div>
-      </Section>
     </>
   );
 }

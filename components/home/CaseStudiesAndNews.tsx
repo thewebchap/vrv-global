@@ -34,15 +34,19 @@ export async function CaseStudiesAndNews() {
   return (
     <Section tone="white" bordered>
       <SectionHeading
-        eyebrow="Case studies & news"
-        title="Case Studies & News"
-        intro="Selected supply-chain examples and the latest VRV Global updates from LinkedIn."
+        eyebrow="Media"
+        title="Media"
+        intro="Explore selected case studies and the latest VRV Global updates from LinkedIn."
       />
 
       <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-12 lg:grid-cols-2 lg:divide-x lg:divide-line">
         {/* LEFT — Case Studies */}
         <div className="lg:pr-14">
           <h3 className="font-serif text-xl text-ink">Case Studies</h3>
+          <p className="mt-2 text-[14px] leading-relaxed text-ink/55">
+            Selected examples of VRV Global&apos;s sourcing, processing, documentation, traceability and market-access
+            work across commodity flows.
+          </p>
 
           <div className="mt-6 space-y-4">
             {studies.map((cs) => (
@@ -83,7 +87,7 @@ export async function CaseStudiesAndNews() {
             href="/case-studies"
             className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-600"
           >
-            View All Case Studies
+            View More Case Studies
             <Icon name="arrowRight" className="h-4 w-4" />
           </Link>
         </div>
@@ -91,6 +95,10 @@ export async function CaseStudiesAndNews() {
         {/* RIGHT — News & Insights (LinkedIn) */}
         <div className="lg:pl-14">
           <h3 className="font-serif text-xl text-ink">News &amp; Insights</h3>
+          <p className="mt-2 text-[14px] leading-relaxed text-ink/55">
+            Latest LinkedIn updates from VRV Global on commodities, sustainability, traceability and supply-chain
+            developments.
+          </p>
 
           {posts.length === 0 ? (
             <div className="mt-6 rounded-xl border border-dashed border-line bg-paper/50 p-6 text-[14px] text-ink/55">

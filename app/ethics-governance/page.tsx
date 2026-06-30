@@ -156,7 +156,7 @@ export default function EthicsGovernancePage() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button href="/contact?type=governance" variant="primary" size="lg">Governance enquiry</Button>
-            <Button href="/about#ethics-governance" variant="outlineLight" size="lg" withArrow>Back to About</Button>
+            <Button href="/about" variant="outlineLight" size="lg" withArrow>Back to About</Button>
           </div>
         </div>
       </section>

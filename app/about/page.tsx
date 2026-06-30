@@ -1,25 +1,18 @@
 import { PageHero } from "@/components/sections/PageHero";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
-import { FeatureCard } from "@/components/ui/FeatureCard";
-import { Media } from "@/components/ui/Media";
 import { Reveal } from "@/components/ui/Reveal";
-import { Icon, type IconName } from "@/components/ui/Icon";
 import { LeadershipGrid } from "@/components/sections/LeadershipGrid";
 import { AutoMovingGrowthLedger } from "@/components/sections/AutoMovingGrowthLedger";
 import { AboutGrowthMetrics } from "@/components/sections/AboutGrowthMetrics";
 import { FounderSpotlight } from "@/components/sections/FounderSpotlight";
 import { companyStats } from "@/data/companyStats";
 import { journeyMilestones } from "@/data/journey";
-import { values } from "@/lib/leadership";
 import { aboutGroupImages } from "@/data/companyImages";
 import { leadershipTeam } from "@/data/leadershipTeam";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
-import { ProofBlocks } from "@/components/seo/ProofBlock";
 import { CompanyResources } from "@/components/company/CompanyResources";
-import { EthicsGovernance } from "@/components/governance/EthicsGovernance";
-import { ethicsPdfExists, ETHICS_PDF_PATH } from "@/lib/policyPdf";
 import { quickAnswers } from "@/data/aeo";
 import { site } from "@/lib/site";
 import { pageMeta } from "@/lib/seo";
@@ -30,19 +23,6 @@ export const metadata = pageMeta({
     "VRV Global is a diversified trading house connecting agri-commodities and metals across Asia, Africa and beyond — delivering reliable, integrated and sustainable supply chains since 2012.",
   path: "/about",
 });
-
-/** Icon lookup keyed to the values/pillars data (order-stable, 9 pillars). */
-const valueIcons: IconName[] = [
-  "handshake", // Customer Partnerships
-  "shield", // Trusted Integrity
-  "leaf", // Sustainable Growth
-  "route", // Sustainable & Traceable Sourcing
-  "spark", // Technology-Enabled Efficiency
-  "users", // Shared Growth with Stakeholders
-  "tree", // Climate-Conscious Sourcing
-  "search", // Technology-Driven Transparency
-  "chart", // Long-Term Stakeholder Value
-];
 
 const aboutSchema = {
   "@context": "https://schema.org",
@@ -75,30 +55,11 @@ export default function AboutPage() {
         crumbs={[{ label: "About" }]}
       />
 
-      {/* Quick answer + entity summary + proof (AEO/GEO) */}
-      <Section tone="white" className="!pb-0">
+      {/* Quick answer + entity summary (AEO/GEO) */}
+      <Section tone="white">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <QuickAnswer question={quickAnswers.about.question} answer={quickAnswers.about.answer} />
           <EntitySummary links={[{ label: "Leadership team", href: "/about#leadership" }, { label: "Ventures", href: "/ventures" }]} />
-        </div>
-        <div className="mt-6">
-          <ProofBlocks />
-        </div>
-      </Section>
-
-      {/* Intro */}
-      <Section tone="white">
-        <div className="mx-auto max-w-3xl space-y-5 text-center text-[17px] leading-relaxed text-ink/70">
-          <p>
-            For over a decade, VRV has grown into a trusted partner across 15+ countries, scaling to over 200,000
-            tonnes annually by maintaining integrity at every step. Our focus on resilient trade flows, sustainable
-            sourcing and strong partnerships positions VRV as a reliable counterparty for customers and a growth
-            platform for investors.
-          </p>
-          <p>
-            We connect experienced traders with customer insight and deep sourcing expertise — building integrated,
-            transparent and future-ready supply chains across agri commodities and metals.
-          </p>
         </div>
       </Section>
 
@@ -218,25 +179,6 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      {/* Values */}
-      <Section tone="paper" bordered id="values" className="scroll-mt-24">
-        <SectionHeading
-          eyebrow="Our values &amp; pillars"
-          title="The principles behind every trade"
-          intro="Nine pillars that shape how VRV Global sources, trades and partners across global markets."
-          align="center"
-        />
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {values.map((v, i) => (
-            <Reveal key={v.title} delay={i * 0.06}>
-              <FeatureCard icon={valueIcons[i] ?? "check"} title={v.title} className="h-full">
-                {v.body}
-              </FeatureCard>
-            </Reveal>
-          ))}
-        </div>
-      </Section>
-
       {/* Sustainability commitment band */}
       <Section tone="paper" bordered className="bg-eco-soft">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center">
@@ -289,52 +231,6 @@ export default function AboutPage() {
           </div>
         </div>
       </Section>
-
-      {/* Sustainability-led growth */}
-      <Section tone="white" bordered>
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
-          <Reveal>
-            <Media
-              src="/pictures/journey/2024.jpg"
-              alt="VRV Global's sustainable, traceable supply chain"
-              label="Sustainable, traceable supply chains"
-              ratio="4/3"
-              overlay
-              rounded="rounded-2xl"
-              className="shadow-card"
-            />
-          </Reveal>
-          <div>
-            <SectionHeading
-              eyebrow="Sustainability-led growth"
-              title="Scaling responsibly, with traceability at the core"
-              intro="As VRV grows, sustainability moves with it. We are transforming our natural rubber supply chain into a sustainable and traceable source — targeting 50% sustainable and traceable produce — while extending responsible sourcing across metals and the circular economy."
-            />
-            <ul className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {[
-                ["20% sustainable volume", "And rising, as programmes scale."],
-                ["Traceable sourcing", "Visibility from origin to delivery."],
-                ["Upstream integration", "Factory development & mining concessions in Africa."],
-                ["Recognised sustainable brand", "With SME 100 fast-growth recognition."],
-              ].map(([t, d]) => (
-                <li key={t} className="flex gap-3">
-                  <Icon name="leaf" className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                  <p className="text-[15px] leading-snug text-ink/70">
-                    <span className="font-semibold text-ink">{t}. </span>{d}
-                  </p>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Button href="/sustainability" variant="royal" withArrow>Explore Our Sustainability Initiatives</Button>
-              <Button href="/ventures" variant="outline" withArrow>Ventures</Button>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* Ethics & Governance */}
-      <EthicsGovernance pdfExists={ethicsPdfExists()} pdfHref={ETHICS_PDF_PATH} />
 
       <CompanyResources />
 

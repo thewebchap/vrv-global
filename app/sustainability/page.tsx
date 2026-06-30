@@ -1,29 +1,25 @@
 import { PageHero } from "@/components/sections/PageHero";
-import { ESGPillars } from "@/components/sections/ESGPillars";
-import { CircularLoop } from "@/components/sections/CircularLoop";
-import { TraceabilityFlow } from "@/components/sections/TraceabilityFlow";
 import { Section, SectionHeading, Eyebrow } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { KPIGrid } from "@/components/ui/FeatureCard";
 import { TickList } from "@/components/ui/TickList";
 import { Media } from "@/components/ui/Media";
 import { Reveal } from "@/components/ui/Reveal";
-import { Icon } from "@/components/ui/Icon";
+import { Icon, type IconName } from "@/components/ui/Icon";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
 import { Definitions } from "@/components/seo/Definitions";
-import { ProofBlocks } from "@/components/seo/ProofBlock";
-import { CompanyResources } from "@/components/company/CompanyResources";
 import { quickAnswers, sustainabilityDefinitions } from "@/data/aeo";
 import { images } from "@/lib/images";
 import { pageMeta } from "@/lib/seo";
-import {
-  esgPillars,
-  esgMetrics,
-  supplyChainFramework,
-  reports,
-  supplierCode,
-} from "@/lib/esg";
+import { esgPillars, esgMetrics, supplierCode } from "@/lib/esg";
+
+/** Icon per ESG pillar (Environment / Social / Governance). */
+const esgPillarIcon: Record<string, IconName> = {
+  environment: "tree",
+  social: "users",
+  governance: "scale",
+};
 
 export const metadata = pageMeta({
   title: "Sustainability & ESG — Responsible, Traceable Supply Chains",
@@ -84,7 +80,7 @@ export default function SustainabilityPage() {
       />
 
       {/* Quick answer + entity summary (AEO/GEO) */}
-      <Section tone="white" className="!pb-0">
+      <Section tone="white">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <QuickAnswer question={quickAnswers.sustainability.question} answer={quickAnswers.sustainability.answer} />
           <EntitySummary links={[{ label: "Explore products", href: "/products" }, { label: "Strategic ventures", href: "/ventures" }]} />
@@ -93,12 +89,7 @@ export default function SustainabilityPage() {
           <Eyebrow>Key terms</Eyebrow>
           <Definitions items={sustainabilityDefinitions} className="mt-5" />
         </div>
-        <div className="mt-10">
-          <ProofBlocks />
-        </div>
       </Section>
-
-      <CompanyResources />
 
       {/* 1 — Commitment */}
       <Section tone="white">
@@ -138,103 +129,35 @@ export default function SustainabilityPage() {
         </div>
       </Section>
 
-      {/* 2 — ESG Strategy / Pillars */}
-      <Section tone="paper" id="esg" className="scroll-mt-24">
+      {/* 2 — ESG Strategy / Pillars — dark, premium treatment */}
+      <Section tone="ink" id="esg" className="scroll-mt-24">
         <SectionHeading
           eyebrow="ESG strategy"
+          tone="white"
           title="A clear framework across Environment, Social and Governance"
           intro="Our ESG strategy turns intent into operating discipline — measurable environmental action, genuine social engagement at origin, and transparent, audit-ready governance across the trade lifecycle."
           align="center"
         />
-        <div className="mt-12">
-          <ESGPillars />
-        </div>
-      </Section>
-
-      {/* 3 — Governance deep-dive band */}
-      <Section tone="ink">
-        <SectionHeading
-          eyebrow="Governance in depth"
-          tone="white"
-          title="Ethics, compliance and transparent reporting"
-          intro="Strong governance is the foundation of investor and partner confidence. We operate to institutional standards across conduct, compliance and risk."
-          align="center"
-        />
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {esgPillars
-            .find((p) => p.key === "governance")
-            ?.points.map((point, i) => (
-              <Reveal as="div" key={point} delay={i * 0.08}>
-                <div className="h-full rounded-xl border border-white/10 bg-white/[0.03] p-6">
-                  <span aria-hidden className="inline-block h-2 w-2 rotate-45 bg-amber" />
-                  <p className="mt-4 text-[15px] font-medium leading-relaxed text-white/85">
-                    {point}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-        </div>
-      </Section>
-
-      {/* 4 — Sustainable Supply Chain Framework */}
-      <Section tone="white" id="framework" className="scroll-mt-24">
-        <SectionHeading
-          eyebrow="Framework"
-          title="A sustainable supply chain, end to end"
-          intro="Every consignment follows the same disciplined journey — so responsibility and traceability are evidenced from source to reuse."
-        />
-        <div className="mt-12">
-          <TraceabilityFlow />
-        </div>
-        <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {supplyChainFramework.map((s, i) => (
-            <Reveal as="div" key={s.step} delay={i * 0.06}>
-              <div className="flex h-full flex-col rounded-2xl border border-line bg-paper p-7 shadow-soft">
-                <span className="font-serif text-2xl text-brand">
-                  {String(i + 1).padStart(2, "0")}
+        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {esgPillars.map((p, i) => (
+            <Reveal as="div" key={p.key} delay={i * 0.08}>
+              <div
+                id={p.key}
+                className="scroll-mt-24 flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-7"
+              >
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.06] text-gold ring-1 ring-white/10">
+                  <Icon name={esgPillarIcon[p.key]} />
                 </span>
-                <h3 className="mt-3 text-lg font-medium text-ink">{s.step}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-ink/60">{s.body}</p>
+                <h3 className="mt-5 font-serif text-xl text-white">{p.title}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-white/65">{p.intro}</p>
+                <TickList tone="white" className="mt-5" items={p.points} />
               </div>
             </Reveal>
           ))}
         </div>
       </Section>
 
-      {/* 5 — Circular Economy */}
-      <Section tone="paper" id="circular" className="scroll-mt-24">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-          <Reveal>
-            <CircularLoop />
-          </Reveal>
-          <Reveal delay={0.1}>
-            <Eyebrow>Circular economy</Eyebrow>
-            <h2 className="mt-5 text-h2 text-balance">
-              Keeping valuable materials in productive use
-            </h2>
-            <p className="mt-5 text-[17px] leading-relaxed text-ink/65 text-pretty">
-              We trade recycled metals and recovered materials, design lower-waste logistics,
-              and build circular flows that return end-of-life materials to industry. The result
-              is reduced embodied carbon, less waste and resilient supply for our buyers.
-            </p>
-            <TickList
-              className="mt-7"
-              items={[
-                "Recycled metals — recovered copper, aluminium and ferrous scrap.",
-                "Lower-waste logistics and consolidated, lower-impact flows.",
-                "Recovered materials returned to productive use through recycle and remanufacture loops.",
-              ]}
-            />
-            <div className="mt-8">
-              <Button href="/products#circular" variant="royal" withArrow>
-                Explore circular economy products
-              </Button>
-            </div>
-          </Reveal>
-        </div>
-      </Section>
-
-      {/* 6 — Reporting & Metrics */}
+      {/* 3 — Reporting & Metrics */}
       <Section tone="white" id="reports" className="scroll-mt-24">
         <SectionHeading
           eyebrow="Reporting & metrics"
@@ -250,44 +173,7 @@ export default function SustainabilityPage() {
         </p>
       </Section>
 
-      {/* 7 — ESG Reports download area */}
-      <Section tone="paper">
-        <SectionHeading
-          eyebrow="ESG reports"
-          title="Download our ESG & governance library"
-          intro="Each report below is a placeholder slot, ready for an approved PDF to be uploaded before launch."
-        />
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {reports.map((r, i) => (
-            <Reveal as="div" key={r.title} delay={i * 0.06}>
-              <div className="flex h-full flex-col rounded-2xl border border-line bg-white p-7 shadow-soft">
-                <div className="flex items-start justify-between gap-3">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand">
-                    <Icon name="doc" />
-                  </span>
-                  <span className="rounded-full border border-line bg-paper px-2.5 py-1 text-[11px] font-semibold uppercase tracking-label text-ink/60">
-                    {r.type}
-                  </span>
-                </div>
-                <h3 className="mt-5 text-lg font-medium text-ink">{r.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/55">{r.note}</p>
-                <span
-                  aria-disabled="true"
-                  className="mt-6 inline-flex cursor-not-allowed items-center gap-2 self-start rounded-full border border-line bg-paper px-5 py-2.5 text-sm font-semibold text-ink/40"
-                >
-                  Download
-                  <Icon name="arrowRight" className="h-4 w-4" />
-                </span>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-        <p className="mt-6 text-sm text-ink/50">
-          Downloads are disabled until approved documents are uploaded.
-        </p>
-      </Section>
-
-      {/* 8 — Supplier Code of Conduct */}
+      {/* 4 — Supplier Code of Conduct */}
       <Section tone="white">
         <div className="rounded-3xl border border-line bg-eco-soft p-8 sm:p-12">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.2fr]">
