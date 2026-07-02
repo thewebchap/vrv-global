@@ -98,8 +98,8 @@ export const productDetails: ProductDetail[] = [
     title: "Copper",
     slug: "copper",
     segment: "Industrial Metals",
-    heroImage: "/images/hero/responsible-metals.jpg",
-    imageAlt: "Copper cathodes and refined copper commodity material",
+    heroImage: "/images/commodities/metals/industrial-metals-warehouse.jpg",
+    imageAlt: "Industrial metals stored in a warehouse for copper commodity trade",
     imagePosition: "center",
     summary:
       "Copper is central to electrification, infrastructure, manufacturing, and energy transition demand.",

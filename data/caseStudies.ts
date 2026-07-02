@@ -139,7 +139,7 @@ export function caseStudyImage(category: CaseStudyCategory, thumbnail?: string):
       return "/images/products/agro-commodities.jpg";
     case "metals":
     case "mining":
-      return "/images/hero/responsible-metals.jpg";
+      return "/images/commodities/metals/industrial-metals-warehouse.jpg";
     case "sustainability":
       return "/images/hero/sustainable-global-trade.jpg";
     case "traceability":

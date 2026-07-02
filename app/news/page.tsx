@@ -42,7 +42,7 @@ function postImage(category: string, image?: string): string {
   const c = category.toLowerCase();
   if (c.includes("rubber") || c.includes("agro")) return "/images/products/agro-commodities.jpg";
   if (c.includes("circular") || c.includes("recycl")) return "/images/hero/circular-economy.jpg";
-  if (c.includes("metal") || c.includes("mining")) return "/images/hero/responsible-metals.jpg";
+  if (c.includes("metal") || c.includes("mining")) return "/images/commodities/metals/industrial-metals-warehouse.jpg";
   if (c.includes("esg") || c.includes("govern")) return "/images/hero/sustainable-global-trade.jpg";
   return "/images/hero/singapore-global-network.jpg";
 }

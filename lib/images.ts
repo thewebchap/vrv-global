@@ -26,7 +26,7 @@ const L = {
   latexTapping: "/images/products/agro-commodities.jpg",
   aluminiumBillets: "/images/products/metals.jpg",
   steelCoils: "/images/products/ferrous-metals.jpg",
-  responsibleMetals: "/images/hero/responsible-metals.jpg",
+  industrialMetals: "/images/commodities/metals/industrial-metals-warehouse.jpg",
   scrapMetal: "/images/products/circular-economy.jpg",
   circularYard: "/images/hero/circular-economy.jpg",
   woodchips: "/images/products/biomass.jpg",
@@ -72,9 +72,9 @@ export const images: Record<string, Img> = {
   // — Product images: Metals
   metals: { src: L.aluminiumBillets, alt: "Stacked aluminium billets in a metals warehouse", credit: LOCAL_CREDIT, where: "Category: Metals / Non-Ferrous Metals" },
   ferrousMetals: { src: L.steelCoils, alt: "Steel coils stored in an industrial metals warehouse", credit: LOCAL_CREDIT, where: "Product: Ferrous Metals" },
-  copper: { src: L.responsibleMetals, alt: "Refined industrial metals representing copper supply", credit: LOCAL_CREDIT, where: "Product: Copper" },
+  copper: { src: L.industrialMetals, alt: "Refined industrial metals representing copper supply", credit: LOCAL_CREDIT, where: "Product: Copper" },
   aluminum: { src: L.aluminiumBillets, alt: "Aluminium billets and ingots in an industrial warehouse", credit: LOCAL_CREDIT, where: "Product: Aluminum" },
-  nickel: { src: L.responsibleMetals, alt: "Refined industrial metals representing nickel supply", credit: LOCAL_CREDIT, where: "Product: Nickel" },
+  nickel: { src: L.industrialMetals, alt: "Refined industrial metals representing nickel supply", credit: LOCAL_CREDIT, where: "Product: Nickel" },
 
   // — Product images: Circular economy
   circular: { src: L.scrapMetal, alt: "Recovered scrap metal at a recycling yard — circular material flows", credit: LOCAL_CREDIT, where: "Category: Circular Economy / Recycled Metals" },
@@ -83,7 +83,7 @@ export const images: Record<string, Img> = {
   mdf: { src: L.woodchips, alt: "Engineered wood feedstock for recovered-material panels", credit: LOCAL_CREDIT, where: "Product: MDF" },
 
   // — Section / page imagery
-  mining: { src: L.responsibleMetals, alt: "Industrial metals and ore representing responsible mining-linked sourcing", credit: LOCAL_CREDIT, where: "Mining / responsible metals sourcing" },
+  mining: { src: L.industrialMetals, alt: "Industrial metals stored in a warehouse representing mining-linked metals sourcing", credit: LOCAL_CREDIT, where: "Mining / responsible metals sourcing" },
   recycling: { src: L.scrapMetal, alt: "Materials recovery yard returning scrap metal to productive use", credit: LOCAL_CREDIT, where: "Circular economy section" },
   farming: { src: L.latexTapping, alt: "Farmer engaged in latex tapping across a sustainable plantation", credit: LOCAL_CREDIT, where: "Sustainable agro section" },
   traceability: { src: L.singaporeNetwork, alt: "Connected global network representing supply-chain traceability from Singapore", credit: LOCAL_CREDIT, where: "Technology & traceability" },

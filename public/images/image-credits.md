@@ -19,7 +19,7 @@ copyrighted images are used without permission.
 | File | Subject | Source / Licence |
 | --- | --- | --- |
 | `hero/natural-rubber.jpg` | Natural rubber plantation / latex | Wikimedia Commons (CC BY-SA 4.0) |
-| `hero/responsible-metals.jpg` | Industrial / responsible metals | Wikimedia Commons (CC BY-SA) |
+| `commodities/metals/industrial-metals-warehouse.jpg` | Industrial metals warehouse (billets) for commodity shipment | Albasmelter (CC BY-SA 4.0) |
 | `hero/circular-economy.jpg` | Recovered scrap / circular flows | Wikimedia Commons (CC0) |
 | `hero/singapore-global-network.jpg` | Singapore global network | Free commercial use |
 | `hero/sustainable-global-trade.jpg` | Cargo / global trade & logistics | Free commercial use |

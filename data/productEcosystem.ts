@@ -53,8 +53,8 @@ export const productEcosystem: ProductEcosystemCard[] = [
     description:
       "Mining-linked industrial and precious metals opportunities focused on responsible resource access, long-term supply security and strategic upstream integration. [Confirm before publishing]",
     tags: ["Industrial Metals", "Precious Metals", "Copper & Gold", "Tanzania & Zambia [Confirm]"],
-    image: "/images/hero/responsible-metals.jpg",
-    imageAlt: "Industrial metals and ore representing mining-linked upstream resource ventures",
+    image: "/images/commodities/metals/industrial-metals-warehouse.jpg",
+    imageAlt: "Industrial metals stored in a warehouse representing mining-linked upstream resource ventures",
     imageCredit: "Wikimedia Commons (CC BY-SA)",
     imageSource: "https://commons.wikimedia.org/",
     imagePosition: "center",
