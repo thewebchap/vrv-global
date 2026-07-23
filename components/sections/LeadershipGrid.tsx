@@ -56,9 +56,17 @@ function LinkedInLink({ leader, label = false }: { leader: LeadershipImage; labe
   );
 }
 
+/** Static offset classes so a short final row (e.g. 2 directors in a 4-col grid)
+ *  centers instead of left-aligning — the cards keep the same width. */
+const COL_START: Record<number, string> = { 2: "lg:col-start-2", 3: "lg:col-start-3" };
+
 /** Leadership cards with a short bio preview; click opens the full-bio modal. */
-export function LeadershipGrid({ members, compact = false }: { members: LeadershipImage[]; compact?: boolean }) {
+export function LeadershipGrid({ members, columns = 3 }: { members: LeadershipImage[]; columns?: 3 | 4 }) {
   const [open, setOpen] = useState<LeadershipImage | null>(null);
+
+  // When fewer members than columns, center them: offset the first card.
+  const emptyCols = columns - members.length;
+  const startClass = emptyCols >= 2 ? COL_START[Math.floor(emptyCols / 2) + 1] ?? "" : "";
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(null);
@@ -74,23 +82,31 @@ export function LeadershipGrid({ members, compact = false }: { members: Leadersh
 
   return (
     <>
-      <div className={cn("mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3", compact && "max-w-5xl")}>
-        {members.map((m) => (
+      <div
+        className={cn(
+          "mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2",
+          columns === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3",
+        )}
+      >
+        {members.map((m, i) => (
           // Card is a div (not a button) so it can hold a real LinkedIn link.
           // Mouse click opens the modal; keyboard users use the explicit
           // "Read full bio" button below.
           <article
             key={m.name}
             onClick={() => setOpen(m)}
-            className="group relative flex h-full min-h-[520px] cursor-pointer flex-col overflow-hidden rounded-2xl border border-line bg-white text-left shadow-soft transition-all duration-300 ease-out-soft hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-hover"
+            className={cn(
+              "group relative flex h-full min-h-[520px] cursor-pointer flex-col overflow-hidden rounded-2xl border border-line bg-white text-left shadow-soft transition-all duration-300 ease-out-soft hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-hover",
+              i === 0 && startClass,
+            )}
           >
             <div className="relative">
               <Portrait leader={m} />
               <span aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-1 bg-gold/80" />
             </div>
-            <div className={cn("flex flex-1 flex-col", compact ? "p-5" : "p-6")}>
+            <div className="flex flex-1 flex-col p-6">
               <p className="eyebrow no-flourish">{m.role}</p>
-              <h3 className={cn("mt-2 font-serif text-ink", compact ? "text-lg" : "text-xl")}>{m.name}</h3>
+              <h3 className="mt-2 font-serif text-xl text-ink">{m.name}</h3>
               <p className="mt-2 flex items-start gap-1.5 text-[13px] font-medium text-brand">
                 <Icon name="leaf" className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                 {m.focus}

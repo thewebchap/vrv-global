@@ -83,20 +83,20 @@ export const leadershipTeam = {
       profileUrl: "https://vrv.campaigntag.com/yasuswini/",
       linkedin: "https://www.linkedin.com/in/yasuswini-subramanian-008627120",
     },
-  ] as LeadershipImage[],
-  directors: [
     {
       name: "Rakesh Bangera",
-      role: "Director — Treasury & Finance",
+      role: "Chief Operating Officer",
       image: "/pictures/team/rakesh-bangera.jpg",
       imagePosition: "center top",
       message:
         "At VRV, our focus is to build resilient trade-finance frameworks that enable global commerce to move with confidence.",
-      bio: "Rakesh Bangera is Director — Trade Finance & Strategy at VRV Global, with over two decades of experience across trade, supply chain, treasury and structured finance. He leads business strategy and trade-finance initiatives while strengthening financial partnerships for global transactions. He previously served as Head of Trade Finance & Cash Management at Agrocorp International in Singapore and led distribution and treasury solutions for Asia and the Middle East at Bunge. His expertise spans banking relationships, structured trade finance and operational strategy across global commodity markets. He holds a Master's degree in Commerce.",
-      focus: "Trade finance, treasury and structured finance",
+      bio: "Rakesh Bangera is Chief Operating Officer at VRV Global, with over two decades of experience across trade, supply chain, treasury and structured finance. He leads business operations and trade-finance initiatives while strengthening financial partnerships for global transactions. He previously served as Head of Trade Finance & Cash Management at Agrocorp International in Singapore and led distribution and treasury solutions for Asia and the Middle East at Bunge. His expertise spans banking relationships, structured trade finance and operational strategy across global commodity markets. He holds a Master's degree in Commerce.",
+      focus: "Operations, trade finance and structured finance",
       profileUrl: "https://vrv.campaigntag.com/rakesh/",
       linkedin: "https://www.linkedin.com/in/rakesh-bangera-23850929",
     },
+  ] as LeadershipImage[],
+  directors: [
     {
       name: "Zac Ng",
       role: "Director — Agro Commodities",
@@ -114,13 +114,13 @@ export const leadershipTeam = {
       role: "Director — Projects",
       // No portrait supplied in the source set (public/pictures/team/raghu.jpg is
       // absent) → initials fallback. Drop a file there to show a photo.
-      image: "",
+      image: "/pictures/team/raghu.jpg",
       imagePosition: "center top",
-      message: "",
-      bio: "[Approved bio to be added]",
+      message: "At VRV Global, every project is built around reliability, collaboration and long-term impact. Our focus is to turn ideas into well-executed solutions that create sustainable value for our partners, communities and the markets we serve.",
+      bio: "Raghu leads project planning and execution at VRV Global, supporting the development of efficient, reliable and sustainable supply chain initiatives. He works closely with internal teams, partners and stakeholders to ensure projects are delivered with clear coordination, operational discipline and long-term business value.",
       focus: "Projects",
       profileUrl: "https://vrv.campaigntag.com/raghu/",
-      linkedin: "#", // no public profile yet → LinkedIn button hidden
+      linkedin: "https://www.linkedin.com/in/raghu-nathan-315b17343/", // no public profile yet → LinkedIn button hidden
     },
   ] as LeadershipImage[],
 };

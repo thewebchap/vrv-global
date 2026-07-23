@@ -32,18 +32,34 @@ export const metadata = pageMeta({
   path: "/products",
 });
 
+const schemaItems = productSegments.flatMap((s) =>
+  s.categories?.length
+    ? s.categories.flatMap((c) =>
+        (c.products?.length ? c.products : [{ name: c.title, href: undefined }]).map((pr) => ({
+          name: pr.name,
+          url: pr.href ? `${site.url}${pr.href}` : `${site.url}/products#${s.slug}`,
+        })),
+      )
+    : s.products.map((p) => ({ name: p.title, url: `${site.url}/products#${p.slug}` })),
+);
+
 const productListSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "VRV Global Product Segments",
-  itemListElement: productSegments.flatMap((s) =>
-    s.products.map((p) => ({ name: p.title, slug: p.slug })),
-  ).map((p, i) => ({
+  itemListElement: schemaItems.map((it, i) => ({
     "@type": "ListItem",
     position: i + 1,
-    name: p.name,
-    url: `${site.url}/products#${p.slug}`,
+    name: it.name,
+    url: it.url,
   })),
+};
+
+/** Subtle, premium per-segment background tints (soft green / copper / gold). */
+const segmentTint: Record<string, string> = {
+  "agro-commodities": "#F3F8F1",
+  "industrial-metals": "#F8F1EC",
+  mining: "#F8F3E6",
 };
 
 /** Large segment overview card — image top, content below, tags, CTA. */
@@ -113,13 +129,66 @@ function FeatureBlocks({ items }: { items: string[] }) {
   );
 }
 
+/** Grouped category cards for a segment (Industrial Metals, Mining Division). */
+function SegmentCategories({ segment, tint }: { segment: ProductSegment; tint?: string }) {
+  return (
+    <div className="border-t border-line py-14 sm:py-16" style={tint ? { backgroundColor: tint } : undefined}>
+      <div className="container-x grid grid-cols-1 gap-6 md:grid-cols-2">
+        {segment.categories!.map((cat) => (
+          <article key={cat.title} className="flex h-full flex-col rounded-2xl border border-line bg-white p-6 shadow-soft sm:p-7">
+            <div className="flex items-center gap-2.5">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand">
+                <Icon name={segment.icon} className="h-5 w-5" />
+              </span>
+              <h3 className="font-serif text-xl text-ink">{cat.title}</h3>
+            </div>
+            {cat.detail && (
+              <p className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-[12.5px] font-semibold text-gold-700">
+                <Icon name="shield" className="h-3.5 w-3.5" />
+                {cat.detail}
+              </p>
+            )}
+            <p className="mt-4 text-[15px] leading-relaxed text-ink/65">{cat.copy}</p>
+            {cat.products && cat.products.length > 0 && (
+              <ul className="mt-5 flex flex-wrap gap-2">
+                {cat.products.map((p) =>
+                  p.href ? (
+                    <li key={p.name}>
+                      <Link
+                        href={p.href}
+                        className="inline-flex items-center gap-1 rounded-full border border-line bg-paper px-3 py-1 text-[12.5px] font-medium text-ink/75 transition-colors hover:border-brand/40 hover:text-brand"
+                      >
+                        {p.name}
+                        <Icon name="arrowRight" className="h-3 w-3" />
+                      </Link>
+                    </li>
+                  ) : (
+                    <li key={p.name}>
+                      <span className="rounded-full border border-line bg-paper px-3 py-1 text-[12.5px] font-medium text-ink/70">{p.name}</span>
+                    </li>
+                  ),
+                )}
+              </ul>
+            )}
+            <div className="mt-auto pt-6">
+              <Button href="/contact" variant="outline" withArrow>Enquire</Button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /** A single product subsection — alternating image / content band. */
-function Subsection({ product, segment, index }: { product: SegmentProduct; segment: ProductSegment; index: number }) {
-  const band = index % 2 === 0 ? "bg-paper" : "bg-white";
+function Subsection({ product, segment, index, tint }: { product: SegmentProduct; segment: ProductSegment; index: number; tint?: string }) {
+  const even = index % 2 === 0;
+  const bandClass = even ? "" : "bg-white";
+  const bandStyle = even && tint ? { backgroundColor: tint } : undefined;
 
   if (product.compact) {
     return (
-      <div id={product.slug} className={cn("scroll-mt-32 border-t border-line py-14 sm:py-16", band)}>
+      <div id={product.slug} style={bandStyle} className={cn("scroll-mt-32 border-t border-line py-14 sm:py-16", bandClass)}>
         <div className="container-x">
           <div className="mx-auto max-w-3xl rounded-2xl border border-line bg-white p-7 text-center shadow-soft sm:p-9">
             <span className="mx-auto inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand">
@@ -145,7 +214,7 @@ function Subsection({ product, segment, index }: { product: SegmentProduct; segm
   const flip = index % 2 === 1;
   const detailHref = detailHrefBySlug[product.slug];
   return (
-    <div id={product.slug} className={cn("scroll-mt-32 border-t border-line py-14 sm:py-20", band)}>
+    <div id={product.slug} style={bandStyle} className={cn("scroll-mt-32 border-t border-line py-14 sm:py-20", bandClass)}>
       <div className="container-x grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
         <Reveal className={cn(flip && "lg:order-2")}>
           <Media
@@ -212,10 +281,6 @@ export default function ProductsPage() {
           <EntitySummary links={[{ label: "Sustainability", href: "/sustainability" }, { label: "Ventures", href: "/ventures" }]} />
         </div>
         <div className="mt-10">
-          <SectionHeading eyebrow="Key terms" title="Commodity definitions" />
-          <Definitions items={productDefinitions} className="mt-8" />
-        </div>
-        <div className="mt-10">
           <ProofBlocks />
         </div>
       </Section>
@@ -239,11 +304,13 @@ export default function ProductsPage() {
         </div>
       </Section>
 
-      {/* 3–5 — Each segment: intro band + product subsections */}
-      {productSegments.map((s) => (
+      {/* 3–5 — Each segment: intro band + product subsections / category cards */}
+      {productSegments.map((s) => {
+        const tint = segmentTint[s.slug];
+        return (
         <section key={s.slug} id={s.slug} className="scroll-mt-32" aria-label={s.title}>
           {/* Segment intro band */}
-          <div className="border-t border-line bg-white py-16 sm:py-20">
+          <div className="border-t border-line py-16 sm:py-20" style={tint ? { backgroundColor: tint } : undefined}>
             <div className="container-x">
               <SectionHeading eyebrow={`${s.title} segment`} title={s.title} intro={s.description} />
               <ul className="mt-6 flex flex-wrap gap-2">
@@ -278,12 +345,15 @@ export default function ProductsPage() {
             </div>
           </div>
 
-          {/* Product subsections */}
-          {s.products.map((p, i) => (
-            <Subsection key={p.slug} product={p} segment={s} index={i} />
-          ))}
+          {/* Product content — grouped category cards, or alternating subsections */}
+          {s.categories?.length
+            ? <SegmentCategories segment={s} tint={tint} />
+            : s.products.map((p, i) => (
+                <Subsection key={p.slug} product={p} segment={s} index={i} tint={tint} />
+              ))}
         </section>
-      ))}
+        );
+      })}
 
       {/* Supply chain operating model */}
       <Section tone="white" bordered>
@@ -335,6 +405,16 @@ export default function ProductsPage() {
         <div className="mt-12">
           <Faq items={productsFaqs} idBase="products-faq" />
         </div>
+      </Section>
+
+      {/* Key Terms — moved to the bottom, below the Mining Division */}
+      <Section tone="paper" bordered>
+        <SectionHeading
+          eyebrow="Key terms"
+          title="Commodity definitions"
+          intro="Plain-language definitions of the commodities and supply-chain terms used across VRV Global's products."
+        />
+        <Definitions items={productDefinitions} className="mt-8" />
       </Section>
 
       {/* 8 — Product / partner enquiry CTA */}

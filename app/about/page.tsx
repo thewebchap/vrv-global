@@ -53,6 +53,10 @@ export default function AboutPage() {
         title="Connecting Markets, People, and Planet — The VRV Way"
         intro="VRV Global is a diversified trading house connecting agri-commodities and metals across Asia, Africa and beyond — combining experienced traders, customer insight and sourcing expertise to deliver reliable, integrated supply chains."
         crumbs={[{ label: "About" }]}
+        image={{
+          src: "/images/hero/sustainable-global-trade.jpg",
+          alt: "Commodity supply chain connecting plantations, industrial materials and global markets",
+        }}
       />
 
       {/* Quick answer + entity summary (AEO/GEO) */}
@@ -60,6 +64,45 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <QuickAnswer question={quickAnswers.about.question} answer={quickAnswers.about.answer} />
           <EntitySummary links={[{ label: "Leadership team", href: "/about#leadership" }, { label: "Ventures", href: "/ventures" }]} />
+        </div>
+      </Section>
+
+      {/* About Us */}
+      <Section tone="white" bordered>
+        <SectionHeading
+          align="center"
+          eyebrow="About us"
+          title="About Us"
+          intro="VRV Global connects everyday industries with the essential materials they need to grow responsibly. Headquartered in Singapore and active across global markets, we source and supply natural rubber, agro commodities, industrial metals and minerals through integrated, transparent and sustainable supply chains. From farmers and producers to manufacturers and communities, our goal is to create reliable trade that supports people, protects the planet and builds long-term value for the future."
+        />
+      </Section>
+
+      {/* Who is VRV Global? */}
+      <Section tone="paper" bordered>
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
+          <div>
+            <p className="eyebrow">Who we are</p>
+            <h2 className="mt-5 text-h2 text-balance">Who is VRV Global?</h2>
+            <p className="mt-5 text-[17px] leading-relaxed text-ink/70 text-pretty">
+              VRV Global is a Singapore-based sustainable supply chain integrator connecting agro commodities, natural
+              rubber, industrial metals and minerals across global markets. Founded in 2012, it combines sourcing
+              expertise, traceability and circular trade models to serve industrial buyers while creating long-term
+              value for communities, customers and investors.
+            </p>
+          </div>
+          <Reveal>
+            <div className="overflow-hidden rounded-[2rem] border border-line bg-white shadow-card">
+              {/* object-contain + h-auto: the full landscape image is always visible, never cropped */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={aboutGroupImages[1].src}
+                alt={aboutGroupImages[1].alt}
+                loading="lazy"
+                decoding="async"
+                className="mx-auto h-auto max-h-[520px] w-full object-contain"
+              />
+            </div>
+          </Reveal>
         </div>
       </Section>
 
@@ -130,55 +173,6 @@ export default function AboutPage() {
         <AutoMovingGrowthLedger milestones={journeyMilestones} />
       </Section>
 
-      {/* Company story */}
-      <Section tone="white">
-        <SectionHeading
-          eyebrow="Our story"
-          title="From commodity trade to an integrated, sustainable supply chain"
-          intro="A growth story rooted in responsibility, traceability and long-term partnership."
-        />
-        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[48%_52%] lg:items-center lg:gap-14">
-          <div className="max-w-prose space-y-5 text-[15px] leading-relaxed text-ink/70">
-            <p>
-              Founded in Singapore in 2012, VRV Global began as a cross-border commodity trading house, building
-              durable relationships with producers, processors, financiers, logistics providers and buyers across
-              multiple regions. From the outset, the ambition was to do more than move material — it was to make the
-              flow of material dependable, transparent and responsible.
-            </p>
-            <p>
-              Over more than a decade, the business has evolved from commodity trade into an integrated, sustainable
-              supply chain company spanning agro commodities, industrial and recycled metals, and circular economy
-              products. Rather than acting only as a seller, VRV Global coordinates sourcing, quality control,
-              processing, trade finance, logistics and destination fulfilment — turning fragmented flows into reliable
-              supply for serious counterparties.
-            </p>
-            <p>
-              Responsible sourcing sits at the centre of how we operate. We work to understand the origin and
-              conditions behind every material, and our material-traceability roadmap is steadily extending visibility
-              across origin, movement, processing and delivery. A formalised ESG framework guides environmental,
-              social and governance practice across the trade lifecycle.
-            </p>
-            <p>
-              As we grow, our focus remains constant: integrate the supply chain, advance traceability and circularity,
-              and create long-term value for partners, communities and stakeholders alike.
-            </p>
-          </div>
-          <Reveal>
-            <div className="overflow-hidden rounded-[2rem] border border-line bg-paper shadow-card">
-              {/* object-contain + h-auto: the full landscape image is always visible, never cropped */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={aboutGroupImages[1].src}
-                alt={aboutGroupImages[1].alt}
-                loading="lazy"
-                decoding="async"
-                className="mx-auto h-auto max-h-[560px] w-full object-contain"
-              />
-            </div>
-          </Reveal>
-        </div>
-      </Section>
-
       {/* Sustainability commitment band */}
       <Section tone="paper" bordered className="bg-eco-soft">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center">
@@ -215,7 +209,7 @@ export default function AboutPage() {
             align="center"
           />
           <div className="mt-12">
-            <LeadershipGrid members={leadershipTeam.executives} />
+            <LeadershipGrid members={leadershipTeam.executives} columns={4} />
           </div>
         </div>
 
@@ -227,7 +221,7 @@ export default function AboutPage() {
             align="center"
           />
           <div className="mt-12">
-            <LeadershipGrid members={leadershipTeam.directors} compact />
+            <LeadershipGrid members={leadershipTeam.directors} columns={4} />
           </div>
         </div>
       </Section>

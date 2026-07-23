@@ -3,16 +3,16 @@ import { Section, SectionHeading, Eyebrow } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { KPIGrid } from "@/components/ui/FeatureCard";
 import { TickList } from "@/components/ui/TickList";
-import { Media } from "@/components/ui/Media";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
 import { Definitions } from "@/components/seo/Definitions";
+import { TraceabilityVideo } from "@/components/sustainability/TraceabilityVideo";
+import { ThreeCTriadVisual } from "@/components/sustainability/ThreeCTriadVisual";
 import { quickAnswers, sustainabilityDefinitions } from "@/data/aeo";
-import { images } from "@/lib/images";
 import { pageMeta } from "@/lib/seo";
-import { esgPillars, esgMetrics, supplierCode } from "@/lib/esg";
+import { esgPillars, esgMetrics } from "@/lib/esg";
 
 /** Icon per ESG pillar (Environment / Social / Governance). */
 const esgPillarIcon: Record<string, IconName> = {
@@ -79,15 +79,41 @@ export default function SustainabilityPage() {
         crumbs={[{ label: "Sustainability" }]}
       />
 
-      {/* Quick answer + entity summary (AEO/GEO) */}
-      <Section tone="white">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <QuickAnswer question={quickAnswers.sustainability.question} answer={quickAnswers.sustainability.answer} />
-          <EntitySummary links={[{ label: "Explore products", href: "/products" }, { label: "Strategic ventures", href: "/ventures" }]} />
-        </div>
-        <div className="mt-10">
-          <Eyebrow>Key terms</Eyebrow>
-          <Definitions items={sustainabilityDefinitions} className="mt-5" />
+      {/* Sustainability Policy Overview — VRV's impact statement (immediately after the header).
+          NOTE: the body wording below is supplied verbatim and must not be edited
+          (spelling, punctuation and "its"/"Commodities deal" are intentional). */}
+      <Section tone="paper" bordered>
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
+          {/* Text — first on mobile, left on desktop */}
+          <div className="order-1">
+            <p className="text-sm font-semibold text-brand">VRV&rsquo;s ESG Program</p>
+            <h2 className="mt-3 text-h2 text-balance">VRV&rsquo;s Sustainability Policy Overview</h2>
+            <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-[12px] font-semibold uppercase tracking-label text-gold-700">
+              3C = COMPREHENSIVE
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {["Company", "Community", "Commodities"].map((c) => (
+                <span key={c} className="rounded-full border border-line bg-white px-3.5 py-1 text-[13px] font-semibold text-ink/75">
+                  {c}
+                </span>
+              ))}
+            </div>
+            <p className="mt-6 text-[16.5px] leading-relaxed text-ink/70 text-pretty">
+              At Corporate level we strive to implement the best practices of sustainability including reduce, reuse and
+              recycle. VRV encourages our stakeholders to be sustainability ambassadors in every walk of life. With the
+              Commodities deal by VRV we have initiated concrete steps to ensure our sourcing and supply chain activities
+              are gradually progressing towards sustainable practices and policies laid out by the Company. With our
+              supplier community and buyer community, we have initiated several discussions to impart, educate and also
+              convert the existing product lines and practices towards sustainable structures. Though its a long road, VRV
+              is determined to walk with conviction. VRV has also earmarked specific support via our VRV Ventures
+              initiative. All are welcome to join us.
+            </p>
+          </div>
+
+          {/* 3C triad visual — second on mobile, right on desktop */}
+          <div className="order-2">
+            <ThreeCTriadVisual />
+          </div>
         </div>
       </Section>
 
@@ -116,16 +142,20 @@ export default function SustainabilityPage() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <Media
-              src={images.sustainability.src}
-              alt={images.sustainability.alt}
-              label="Responsible sourcing & sustainable trade"
-              ratio="4/3"
-              overlay
-              rounded="rounded-2xl"
-              className="shadow-card"
-            />
+            <TraceabilityVideo />
           </Reveal>
+        </div>
+      </Section>
+
+      {/* Quick answer + entity summary + key terms (AEO/GEO) */}
+      <Section tone="paper" bordered>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <QuickAnswer question={quickAnswers.sustainability.question} answer={quickAnswers.sustainability.answer} />
+          <EntitySummary links={[{ label: "Explore products", href: "/products" }, { label: "Strategic ventures", href: "/ventures" }]} />
+        </div>
+        <div className="mt-10">
+          <Eyebrow>Key terms</Eyebrow>
+          <Definitions items={sustainabilityDefinitions} className="mt-5" />
         </div>
       </Section>
 
@@ -171,35 +201,6 @@ export default function SustainabilityPage() {
           Note: metrics shown are editable placeholders and will be replaced with verified ESG
           figures before publication.
         </p>
-      </Section>
-
-      {/* 4 — Supplier Code of Conduct */}
-      <Section tone="white">
-        <div className="rounded-3xl border border-line bg-eco-soft p-8 sm:p-12">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.2fr]">
-            <div>
-              <Eyebrow>Supplier code of conduct</Eyebrow>
-              <h2 className="mt-5 text-h2 text-balance">
-                Clear expectations across our supplier network
-              </h2>
-              <p className="mt-5 text-[17px] leading-relaxed text-ink/65 text-pretty">
-                Every supplier is held to a code spanning legal compliance, human rights,
-                environmental standards and traceability cooperation — supported by audit access
-                and continuous improvement.
-              </p>
-              <span
-                aria-disabled="true"
-                className="mt-7 inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-line bg-white px-5 py-2.5 text-sm font-semibold text-ink/40"
-              >
-                Download full code [Upload Supplier Code of Conduct PDF]
-                <Icon name="doc" className="h-4 w-4" />
-              </span>
-            </div>
-            <div className="rounded-2xl border border-line bg-white p-7 shadow-soft">
-              <TickList items={supplierCode} />
-            </div>
-          </div>
-        </div>
       </Section>
 
       {/* FAQ */}
