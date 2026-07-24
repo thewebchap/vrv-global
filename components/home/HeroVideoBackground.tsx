@@ -116,11 +116,6 @@ export function HeroVideoBackground() {
             <RotatingHeroHeadline />
           </div>
 
-          <p className="mt-6 max-w-xl text-[18px] leading-relaxed text-white/80 text-pretty">
-            VRV Global connects natural rubber, industrial metals, mining-linked ventures and circular economy materials
-            through responsible sourcing, disciplined execution and traceability-ready supply-chain systems.
-          </p>
-
           <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
             <Button href="/products" variant="primary" size="lg" withArrow>Explore Products</Button>
             <Button href="/contact?type=buyer" variant="outlineLight" size="lg">Start an Enquiry</Button>

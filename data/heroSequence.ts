@@ -1,57 +1,55 @@
 /**
- * Hero sequence for the homepage split hero.
- *
- * Each step pairs a rotating headline (left column H1) with one Technology &
- * Traceability connection point. As the headline rotates (~10s each, ~60s loop)
- * the matching connection point is revealed/highlighted and only the active
- * point's description is shown — so the path "builds" progressively.
+ * Homepage hero rotation — 5 content points, each a headline + supporting line,
+ * changing every 5 seconds (25s total cycle, looping). Wording is supplied and
+ * must not be edited (punctuation, including the full stops in the headlines,
+ * is intentional). Sequence is ordered to track the hero video story:
+ *   1. Natural rubber origin / farmers   → From Farm to Future.
+ *   2. Traceability, quality, technology  → Industry 5.0.
+ *   3. Copper / aluminium / recycled      → Critical Metals. Circular Value.
+ *   4. Mining, mapping, upstream          → Mining Value at Source.
+ *   5. Communities, sustainability, impact→ Sustainable Supply. Global Impact.
  */
-export type HeroStep = {
-  /** Rotating H1 headline (kept short and premium). */
-  headline: string;
-  /** Connection-point label in the Technology & Traceability path. */
-  point: string;
-  /** Short description shown only while this step is active. */
+export type HeroSlide = {
+  title: string;
   description: string;
 };
 
-export const heroSequence: HeroStep[] = [
+export const heroSlides: HeroSlide[] = [
   {
-    headline: "Global Sourcing Across Commodities",
-    point: "Origin Sourcing",
-    description: "Rubber, agro commodities, industrial metals and mining-linked materials from trusted origin networks.",
+    title: "From Farm to Future.",
+    description:
+      "Building responsible natural rubber supply chains from farmers to global tyre manufacturers.",
   },
   {
-    headline: "Ground-Zero Traceability",
-    point: "Supplier & Origin Visibility",
-    description: "Supplier engagement and origin records that make supply chains more transparent and accountable.",
+    title: "Industry 5.0.",
+    description: "Enabled with future tech, establishing quality and traceability.",
   },
   {
-    headline: "Tolling, Refining & Value-Add",
-    point: "Processing & Transformation",
-    description: "Processing, tolling, refining and packing that add value across commodity flows.",
+    title: "Critical Metals. Circular Value.",
+    description:
+      "Supplying primary and recycled metals that power industry, infrastructure and next-generation manufacturing.",
   },
   {
-    headline: "Quality Checks at Every Stage",
-    point: "Quality & Documentation",
-    description: "Specifications, inspections and shipment-ready records linked from source to delivery.",
+    title: "Mining Value at Source.",
+    description:
+      "Capturing copper and precious metals value from responsible mining to industrial-scale buyers.",
   },
   {
-    headline: "Satellite-Based Farm & Mine Mapping",
-    point: "Geospatial Intelligence",
-    description: "Geospatial mapping that supports better visibility across farms, plantations and mining areas.",
-  },
-  {
-    headline: "Ethical, ESG-Aligned Supply Chains",
-    point: "ESG & Chain-of-Custody Reporting",
-    description: "Traceability-ready ESG data capture and audit-oriented chain-of-custody reporting.",
+    title: "Sustainable Supply. Global Impact.",
+    description:
+      "Creating long-term value for people, planet and investors through circular commodity solutions.",
   },
 ];
 
-/** Longest headline (by length) reserves a stable H1 height to avoid layout jumps. */
-export const LONGEST_HEADLINE = heroSequence.reduce(
-  (a, b) => (b.headline.length > a.length ? b.headline : a),
-  heroSequence[0].headline,
+/** Longest title / description reserve stable heights to avoid layout jumps. */
+export const LONGEST_TITLE = heroSlides.reduce(
+  (a, b) => (b.title.length > a.length ? b.title : a),
+  heroSlides[0].title,
+);
+export const LONGEST_DESCRIPTION = heroSlides.reduce(
+  (a, b) => (b.description.length > a.length ? b.description : a),
+  heroSlides[0].description,
 );
 
-export const HERO_INTERVAL_MS = 10000;
+/** 5 seconds per slide → 25s total cycle. */
+export const HERO_INTERVAL_MS = 5000;
