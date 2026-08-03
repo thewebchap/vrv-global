@@ -3,6 +3,7 @@ import { Section, SectionHeading } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { LeadershipGrid } from "@/components/sections/LeadershipGrid";
+import { FootprintSection } from "@/components/map/deck/FootprintSection";
 import { AutoMovingGrowthLedger } from "@/components/sections/AutoMovingGrowthLedger";
 import { AboutGrowthMetrics } from "@/components/sections/AboutGrowthMetrics";
 import { FounderSpotlight } from "@/components/sections/FounderSpotlight";
@@ -171,6 +172,18 @@ export default function AboutPage() {
       {/* The VRV Growth Ledger — auto-moving growth flow (no timeline, no images) */}
       <Section tone="paper" bordered id="milestones" className="scroll-mt-24">
         <AutoMovingGrowthLedger milestones={journeyMilestones} />
+      </Section>
+
+      {/* Global Presence — commodity footprint map (moved from Products) */}
+      <Section tone="white" bordered id="global-presence" className="scroll-mt-24">
+        <SectionHeading
+          eyebrow="Global presence"
+          title="Global Presence"
+          intro="A Singapore-based platform connected to sourcing, purchase and customer markets across agro commodities, industrial metals and mining-linked opportunities."
+        />
+        <div className="mt-12">
+          <FootprintSection />
+        </div>
       </Section>
 
       {/* Sustainability commitment band */}

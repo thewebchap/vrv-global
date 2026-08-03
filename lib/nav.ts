@@ -32,7 +32,7 @@ export const mainNav: NavItem[] = [
       { label: "Company Overview", href: "/about", desc: "Mission, vision, values and story" },
       { label: "Our Journey", href: "/about#milestones", desc: "Milestones since 2012" },
       { label: "Leadership", href: "/about#leadership", desc: "The team behind VRV Global" },
-      { label: "Careers", href: "/careers", desc: "Build purpose-led global trade" },
+      { label: "Global Presence", href: "/about#global-presence", desc: "Sourcing, purchase and customer markets" },
     ],
   },
   { label: "Products", href: "/products", mega: "products" },

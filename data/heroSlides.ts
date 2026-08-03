@@ -40,7 +40,7 @@ export const heroSlides: HeroSlide[] = [
     description:
       "VRV supports responsible natural rubber flows through supplier relationships, quality focus and traceability-led sourcing across key producing regions.",
     primaryCta: { label: "Explore Agro Commodities", href: "/products#agro" },
-    secondaryCta: { label: "View Commodity Network", href: "/products#footprint" },
+    secondaryCta: { label: "View Commodity Network", href: "/about#global-presence" },
     image: "/images/hero/natural-rubber.jpg",
     imageAlt: "Latex collected from tapped trees in a natural rubber plantation",
     imageCredit: "Manukrishnan80 (CC BY-SA 4.0)",
@@ -79,7 +79,7 @@ export const heroSlides: HeroSlide[] = [
     title: "Coordinated from Singapore. Connected to Global Markets.",
     description:
       "Headquartered in Singapore, VRV manages purchase and sales geographies across Asia, Africa, Europe, the Middle East and the Americas.",
-    primaryCta: { label: "Explore Global Footprint", href: "/products#footprint" },
+    primaryCta: { label: "Explore Global Footprint", href: "/about#global-presence" },
     secondaryCta: { label: "About VRV", href: "/about" },
     image: "/images/hero/singapore-global-network.jpg",
     imageAlt: "Aerial view of Singapore's container terminal and global shipping lanes",

@@ -47,9 +47,9 @@ export const journeyMilestones: JourneyMilestone[] = [
   {
     year: "2020",
     phase: "Scale and Integration",
-    title: "$100M Order Book",
+    title: "Global Distribution Partnerships",
     description:
-      "VRV crossed a $100 million order book and entered into a strategic partnership with rubber producers for global distribution, marking its transition from tyre distribution into natural rubber supply.",
+      "VRV entered into a strategic partnerships with Natural Rubber Producers for global distribution, marking its full transition from tyre distribution into the Natural Rubber Supply chain Industry.",
   },
   {
     year: "2022",
@@ -59,10 +59,24 @@ export const journeyMilestones: JourneyMilestone[] = [
       "VRV entered strategic partnerships for expansion into African markets, including supply and distribution arrangements across Western Africa and the Middle East.",
   },
   {
+    year: "2023",
+    phase: "Scale and Integration",
+    title: "Fast growing SME Award",
+    description:
+      "2023 has been a year of global recognition and dedication to the hardwork of Team VRV. VRV was awarded the Fast growing SME 100 award and Best Sustainable Business Brand award for the Sustainability tech integration initiative used in VRV’s business.",
+  },
+  {
+    year: "2024",
+    phase: "Scale and Integration",
+    title: "Deforestation free Natural Rubber",
+    description:
+      "VRV exported a fully EUDR compliant Deforestation free Natural Rubber to its customers using a home grown technology solution behind it. VRV to date has converted ~20% of its Natural Rubber Supply Chain into De-forestation free – a long term step towards Sustainable Natural Rubber goal.",
+  },
+  {
     year: "2025",
     phase: "Scale and Integration",
-    title: "$350M Order Book",
+    title: "Agro processing & Mining",
     description:
-      "VRV crossed a $350 million order book and accelerated upstream integration in natural rubber and metals, including factory development in Côte d'Ivoire and mining concessions for copper and industrial metals in Africa.",
+      "VRV acquired Large scale mining licenses for Copper and Critical minerals in Africa integrating its presence in the Industrial and Critical Minerals Space. Similarly VRV also acquired stake in a production licence for processing Natural Rubber in West Africa.",
   },
 ];

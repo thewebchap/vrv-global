@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/Button";
 import { Media } from "@/components/ui/Media";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
-import { FootprintSection } from "@/components/map/deck/FootprintSection";
 import { ProductAnchorNav } from "@/components/products/ProductAnchorNav";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
@@ -364,18 +363,6 @@ export default function ProductsPage() {
         />
         <div className="mt-14">
           <SupplyChainOperatingModel />
-        </div>
-      </Section>
-
-      {/* 6 — Global commodity footprint map */}
-      <Section tone="paper" bordered id="footprint" className="scroll-mt-32">
-        <SectionHeading
-          eyebrow="Global commodity footprint"
-          title="Global Commodity Footprint"
-          intro="VRV Global's purchase and sales geographies span key agro commodities, metals and resource markets across Asia, Africa, Europe, the Middle East and the Americas. The map highlights the company's global presence without representing specific shipment routes."
-        />
-        <div className="mt-12">
-          <FootprintSection />
         </div>
       </Section>
 
