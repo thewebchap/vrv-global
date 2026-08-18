@@ -29,10 +29,10 @@ export const mainNav: NavItem[] = [
     label: "About",
     href: "/about",
     children: [
-      { label: "Company Overview", href: "/about", desc: "Mission, vision, values and story" },
-      { label: "Our Journey", href: "/about#milestones", desc: "Milestones since 2012" },
-      { label: "Leadership", href: "/about#leadership", desc: "The team behind VRV Global" },
-      { label: "Global Presence", href: "/about#global-presence", desc: "Sourcing, purchase and customer markets" },
+      { label: "Company Overview", href: "/about", desc: "Singapore-based commodity supply-chain platform." },
+      { label: "Global Presence", href: "/about#global-presence", desc: "Sourcing, purchase and customer markets across global commodities." },
+      { label: "Leadership", href: "/about#leadership", desc: "Meet VRV Global's executive and director team." },
+      { label: "Our Journey", href: "/about#milestones", desc: "Timeline of VRV Global's growth and milestones." },
     ],
   },
   { label: "Products", href: "/products", mega: "products" },
@@ -58,7 +58,14 @@ export const mainNav: NavItem[] = [
       { label: "Supply Chain Infrastructure", href: "/ventures/supply-chain-infrastructure", desc: "Processing, logistics & quality" },
     ],
   },
-  { label: "Media", href: "/news" },
+  {
+    label: "Media",
+    href: "/news",
+    children: [
+      { label: "Case Studies", href: "/case-studies", desc: "Selected supply-chain examples and project stories." },
+      { label: "News & Insights", href: "/news", desc: "LinkedIn-sourced VRV Global updates." },
+    ],
+  },
   { label: "Careers", href: "/careers" },
   { label: "Contact", href: "/contact" },
 ];
