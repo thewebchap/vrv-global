@@ -1,4 +1,4 @@
-import { PageHero } from "@/components/sections/PageHero";
+import { PageBanner } from "@/components/sections/PageBanner";
 import { TraceabilityFlow } from "@/components/sections/TraceabilityFlow";
 import { Section, SectionHeading, Eyebrow } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
@@ -100,11 +100,13 @@ const roadmap: { title: string; body: string; tag: string }[] = [
 export default function TechnologyPage() {
   return (
     <>
-      <PageHero
+      <PageBanner
         eyebrow="Technology & Traceability"
         title="Visibility from source to reuse"
-        intro="We invest in technology that makes supply chains transparent, accountable and audit-ready — giving buyers, lenders and investors material traceability and supply chain visibility they can trust."
-        crumbs={[{ label: "Technology & Traceability" }]}
+        subtitle="We invest in technology that makes supply chains transparent, accountable and audit-ready — giving buyers, lenders and investors material traceability and supply chain visibility they can trust."
+        imageSrc="/pictures/Traceability and Technology Page - Banner.jpg"
+        imageAlt="Digital sustainability and circular economy technology interface"
+        imagePosition="right center"
       />
 
       {/* 1 — Why traceability matters */}

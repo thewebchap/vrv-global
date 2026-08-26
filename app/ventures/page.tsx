@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Section, SectionHeading } from "@/components/ui/Section";
+import { PageBanner } from "@/components/sections/PageBanner";
 import { Button } from "@/components/ui/Button";
 import { Media } from "@/components/ui/Media";
 import { Icon } from "@/components/ui/Icon";
@@ -13,7 +14,6 @@ import { Faq } from "@/components/seo/Faq";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ventures, featuredVentures, ventureRegions } from "@/data/ventures";
 import { quickAnswers, venturesFaqs } from "@/data/aeo";
-import { images } from "@/lib/images";
 import { site } from "@/lib/site";
 import { pageMeta, breadcrumbSchema } from "@/lib/seo";
 
@@ -37,29 +37,17 @@ export default function VenturesPage() {
   return (
     <>
       {/* 1 — Ventures hero */}
-      <section className="relative isolate overflow-hidden bg-ink-900">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={images.mining.src}
-          alt="Strategic ventures across mining, resource development and sustainable supply chains"
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
-          style={{ objectPosition: "center" }}
-        />
-        <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-900/92 via-ink-900/72 to-ink-900/35" />
-        <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-800/55 via-transparent to-transparent" />
-        <div className="container-x py-24 lg:py-32">
-          <p className="eyebrow !text-gold">Ventures</p>
-          <h1 className="mt-4 max-w-3xl text-display text-white text-balance">Ventures Built for Long-Term Supply Chain Value</h1>
-          <p className="mt-5 max-w-2xl text-[18px] leading-relaxed text-white/75 text-pretty">
-            VRV Global&apos;s ventures extend the company&apos;s commodity trading capabilities into strategic projects,
-            upstream resource access, circular economy opportunities, and sustainable supply chain growth.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="#focus" variant="primary" size="lg" withArrow>Explore Venture Focus Areas</Button>
-            <Button href="#enquiry" variant="outlineLight" size="lg">Partner with VRV</Button>
-          </div>
-        </div>
-      </section>
+      <PageBanner
+        eyebrow="Ventures"
+        title="Ventures Built for Long-Term Supply Chain Value"
+        subtitle="VRV Global's ventures extend the company's commodity trading capabilities into strategic projects, upstream resource access, circular economy opportunities, and sustainable supply chain growth."
+        imageSrc="/pictures/Ventures Page - Banner.jpg"
+        imageAlt="Technology and innovation concept representing VRV Global ventures"
+        imagePosition="right center"
+      >
+        <Button href="#focus" variant="primary" size="lg" withArrow>Explore Venture Focus Areas</Button>
+        <Button href="#enquiry" variant="outlineLight" size="lg">Partner with VRV</Button>
+      </PageBanner>
 
       {/* Quick answer + entity summary + proof (AEO/GEO) */}
       <Section tone="white" className="!pb-0">

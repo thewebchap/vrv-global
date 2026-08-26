@@ -40,8 +40,8 @@ export const productDetails: ProductDetail[] = [
     title: "Natural Rubber — Cuplumps",
     slug: "natural-rubber",
     segment: "Agro Commodities",
-    heroImage: "/images/hero/natural-rubber.jpg",
-    imageAlt: "Natural rubber cuplumps and latex collected at a rubber plantation",
+    heroImage: "/pictures/Products Page - Natural Rubber Cuplumps.png",
+    imageAlt: "Natural rubber cuplumps collected from rubber plantation",
     imagePosition: "center",
     summary:
       "VRV Global supports natural rubber supply chains through origin relationships, responsible sourcing, and disciplined quality control across cuplump procurement and movement.",

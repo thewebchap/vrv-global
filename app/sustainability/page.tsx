@@ -1,4 +1,4 @@
-import { PageHero } from "@/components/sections/PageHero";
+import { PageBanner } from "@/components/sections/PageBanner";
 import { Section, SectionHeading, Eyebrow } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { KPIGrid } from "@/components/ui/FeatureCard";
@@ -72,11 +72,13 @@ export default function SustainabilityPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <PageHero
+      <PageBanner
         eyebrow="Sustainability"
         title="Sustainability at the core of how we trade"
-        intro="We integrate responsible sourcing, material traceability, circular economy flows and ESG governance into every supply chain — building a green supply chain that creates long-term value for partners, investors and the communities we source from."
-        crumbs={[{ label: "Sustainability" }]}
+        subtitle="We integrate responsible sourcing, material traceability, circular economy flows and ESG governance into every supply chain — building a green supply chain that creates long-term value for partners, investors and the communities we source from."
+        imageSrc="/pictures/Sustainability Page - Banner.jpg"
+        imageAlt="Hands holding a young plant representing sustainability and responsible growth"
+        imagePosition="right center"
       />
 
       {/* Sustainability Policy Overview — VRV's impact statement (immediately after the header).

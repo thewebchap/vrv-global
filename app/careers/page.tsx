@@ -1,4 +1,4 @@
-import { PageHero } from "@/components/sections/PageHero";
+import { PageBanner } from "@/components/sections/PageBanner";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { FeatureCard } from "@/components/ui/FeatureCard";
 import { Media } from "@/components/ui/Media";
@@ -63,11 +63,13 @@ const openings = [
 export default function CareersPage() {
   return (
     <>
-      <PageHero
+      <PageBanner
         eyebrow="Careers"
         title="Build purpose-led global trade"
-        intro="Join a Singapore-based team making global trade more responsible, transparent and resilient. We hire people who want to own outcomes across sustainable supply chains — and build careers with real impact."
-        crumbs={[{ label: "Careers" }]}
+        subtitle="Join a Singapore-based team making global trade more responsible, transparent and resilient. We hire people who want to own outcomes across sustainable supply chains — and build careers with real impact."
+        imageSrc="/pictures/Careers Page - Banner.jpg"
+        imageAlt="Team collaboration and planning for VRV Global careers"
+        imagePosition="center"
       />
 
       {/* Why work with us */}

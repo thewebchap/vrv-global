@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { PageHero } from "@/components/sections/PageHero";
+import { PageBanner } from "@/components/sections/PageBanner";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Icon } from "@/components/ui/Icon";
 import {
@@ -53,11 +53,13 @@ export default async function MediaPage() {
 
   return (
     <>
-      <PageHero
+      <PageBanner
         eyebrow="Media"
         title="Media"
-        intro="Explore selected case studies and the latest VRV Global updates from LinkedIn."
-        crumbs={[{ label: "Media" }]}
+        subtitle="Explore selected case studies and the latest VRV Global updates from LinkedIn."
+        imageSrc="/pictures/Products Page - Banner 2.jpg"
+        imageAlt="Cargo vessel moving commodities across global markets"
+        imagePosition="center"
       />
 
       {/* Subsection 1 — Case Studies */}

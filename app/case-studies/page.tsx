@@ -1,4 +1,4 @@
-import { PageHero } from "@/components/sections/PageHero";
+import { PageBanner } from "@/components/sections/PageBanner";
 import { Section } from "@/components/ui/Section";
 import { CaseStudiesExplorer } from "@/components/case-studies/CaseStudiesExplorer";
 import { getPublishedCaseStudies } from "@/data/caseStudies";
@@ -16,14 +16,13 @@ export default function CaseStudiesPage() {
 
   return (
     <>
-      <PageHero
+      <PageBanner
         eyebrow="Case studies"
         title="Case Studies"
-        intro="Supply-chain examples showing how VRV Global connects sourcing, processing, documentation, traceability and market access across commodity flows."
-        crumbs={[
-          { label: "Home", href: "/" },
-          { label: "Case Studies", href: "/case-studies" },
-        ]}
+        subtitle="Supply-chain examples showing how VRV Global connects sourcing, processing, documentation, traceability and market access across commodity flows."
+        imageSrc="/pictures/Home page - Agro products.png"
+        imageAlt="Natural rubber tapping processing and cuplumps representing commodity case studies"
+        imagePosition="center"
       />
 
       <Section tone="white">

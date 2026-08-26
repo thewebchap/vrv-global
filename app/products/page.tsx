@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PageHero } from "@/components/sections/PageHero";
+import { PageBanner } from "@/components/sections/PageBanner";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Media } from "@/components/ui/Media";
@@ -259,11 +259,13 @@ export default function ProductsPage() {
   return (
     <>
       {/* 1 — Products hero */}
-      <PageHero
+      <PageBanner
         eyebrow="Products"
         title="Products Built Around Responsible Commodity Supply Chains"
-        intro="VRV Global operates across natural rubber, industrial metals, and strategic mining opportunities, connecting origin relationships with global markets through disciplined sourcing, trade execution, and long-term supply chain partnerships."
-        crumbs={[{ label: "Products" }]}
+        subtitle="VRV Global operates across natural rubber, industrial metals, and strategic mining opportunities, connecting origin relationships with global markets through disciplined sourcing, trade execution, and long-term supply chain partnerships."
+        imageSrc="/pictures/Products - Page Banner 1.jpg"
+        imageAlt="Container ship representing global commodity trade and product supply chains"
+        imagePosition="center"
       />
 
       <Section tone="white" className="!pb-0">

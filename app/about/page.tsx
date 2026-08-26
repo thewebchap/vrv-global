@@ -1,4 +1,4 @@
-import { PageHero } from "@/components/sections/PageHero";
+import { PageBanner } from "@/components/sections/PageBanner";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
@@ -49,15 +49,13 @@ export default function AboutPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
       />
 
-      <PageHero
+      <PageBanner
         eyebrow="Company"
         title="Connecting Markets, People, and Planet — The VRV Way"
-        intro="VRV Global is a diversified trading house connecting agri-commodities and metals across Asia, Africa and beyond — combining experienced traders, customer insight and sourcing expertise to deliver reliable, integrated supply chains."
-        crumbs={[{ label: "About" }]}
-        image={{
-          src: "/images/hero/sustainable-global-trade.jpg",
-          alt: "Commodity supply chain connecting plantations, industrial materials and global markets",
-        }}
+        subtitle="VRV Global is a diversified trading house connecting agri-commodities and metals across Asia, Africa and beyond — combining experienced traders, customer insight and sourcing expertise to deliver reliable, integrated supply chains."
+        imageSrc="/pictures/About us - Page Banner.jpg"
+        imageAlt="Business collaboration and growth concept for VRV Global"
+        imagePosition="right center"
       />
 
       {/* Quick answer + entity summary (AEO/GEO) */}

@@ -123,3 +123,15 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/* /home2 immersive scroll story: hide the global floating navbar until the
+   story ends. The `home2-immersive` class is added only by Home2Story (and
+   removed on unmount), so no other route is ever affected. */
+header {
+  transition: transform 400ms ease, opacity 400ms ease;
+}
+html.home2-immersive header {
+  transform: translateY(-160%);
+  opacity: 0;
+  pointer-events: none;
+}

@@ -72,8 +72,8 @@ export const productSegments: ProductSegment[] = [
           "Cuplumps are a primary form of natural rubber collected at origin before further processing. VRV Global works with sourcing networks and supply partners to support reliable procurement, quality consistency, and responsible movement of natural rubber cuplumps from producing regions to global markets.",
         blocks: ["Origin sourcing", "Quality checks", "Supplier engagement", "Traceability readiness", "Movement to processing or customer markets"],
         cta: { label: "Enquire About Natural Rubber", href: CONTACT },
-        image: "/images/hero/natural-rubber.jpg",
-        imageAlt: "Rubber tapping and cuplump collection at a natural rubber plantation",
+        image: "/pictures/Products Page - Natural Rubber Cuplumps.png",
+        imageAlt: "Natural rubber cuplumps collected from rubber plantation",
       },
       {
         title: "Block Rubber / TSR",

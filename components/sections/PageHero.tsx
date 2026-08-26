@@ -22,7 +22,7 @@ export function PageHero({
   intro?: string;
   crumbs: Crumb[];
   phLabel?: string;
-  image?: { src: string; alt: string };
+  image?: { src: string; alt: string; position?: string };
 }) {
   return (
     <section className="border-b border-line bg-paper">
@@ -49,6 +49,7 @@ export function PageHero({
                 fill
                 sizes="(max-width: 1024px) 100vw, 45vw"
                 className="object-cover"
+                style={{ objectPosition: image.position ?? "center" }}
                 priority
               />
             </div>

@@ -1,4 +1,4 @@
-import { PageHero } from "@/components/sections/PageHero";
+import { PageBanner } from "@/components/sections/PageBanner";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Icon } from "@/components/ui/Icon";
 import { ContactForm } from "@/components/forms/ContactForm";
@@ -89,11 +89,13 @@ export default function ContactPage({ searchParams }: { searchParams?: { type?: 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPointSchema) }}
       />
 
-      <PageHero
+      <PageBanner
         eyebrow="Contact"
         title="Talk to VRV Global"
-        intro="Reach the right team directly — for product inquiries, ventures and partnerships, sustainability and ESG, careers and media. We respond from our Singapore headquarters."
-        crumbs={[{ label: "Contact" }]}
+        subtitle="Reach the right team directly — for product inquiries, ventures and partnerships, sustainability and ESG, careers and media. We respond from our Singapore headquarters."
+        imageSrc="/pictures/Contactus Page - Banner.jpg"
+        imageAlt="Customer support representative for VRV Global contact enquiries"
+        imagePosition="right center"
       />
 
       <Section tone="white" className="!pb-0">
