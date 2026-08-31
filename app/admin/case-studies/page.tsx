@@ -118,13 +118,13 @@ function CaseStudyBuilder() {
   function pickThumbnail(file?: File) {
     if (!file) return;
     setThumbPreview(URL.createObjectURL(file));
-    if (!form.thumbnail) set("thumbnail", `/images/case-studies/${file.name}`);
+    if (!form.thumbnail) set("thumbnail", `/pictures/${file.name}`);
   }
   function pickImages(files: FileList | null) {
     if (!files?.length) return;
     const arr = Array.from(files);
     setImgPreviews((p) => [...p, ...arr.map((f) => ({ name: f.name, url: URL.createObjectURL(f) }))]);
-    const paths = arr.map((f) => `/images/case-studies/${f.name}`).join("\n");
+    const paths = arr.map((f) => `/pictures/${f.name}`).join("\n");
     set("images", form.images ? `${form.images}\n${paths}` : paths);
   }
   function pickFiles(files: FileList | null) {
@@ -270,7 +270,7 @@ function CaseStudyBuilder() {
 
         {/* Thumbnail */}
         <Field label="Thumbnail image — public path" full>
-          <input className={inputCls} placeholder="/images/case-studies/my-study.jpg" value={form.thumbnail} onChange={(e) => set("thumbnail", e.target.value)} />
+          <input className={inputCls} placeholder="/pictures/my-study.jpg" value={form.thumbnail} onChange={(e) => set("thumbnail", e.target.value)} />
           <div className="mt-2 flex items-center gap-3">
             <input type="file" accept="image/*" onChange={(e) => pickThumbnail(e.target.files?.[0])} className="text-xs text-ink/60" />
             {thumbPreview && (
@@ -282,7 +282,7 @@ function CaseStudyBuilder() {
 
         {/* Additional images */}
         <Field label="Additional images — one public path per line" full>
-          <textarea className={cn(inputCls, "min-h-[64px] font-mono text-[12.5px]")} value={form.images} onChange={(e) => set("images", e.target.value)} placeholder="/images/case-studies/photo-1.jpg" />
+          <textarea className={cn(inputCls, "min-h-[64px] font-mono text-[12.5px]")} value={form.images} onChange={(e) => set("images", e.target.value)} placeholder="/pictures/photo-1.jpg" />
           <input type="file" accept="image/*" multiple onChange={(e) => pickImages(e.target.files)} className="mt-2 text-xs text-ink/60" />
           {imgPreviews.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-2">

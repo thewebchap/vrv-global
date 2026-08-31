@@ -15,7 +15,7 @@ import { Icon } from "@/components/ui/Icon";
  * ─────────────────────────────────────────────────────────────────────────────
  * REQUIRED VIDEO STORYBOARD (for the video to be produced later)
  * File:   /public/videos/origin-to-end-user-traceability.mp4
- * Poster: /public/images/sustainability/origin-traceability-poster.jpg
+ * Poster: /public/pictures/Traceability and Technology Page - Banner.jpg
  *
  * Flow:  Certificate → QR scan → farmer KYC → farm polygons → supply chain →
  *        factory → end user
@@ -41,7 +41,7 @@ import { Icon } from "@/components/ui/Icon";
  * ─────────────────────────────────────────────────────────────────────────────
  */
 const VIDEO_MP4 = "/videos/origin-to-end-user-traceability.mp4";
-const POSTER = "/images/sustainability/origin-traceability-poster.jpg";
+const POSTER = "/pictures/Traceability and Technology Page - Banner.jpg";
 
 export function TraceabilityVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);

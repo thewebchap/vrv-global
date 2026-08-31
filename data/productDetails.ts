@@ -12,7 +12,6 @@
  * Images use the project's local commodity photography and the curated
  * royalty-free registry (lib/images.ts) so every hero shows a real commodity.
  */
-import { images } from "@/lib/images";
 
 export type ProductSegmentName = "Agro Commodities" | "Industrial Metals" | "Mining";
 
@@ -68,7 +67,7 @@ export const productDetails: ProductDetail[] = [
     title: "Block Rubber / TSR",
     slug: "block-rubber",
     segment: "Agro Commodities",
-    heroImage: "/images/products/agro-commodities.jpg",
+    heroImage: "/pictures/Products Page/Products Page - Block Rubber TSR.png",
     imageAlt: "Block rubber and TSR material used in industrial rubber supply chains",
     imagePosition: "center",
     summary:
@@ -98,7 +97,7 @@ export const productDetails: ProductDetail[] = [
     title: "Copper",
     slug: "copper",
     segment: "Industrial Metals",
-    heroImage: "/images/commodities/metals/industrial-metals-warehouse.jpg",
+    heroImage: "/pictures/Products Page/Products Page - Copper Banner.png",
     imageAlt: "Industrial metals stored in a warehouse for copper commodity trade",
     imagePosition: "center",
     summary:
@@ -127,7 +126,7 @@ export const productDetails: ProductDetail[] = [
     title: "Aluminium",
     slug: "aluminium",
     segment: "Industrial Metals",
-    heroImage: "/images/products/metals.jpg",
+    heroImage: "/pictures/Products Page/Products Page - Aluminium Banner.png",
     imageAlt: "Aluminium ingots and billets, industrial aluminium commodity material",
     imagePosition: "center",
     summary:
@@ -156,7 +155,7 @@ export const productDetails: ProductDetail[] = [
     title: "Lead",
     slug: "lead",
     segment: "Industrial Metals",
-    heroImage: "/images/products/ferrous-metals.jpg",
+    heroImage: "/pictures/Products Page/Products Page - Lead Banner.png",
     imageAlt: "Lead ingots in industrial metals storage",
     imagePosition: "center",
     summary:
@@ -184,7 +183,7 @@ export const productDetails: ProductDetail[] = [
     title: "Zinc",
     slug: "zinc",
     segment: "Industrial Metals",
-    heroImage: images.nickel.src,
+    heroImage: "/pictures/Products Page/Products Page - Zinc Banner.png",
     imageAlt: "Zinc ingots and refined industrial zinc commodity material",
     imagePosition: "center",
     summary:
@@ -212,7 +211,7 @@ export const productDetails: ProductDetail[] = [
     title: "Silico-Manganese & Ferro-Manganese",
     slug: "silico-ferro-manganese",
     segment: "Industrial Metals",
-    heroImage: images.ferrousScrap.src,
+    heroImage: "/pictures/Products Page/Products Page - Manganese Banner.png",
     imageAlt: "Manganese alloy material used as a steelmaking input",
     imagePosition: "center",
     summary:
@@ -242,7 +241,7 @@ export const productDetails: ProductDetail[] = [
     title: "Industrial & Precious Metals",
     slug: "industrial-precious-metals",
     segment: "Mining",
-    heroImage: images.mining.src,
+    heroImage: "/pictures/Products Page/Products Page - Industrial Metals - Mining.jpeg",
     imageAlt: "Industrial and precious metals mining and responsible resource development",
     imagePosition: "center",
     summary:

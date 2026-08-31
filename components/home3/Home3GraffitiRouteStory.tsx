@@ -157,18 +157,46 @@ export function Home3GraffitiRouteStory() {
 
   return (
     <div className="bg-[#F6F3EC] text-[#0B2F44]">
-      {/* intro */}
-      <section className="container-x pt-28 pb-8 sm:pt-32">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: COLORS.sea }}>
-          A maritime supply-chain journey
-        </p>
-        <h1 className="mt-4 max-w-3xl font-serif text-[clamp(2.4rem,6vw,4.6rem)] font-medium leading-[1.02] tracking-tight text-balance">
-          Source to destination, sailed as one route.
-        </h1>
-        <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-[#0B2F44]/60 text-pretty">
-          One continuous route connects every stage — sourcing, processing, assurance and shipment — integrated end to end.
-        </p>
-        <p className="mt-8 text-[11px] font-medium uppercase tracking-[0.3em] text-[#0B2F44]/40">Scroll to sail the route</p>
+      {/* Opening image-led hero — end-to-end sustainable commodity trading */}
+      <section className="relative isolate flex min-h-[82vh] items-center overflow-hidden bg-[#0B2F44]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/pictures/Products - Page Banner 1.jpg"
+          alt="Global commodity trade and supply-chain movement from responsible sourcing to final delivery"
+          loading="eager"
+          fetchPriority="high"
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
+          style={{ objectPosition: "center" }}
+        />
+        {/* dark gradients keep text readable (image darkened only where text sits) */}
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-[#071F2E]/92 via-[#071F2E]/62 to-[#071F2E]/25" />
+        <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-44 bg-gradient-to-t from-[#071F2E]/80 to-transparent" />
+
+        {/* subtle dotted route beginning + a small ship, introducing the journey */}
+        <svg aria-hidden viewBox="0 0 1200 200" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 bottom-12 h-24 w-full">
+          <path d="M60,150 C320,60 540,150 800,70 C1000,20 1100,90 1180,45" fill="none" stroke="rgba(246,243,236,0.45)" strokeWidth={1.5} strokeDasharray="4 10" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+        </svg>
+        <svg aria-hidden viewBox="-16 -16 32 32" className="pointer-events-none absolute bottom-[84px] left-6 h-8 w-8 -rotate-6 sm:left-10">
+          <path d="M-11,1 Q0,9 12,0 L8,-2 L-9,-2 Z" fill="#F6F3EC" />
+          <line x1={-1} y1={-2} x2={-1} y2={-15} stroke="#F6F3EC" strokeWidth={1} />
+          <path d="M-1,-3 L-1,-15 L8,-5 Z" fill="#F6F3EC" opacity={0.85} />
+        </svg>
+
+        <div className="container-x relative z-10 py-20">
+          <div className="max-w-2xl">
+            <p className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.28em] text-[#B8955B]">
+              <span aria-hidden className="h-px w-6 bg-[#B8955B]" />
+              End-to-end sustainable commodity trading
+            </p>
+            <h1 className="mt-5 font-serif text-[clamp(2.3rem,5.4vw,4.4rem)] font-medium leading-[1.03] tracking-tight text-white text-balance">
+              End-to-End Sustainable Commodity Trading
+            </h1>
+            <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-white/75 text-pretty">
+              From responsible sourcing to final delivery, VRV Global integrates commodities, people, processing, quality, logistics and markets through transparent and traceable supply-chain execution.
+            </p>
+            <p className="mt-8 text-[11px] font-medium uppercase tracking-[0.3em] text-white/45">Scroll to sail the route</p>
+          </div>
+        </div>
       </section>
 
       {/* master route mural + stages */}

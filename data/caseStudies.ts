@@ -61,7 +61,7 @@ export const caseStudies: CaseStudy[] = [
     date: "2026-06-28",
     status: "Published",
     featured: true,
-    thumbnail: "/images/case-studies/natural-rubber-traceability.jpg",
+    thumbnail: "/pictures/Products Page - Natural Rubber Cuplumps.png",
     content: {
       problem:
         "Natural rubber supply chains require better origin visibility, documentation and quality discipline.",
@@ -76,7 +76,7 @@ export const caseStudies: CaseStudy[] = [
       sustainability:
         "The approach supports responsible sourcing and improved visibility across natural rubber supply chains.",
     },
-    images: ["/images/case-studies/natural-rubber-traceability.jpg"],
+    images: ["/pictures/Products Page - Natural Rubber Cuplumps.png"],
     files: [],
   },
   {
@@ -89,7 +89,7 @@ export const caseStudies: CaseStudy[] = [
     date: "2026-06-28",
     status: "Published",
     featured: true,
-    thumbnail: "/images/case-studies/metals-documentation-flow.jpg",
+    thumbnail: "/pictures/Home page - Metals products.png",
     content: {
       problem:
         "Industrial metals supply chains depend on specification clarity, documentation and reliable movement.",
@@ -104,7 +104,7 @@ export const caseStudies: CaseStudy[] = [
       sustainability:
         "The process supports responsible sourcing and improved supply-chain accountability.",
     },
-    images: ["/images/case-studies/metals-documentation-flow.jpg"],
+    images: ["/pictures/Home page - Metals products.png"],
     files: [],
   },
 ];
@@ -136,15 +136,15 @@ export function caseStudyImage(category: CaseStudyCategory, thumbnail?: string):
   switch (category) {
     case "agro":
     case "rubber":
-      return "/images/products/agro-commodities.jpg";
+      return "/pictures/Home page - Agro products.png";
     case "metals":
     case "mining":
-      return "/images/commodities/metals/industrial-metals-warehouse.jpg";
+      return "/pictures/Home page - Metals products.png";
     case "sustainability":
-      return "/images/hero/sustainable-global-trade.jpg";
+      return "/pictures/Sustainability Page - Banner.jpg";
     case "traceability":
-      return "/images/hero/singapore-global-network.jpg";
+      return "/pictures/Products - Page Banner 1.jpg";
     default:
-      return "/images/hero/singapore-global-network.jpg";
+      return "/pictures/Products - Page Banner 1.jpg";
   }
 }

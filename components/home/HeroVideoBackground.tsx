@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { HeroStoryboardLoop } from "@/components/sections/HeroStoryboardLoop";
 import { RotatingHeroHeadline } from "@/components/home/RotatingHeroHeadline";
+import { heroSlides, HERO_INTERVAL_MS } from "@/data/heroSequence";
 
 /**
  * HeroVideoBackground — full-bleed cinematic video hero for the homepage.
@@ -24,7 +25,7 @@ import { RotatingHeroHeadline } from "@/components/home/RotatingHeroHeadline";
  * ─────────────────────────────────────────────────────────────────────────────
  * REQUIRED HERO VIDEO STORYBOARD (for the cinematic film to be produced later)
  * Files: /public/videos/vrv-hero-supply-chain.{mp4,webm}
- * Poster: /public/images/hero/vrv-hero-poster.jpg
+ * Poster: /pictures (rotating hero images)
  * Style: high-resolution, cinematic, realistic, premium-corporate, smoothly
  *        edited, clean transitions. NO embedded text / subtitles / logos /
  *        watermarks / fake UI / cartoon or animated stock feel.
@@ -63,42 +64,40 @@ import { RotatingHeroHeadline } from "@/components/home/RotatingHeroHeadline";
  *     authentic — not staged or charity-like.
  * ─────────────────────────────────────────────────────────────────────────────
  */
-const VIDEO_MP4 = "/videos/vrv-hero-supply-chain.mp4";
-const VIDEO_WEBM = "/videos/vrv-hero-supply-chain.webm";
-const POSTER = "/images/hero/vrv-hero-poster.jpg";
-
 export function HeroVideoBackground() {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  // Single source of truth for the rotation — the background image slide and the
+  // headline/description change together every 5s (30s cycle over 6 slides).
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const v = videoRef.current;
-    if (v && !reduce) {
-      // Start playback only when motion is allowed. play() rejects silently if
-      // the sources are unavailable → poster / storyboard stays visible.
-      v.play().catch(() => {});
-    }
+    if (reduce) return; // reduced motion → hold on the first slide, no rotation
+    const interval = window.setInterval(
+      () => setIndex((i) => (i + 1) % heroSlides.length),
+      HERO_INTERVAL_MS,
+    );
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <section className="relative isolate flex min-h-[85vh] items-center overflow-hidden bg-ink-900 lg:min-h-[92vh]">
-      {/* Animated storyboard fallback (and reduced-motion still). */}
+      {/* Animated storyboard fallback behind the images (never blank). */}
       <HeroStoryboardLoop className="-z-20" />
 
-      {/* Full-bleed video — full frame, no crop (object-cover, centred). */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster={POSTER}
-        aria-hidden="true"
-      >
-        <source src={VIDEO_WEBM} type="video/webm" />
-        <source src={VIDEO_MP4} type="video/mp4" />
-      </video>
+      {/* Six full-bleed rotating hero images (crossfade, object-cover). */}
+      {heroSlides.map((slide, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={slide.image}
+          src={slide.image}
+          alt={i === index ? slide.imageAlt : ""}
+          aria-hidden={i === index ? undefined : true}
+          loading={i === 0 ? "eager" : "lazy"}
+          fetchPriority={i === 0 ? "high" : "low"}
+          className="absolute inset-0 -z-10 h-full w-full object-cover transition-opacity duration-[1200ms] ease-out motion-reduce:transition-none"
+          style={{ objectPosition: slide.imagePosition, opacity: i === index ? 1 : 0 }}
+        />
+      ))}
 
       {/* Premium dark gradient overlays for readability. */}
       <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-ink-900/88 via-ink-900/55 to-ink-900/20" />
@@ -113,7 +112,7 @@ export function HeroVideoBackground() {
           </p>
 
           <div className="mt-6">
-            <RotatingHeroHeadline />
+            <RotatingHeroHeadline index={index} />
           </div>
 
           <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">

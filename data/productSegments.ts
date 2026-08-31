@@ -61,7 +61,7 @@ export const productSegments: ProductSegment[] = [
     icon: "leaf",
     description:
       "VRV Global's Agro Commodities segment focuses on natural rubber supply chains, including cuplumps and block rubber / TSR. Through origin relationships, supplier engagement, and disciplined quality control, VRV supports reliable rubber flows from producing regions to global customers.",
-    image: "/images/products/agro-commodities.jpg",
+    image: "/pictures/Home page - Agro products.png",
     imageAlt: "Latex collected from tapped trees in a natural rubber plantation",
     tags: ["Natural Rubber", "Cuplumps", "Block Rubber", "TSR"],
     products: [
@@ -82,8 +82,8 @@ export const productSegments: ProductSegment[] = [
           "Block Rubber, including Technically Specified Rubber (TSR) grades, supports customers requiring standardized rubber inputs for industrial and manufacturing use. VRV Global focuses on specification discipline, dependable supply, and traceable sourcing relationships across natural rubber markets.",
         blocks: ["TSR / block rubber grades", "Industrial use", "Specification control", "Origin-to-market supply", "Customer-led delivery"],
         cta: { label: "Discuss Block Rubber Supply", href: CONTACT },
-        image: "/images/products/agro-commodities.jpg",
-        imageAlt: "Natural rubber sourcing supporting block rubber and TSR grades",
+        image: "/pictures/Products Page/Products Page - Block Rubber TSR.png",
+        imageAlt: "Block rubber and TSR bales prepared for industrial manufacturing use",
       },
     ],
   },
@@ -93,8 +93,8 @@ export const productSegments: ProductSegment[] = [
     icon: "cube",
     description:
       "VRV Global's Industrial Metals segment connects global sourcing networks with industrial and manufacturing demand across copper, aluminium, zinc, lead, manganese alloys, and other industrial metals. The segment is built around supply reliability, responsible sourcing, and disciplined trade execution.",
-    image: "/images/products/metals.jpg",
-    imageAlt: "Stacked aluminium billets in an industrial metals warehouse",
+    image: "/pictures/Products Page/Products Page - Industrial Metals.jpg",
+    imageAlt: "Refined industrial metals prepared for global trade and manufacturing supply",
     tags: ["Refined Metals", "Circular Economy Metals", "Ferro & Noble Alloys", "Hedging Services"],
     products: [],
     categories: [

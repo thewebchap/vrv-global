@@ -99,7 +99,7 @@ export const ventures: Venture[] = [
       "Origin-linked processing and traceability-led natural rubber supply chain development, supporting responsible, deforestation-conscious sourcing.",
     partnership:
       "VRV is open to processing, offtake and partnership discussions with producers, processors and strategic partners across the natural rubber value chain.",
-    image: "/images/products/agro-commodities.jpg",
+    image: "/pictures/Home page - Agro products.png",
     imageAlt: "Natural rubber processing and sustainable sourcing",
     confirm: true,
   },
@@ -127,7 +127,7 @@ export const ventures: Venture[] = [
       "Recovered and recycled material flows that support lower-waste industrial supply chains and improved resource efficiency.",
     partnership:
       "VRV welcomes partners across recovery, recycling and industrial offtake to scale circular material flows responsibly.",
-    image: "/images/products/circular-economy.jpg",
+    image: "/pictures/Home page - Metals products.png",
     imageAlt: "Circular economy materials and recovered industrial products",
     confirm: true,
   },

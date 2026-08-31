@@ -2,7 +2,7 @@
  * Curated image registry for VRV Global.
  * ------------------------------------------------------------------
  * Strategy: prefer the project's own LOCAL, commodity-relevant photography
- * (in /public/images/...) for every slot that has a good match — these are
+ * (in /public/pictures/...) for every slot that has a good match — these are
  * real supply-chain visuals (rubber tapping, aluminium billets, steel, scrap,
  * Singapore network, global trade) and they avoid remote dependencies, layout
  * shift and Vercel image-optimization limits.
@@ -10,7 +10,7 @@
  * A few slots without a confirmed local photo fall back to royalty-free
  * Unsplash CDN links (https://unsplash.com/license — free, commercial use,
  * no attribution required). When VRV supplies real photography, drop the files
- * into the folders documented in /public/images/image-credits.md and point the
+ * into the folders documented in /public/pictures/ and point the
  * matching `src` below at them — keep the keys and the whole site updates.
  *
  * Alt text is meaningful and commodity-specific (never "image"/"photo"/"banner").
@@ -22,17 +22,17 @@ export type Img = { src: string; alt: string; credit?: string; where: string };
 
 /** Local, commodity-relevant source files (already optimized, in /public). */
 const L = {
-  rubberPlantation: "/images/hero/natural-rubber.jpg",
-  latexTapping: "/images/products/agro-commodities.jpg",
-  aluminiumBillets: "/images/products/metals.jpg",
-  steelCoils: "/images/products/ferrous-metals.jpg",
-  industrialMetals: "/images/commodities/metals/industrial-metals-warehouse.jpg",
-  scrapMetal: "/images/products/circular-economy.jpg",
-  circularYard: "/images/hero/circular-economy.jpg",
-  woodchips: "/images/products/biomass.jpg",
-  spices: "/images/products/nuts-spices.jpg",
-  singaporeNetwork: "/images/hero/singapore-global-network.jpg",
-  globalTrade: "/images/hero/sustainable-global-trade.jpg",
+  rubberPlantation: "/pictures/Home page - Agro products.png",
+  latexTapping: "/pictures/Home page - Agro products.png",
+  aluminiumBillets: "/pictures/Products Page/Products Page - Aluminium Banner.png",
+  steelCoils: "/pictures/Products Page/Products Page - Industrial Metals.jpg",
+  industrialMetals: "/pictures/Home page - Metals products.png",
+  scrapMetal: "/pictures/Home page - Metals products.png",
+  circularYard: "/pictures/Home page - Metals products.png",
+  woodchips: "/pictures/Home page - Agro products.png",
+  spices: "/pictures/Home page - Agro products.png",
+  singaporeNetwork: "/pictures/Products - Page Banner 1.jpg",
+  globalTrade: "/pictures/Products - Page Banner 1.jpg",
 } as const;
 
 const LOCAL_CREDIT = "VRV Global / Wikimedia Commons (CC BY-SA)";

@@ -40,11 +40,11 @@ const fmtDate = (iso: string) => dateFmt.format(new Date(iso));
 function postImage(category: string, image?: string): string {
   if (image) return image;
   const c = category.toLowerCase();
-  if (c.includes("rubber") || c.includes("agro")) return "/images/products/agro-commodities.jpg";
-  if (c.includes("circular") || c.includes("recycl")) return "/images/hero/circular-economy.jpg";
-  if (c.includes("metal") || c.includes("mining")) return "/images/commodities/metals/industrial-metals-warehouse.jpg";
-  if (c.includes("esg") || c.includes("govern")) return "/images/hero/sustainable-global-trade.jpg";
-  return "/images/hero/singapore-global-network.jpg";
+  if (c.includes("rubber") || c.includes("agro")) return "/pictures/Home page - Agro products.png";
+  if (c.includes("circular") || c.includes("recycl")) return "/pictures/Home page - Metals products.png";
+  if (c.includes("metal") || c.includes("mining")) return "/pictures/Home page - Metals products.png";
+  if (c.includes("esg") || c.includes("govern")) return "/pictures/Sustainability Page - Banner.jpg";
+  return "/pictures/Products - Page Banner 1.jpg";
 }
 
 export default async function MediaPage() {

@@ -24,19 +24,23 @@ const fade = {
   transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
 };
 
-export function RotatingHeroHeadline() {
+export function RotatingHeroHeadline({ index: controlledIndex }: { index?: number } = {}) {
   const reduce = useReducedMotion();
-  const [index, setIndex] = useState(0);
+  const [selfIndex, setSelfIndex] = useState(0);
+  const controlled = controlledIndex !== undefined;
 
   useEffect(() => {
-    if (reduce) return;
+    // Only self-rotate when uncontrolled (the hero drives the index otherwise,
+    // keeping the rotating headline in sync with the background image slide).
+    if (controlled || reduce) return;
     const interval = window.setInterval(
-      () => setIndex((i) => (i + 1) % heroSlides.length),
+      () => setSelfIndex((i) => (i + 1) % heroSlides.length),
       HERO_INTERVAL_MS,
     );
     return () => clearInterval(interval);
-  }, [reduce]);
+  }, [controlled, reduce]);
 
+  const index = controlled ? controlledIndex! : selfIndex;
   const slide = heroSlides[index];
 
   return (
