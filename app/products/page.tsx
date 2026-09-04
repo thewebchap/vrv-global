@@ -7,6 +7,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { ProductAnchorNav } from "@/components/products/ProductAnchorNav";
 import { MiningSection } from "@/components/products/MiningDivisionSection";
+import { CommodityPattern, SectionRouteConnector, commodityKind, commodityTheme } from "@/components/products/CommodityDecor";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
 import { Definitions } from "@/components/seo/Definitions";
@@ -64,8 +65,13 @@ const segmentTint: Record<string, string> = {
 
 /** Large segment overview card — image top, content below, tags, CTA. */
 function SegmentCard({ segment }: { segment: ProductSegment }) {
+  const kind = commodityKind(segment.slug);
+  const theme = kind ? commodityTheme[kind] : null;
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-soft transition-all duration-300 ease-out-soft hover:-translate-y-1 hover:border-brand/30 hover:shadow-hover">
+    <article
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-soft transition-all duration-300 ease-out-soft hover:-translate-y-1 hover:shadow-hover"
+      style={theme ? { borderColor: theme.border } : undefined}
+    >
       <Media
         src={segment.image}
         alt={segment.imageAlt}
@@ -74,9 +80,12 @@ function SegmentCard({ segment }: { segment: ProductSegment }) {
         rounded="rounded-none"
         imgClassName="transition-transform duration-500 ease-out-soft group-hover:scale-105"
       />
-      <div className="flex flex-1 flex-col p-6 sm:p-7">
+      <div className="flex flex-1 flex-col p-6 sm:p-7" style={theme ? { background: theme.gradient } : undefined}>
         <div className="flex items-center gap-2.5">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand">
+          <span
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand"
+            style={theme ? { backgroundColor: `${theme.accent}14`, color: theme.accent } : undefined}
+          >
             <Icon name={segment.icon} className="h-5 w-5" />
           </span>
           <h3 className="font-serif text-xl text-ink">{segment.title}</h3>
@@ -306,17 +315,22 @@ export default function ProductsPage() {
         </div>
       </Section>
 
+      {/* Decorative supply-chain route connector (sourcing → … → delivery). */}
+      <SectionRouteConnector className="bg-white py-8" />
+
       {/* 3–5 — Each segment: intro band + product subsections / category cards */}
       {productSegments.map((s) => {
         const tint = segmentTint[s.slug];
+        const k = commodityKind(s.slug);
         // Mining is rebuilt as a dedicated Tanzania/Zambia section (not the
         // generic segment intro band + category cards).
         if (s.slug === "mining") return <MiningSection key={s.slug} tint={tint} />;
         return (
         <section key={s.slug} id={s.slug} className="scroll-mt-32" aria-label={s.title}>
           {/* Segment intro band */}
-          <div className="border-t border-line py-16 sm:py-20" style={tint ? { backgroundColor: tint } : undefined}>
-            <div className="container-x">
+          <div className="relative overflow-hidden border-t border-line py-16 sm:py-20" style={tint ? { backgroundColor: tint } : undefined}>
+            {k && <CommodityPattern kind={k} opacity={0.5} />}
+            <div className="container-x relative">
               <SectionHeading eyebrow={`${s.title} segment`} title={s.title} intro={s.description} />
               <ul className="mt-6 flex flex-wrap gap-2">
                 {s.tags.map((t) => (

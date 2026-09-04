@@ -6,6 +6,7 @@ import { Section, SectionHeading } from "@/components/ui/Section";
 import { TickList } from "@/components/ui/TickList";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
+import { CommodityPattern } from "@/components/products/CommodityDecor";
 
 /**
  * MiningSection — the Mining Division block embedded INSIDE the Products page
@@ -264,8 +265,9 @@ export function MiningSection({ tint }: { tint?: string }) {
   return (
     <section id="mining" className="scroll-mt-32" aria-label="Mining Division">
       {/* Intro band + focus geographies */}
-      <div className="border-t border-line py-16 sm:py-20" style={tint ? { backgroundColor: tint } : undefined}>
-        <div className="container-x">
+      <div className="relative overflow-hidden border-t border-line py-16 sm:py-20" style={tint ? { backgroundColor: tint } : undefined}>
+        <CommodityPattern kind="mining" opacity={0.5} />
+        <div className="container-x relative">
           <SectionHeading
             eyebrow="Mining segment"
             title="Mining Division"

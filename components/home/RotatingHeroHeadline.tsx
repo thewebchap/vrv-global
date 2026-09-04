@@ -13,9 +13,11 @@ import { cn } from "@/lib/cn";
  * heights so the layout never jumps. Honours prefers-reduced-motion (no
  * auto-rotate → first slide only, no fade), and cleans up its interval.
  */
-const H1_CLASS =
+const H1_LIGHT =
   "text-display font-medium text-white text-balance [text-shadow:0_2px_28px_rgba(6,16,13,0.55)]";
-const DESC_CLASS = "text-[18px] leading-relaxed text-white/80 text-pretty";
+const H1_DARK = "text-display font-medium text-ink text-balance";
+const DESC_LIGHT = "text-[18px] leading-relaxed text-white/80 text-pretty";
+const DESC_DARK = "text-[18px] leading-relaxed text-ink/70 text-pretty";
 
 const fade = {
   initial: { opacity: 0, y: 10 },
@@ -24,10 +26,12 @@ const fade = {
   transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
 };
 
-export function RotatingHeroHeadline({ index: controlledIndex }: { index?: number } = {}) {
+export function RotatingHeroHeadline({ index: controlledIndex, tone = "light" }: { index?: number; tone?: "light" | "dark" } = {}) {
   const reduce = useReducedMotion();
   const [selfIndex, setSelfIndex] = useState(0);
   const controlled = controlledIndex !== undefined;
+  const H1_CLASS = tone === "dark" ? H1_DARK : H1_LIGHT;
+  const DESC_CLASS = tone === "dark" ? DESC_DARK : DESC_LIGHT;
 
   useEffect(() => {
     // Only self-rotate when uncontrolled (the hero drives the index otherwise,
