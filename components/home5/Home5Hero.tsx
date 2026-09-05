@@ -25,12 +25,17 @@ const HERO_BG =
   "radial-gradient(circle at 82% 22%, rgba(47,125,90,0.08), transparent 34%), linear-gradient(135deg, #F8F6F1 0%, #FFFFFF 55%, #F3F6F4 100%)";
 
 const ROUTE_VB = { w: 1000, h: 560 };
-const ROUTE_D = "M34,16 H966 Q984,16 984,34 V526 Q984,544 966,544 H34 Q16,544 16,526 V34 Q16,16 34,16 Z";
+// Slightly hand-plotted rounded rectangle — subtly uneven corners/edges so the
+// frame reads as a maritime route rather than a mechanical box.
+const ROUTE_D = "M42,18 H956 Q983,15 985,42 V518 Q986,546 959,545 H40 Q14,547 16,520 V40 Q14,16 42,18 Z";
 const HARBOUR_F = [0.03, 0.2, 0.4, 0.55, 0.73, 0.92];
 
 const STAGE_KIND = ["tree", "gear", "ingot", "mine", "loop", "ppp"] as const;
 type Kind = (typeof STAGE_KIND)[number];
 const ACCENTS = ["#2F7D5A", "#0B2F44", "#B87333", "#B8955B", "#2F7D5A", "#B8955B"];
+// Short uppercase trade-route labels + generic trade-record values per stage.
+const STAGE_LABEL = ["SOURCE", "PROCESS", "METALS", "MINE", "IMPACT", "GROWTH"];
+const STAGE_NAME = ["Origin", "Processing", "Metals", "Mining", "Impact", "Growth"];
 
 /** Thin-line, commodity-specific stage icon. Decorative. */
 function StageIcon({ kind, className }: { kind: Kind; className?: string }) {
@@ -156,7 +161,7 @@ export function Home5Hero() {
 
   return (
     <div ref={sectionRef} className="relative" style={{ height: `${N * 60}vh` }}>
-      <div className="sticky top-0 flex h-[100svh] items-center overflow-hidden" style={{ background: HERO_BG }}>
+      <div className="sticky top-0 flex h-[100svh] items-start overflow-hidden pt-20 lg:items-center lg:pt-0" style={{ background: HERO_BG }}>
         {/* faint trade-map grid (decorative, desktop) */}
         <div
           aria-hidden
@@ -169,17 +174,22 @@ export function Home5Hero() {
           }}
         />
 
-        <div className="container-x relative z-10 grid w-full items-center gap-10 py-14 lg:grid-cols-12 lg:gap-14 lg:py-0">
+        {/* faint per-stage commodity motif watermark (desktop) */}
+        <div aria-hidden className="pointer-events-none absolute bottom-4 left-4 hidden opacity-[0.06] lg:block" style={{ color: accent, transition: "color 500ms ease" }}>
+          <StageIcon kind={STAGE_KIND[active]} className="h-44 w-44" />
+        </div>
+
+        <div className="container-x relative z-10 grid w-full items-center gap-4 pb-8 lg:grid-cols-12 lg:gap-14 lg:pb-0">
           {/* Content — left, spacious */}
           <div className="lg:col-span-5">
             <p className="inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-label text-gold-700">
               <span aria-hidden className="h-px w-6 bg-gold" />
               Singapore-headquartered commodity supply-chain integrator
             </p>
-            <div className="mt-6">
+            <div className="mt-4 lg:mt-6">
               <RotatingHeroHeadline index={active} tone="dark" />
             </div>
-            <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center lg:mt-9 lg:gap-4">
               <Button href="/products" variant="primary" size="lg" withArrow>Explore Products</Button>
               <Button href="/contact?type=buyer" variant="outline" size="lg">Start an Enquiry</Button>
             </div>
@@ -187,7 +197,8 @@ export function Home5Hero() {
 
           {/* Banner image — the rectangle border route + harbours + ship wrap it. */}
           <div className="lg:col-span-7 lg:pr-8 xl:pr-12">
-            <div className="relative mx-auto w-full">
+            {/* On mobile the card is capped so the compact banner + route fit the first screen. */}
+            <div className="relative mx-auto w-full max-w-[340px] sm:max-w-[440px] lg:max-w-none">
               {/* the active banner image (contained; crossfades per stage) */}
               <div className="relative z-10 w-full overflow-hidden rounded-2xl shadow-[0_28px_70px_rgba(7,31,46,0.16)] ring-1 ring-black/5" style={{ aspectRatio: "16 / 9" }}>
                 {heroSlides.map((slide, i) => (
@@ -199,15 +210,16 @@ export function Home5Hero() {
                     aria-hidden={i === active ? undefined : true}
                     loading={i === 0 ? "eager" : "lazy"}
                     fetchPriority={i === 0 ? "high" : "low"}
-                    className="absolute inset-0 h-full w-full object-cover transition-opacity duration-[1000ms] ease-out motion-reduce:transition-none"
-                    style={{ objectPosition: slide.imagePosition, opacity: i === active ? 1 : 0 }}
+                    className="absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[1100ms] ease-out motion-reduce:transition-none"
+                    style={{ objectPosition: slide.imagePosition, opacity: i === active ? 1 : 0, transform: i === active ? "translateX(0)" : "translateX(16px)" }}
                   />
                 ))}
                 <div aria-hidden className="absolute inset-x-0 bottom-0 h-1.5" style={{ backgroundColor: accent, opacity: 0.9, transition: "background-color 500ms ease" }} />
               </div>
 
-              {/* Rectangle border route (revealed behind the ship) + harbours + ship. */}
-              <div aria-hidden className="pointer-events-none absolute -inset-9 z-20 hidden lg:block xl:-inset-12">
+              {/* Rectangle border route (revealed behind the ship) + harbours + ship.
+                  Shown on mobile too (tighter inset); labels/panel hide on mobile. */}
+              <div aria-hidden className="pointer-events-none absolute -inset-3 z-20 lg:-inset-9 xl:-inset-12">
                 <svg viewBox={`0 0 ${ROUTE_VB.w} ${ROUTE_VB.h}`} preserveAspectRatio="none" className="absolute inset-0 h-full w-full">
                   <defs>
                     <mask id="home5TrailReveal" maskUnits="userSpaceOnUse" x={0} y={0} width={ROUTE_VB.w} height={ROUTE_VB.h}>
@@ -224,7 +236,7 @@ export function Home5Hero() {
                   return (
                     <div key={i} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${h.left}%`, top: `${h.top}%`, opacity: reached ? 1 : 0, transition: "opacity 500ms ease" }}>
                       <span
-                        className="grid h-8 w-8 place-items-center rounded-[8px] bg-white/95 transition-all duration-300"
+                        className="grid h-6 w-6 place-items-center rounded-[7px] bg-white/95 transition-all duration-300 lg:h-8 lg:w-8 lg:rounded-[8px]"
                         style={{
                           border: `1px solid ${on ? ACCENTS[i] : "rgba(11,47,68,0.14)"}`,
                           boxShadow: on ? `0 10px 26px rgba(7,31,46,0.14), 0 0 0 3px ${ACCENTS[i]}1f` : "0 8px 22px rgba(7,31,46,0.08)",
@@ -234,6 +246,21 @@ export function Home5Hero() {
                       >
                         <StageIcon kind={STAGE_KIND[i]} className="h-4 w-4" />
                       </span>
+                      {(() => {
+                        const dx = h.left - 50;
+                        const dy = h.top - 50;
+                        const m = Math.hypot(dx, dy) || 1;
+                        const ox = (dx / m) * 30;
+                        const oy = (dy / m) * 30;
+                        return (
+                          <span
+                            className="pointer-events-none absolute left-1/2 top-1/2 hidden whitespace-nowrap text-[9px] font-semibold uppercase tracking-[0.22em] lg:block"
+                            style={{ transform: `translate(calc(-50% + ${ox}px), calc(-50% + ${oy}px))`, color: on ? ACCENTS[i] : "rgba(11,47,68,0.42)", transition: "color 300ms ease" }}
+                          >
+                            {STAGE_LABEL[i]}
+                          </span>
+                        );
+                      })()}
                     </div>
                   );
                 })}
@@ -250,21 +277,19 @@ export function Home5Hero() {
                 </div>
               </div>
 
-              {/* Mobile compact stage tracker (icons) — route simplifies here. */}
-              <div aria-hidden className="mt-6 flex items-center justify-center gap-3 lg:hidden">
-                {heroSlides.map((_, i) => {
-                  const on = i === active;
-                  return (
-                    <span
-                      key={i}
-                      className="grid h-8 w-8 place-items-center rounded-[8px] bg-white transition-all"
-                      style={{ boxShadow: `inset 0 0 0 ${on ? 1.6 : 1.2}px ${on ? ACCENTS[i] : "rgba(11,47,68,0.2)"}`, color: on ? ACCENTS[i] : "rgba(11,47,68,0.32)" }}
-                    >
-                      <StageIcon kind={STAGE_KIND[i]} className="h-4 w-4" />
-                    </span>
-                  );
-                })}
+              {/* Trade-document mini-panel — a subtle stamp/record, updates per stage. */}
+              <div aria-hidden className="absolute -bottom-8 left-2 z-30 hidden w-[196px] rounded-xl border border-ink/10 bg-white/90 p-3.5 shadow-[0_14px_34px_rgba(7,31,46,0.12)] backdrop-blur-sm lg:block">
+                <div className="flex items-center justify-between">
+                  <span className="text-[9px] font-semibold uppercase tracking-[0.22em] text-ink/45">Trade record</span>
+                  <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: accent, transition: "background-color 400ms ease" }} />
+                </div>
+                <dl className="mt-2.5 space-y-1.5 text-[11.5px]">
+                  <div className="flex items-center justify-between gap-3"><dt className="text-ink/45">Stage</dt><dd className="font-medium text-ink/80">{STAGE_NAME[active]}</dd></div>
+                  <div className="flex items-center justify-between gap-3"><dt className="text-ink/45">Flow</dt><dd className="font-medium text-ink/80">Commodity Supply</dd></div>
+                  <div className="flex items-center justify-between gap-3"><dt className="text-ink/45">Status</dt><dd className="font-semibold" style={{ color: accent }}>{active === N - 1 ? "Complete" : "In Progress"}</dd></div>
+                </dl>
               </div>
+
             </div>
           </div>
         </div>
