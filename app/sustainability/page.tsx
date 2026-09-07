@@ -1,18 +1,14 @@
 import { PageBanner } from "@/components/sections/PageBanner";
 import { Section, SectionHeading, Eyebrow } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
-import { KPIGrid } from "@/components/ui/FeatureCard";
 import { TickList } from "@/components/ui/TickList";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon, type IconName } from "@/components/ui/Icon";
-import { QuickAnswer } from "@/components/seo/QuickAnswer";
-import { EntitySummary } from "@/components/seo/EntitySummary";
-import { Definitions } from "@/components/seo/Definitions";
 import { TraceabilityVideo } from "@/components/sustainability/TraceabilityVideo";
 import { ThreeCTriadVisual } from "@/components/sustainability/ThreeCTriadVisual";
-import { quickAnswers, sustainabilityDefinitions } from "@/data/aeo";
+import { SustainabilityInitiatives } from "@/components/sustainability/SustainabilityInitiatives";
 import { pageMeta } from "@/lib/seo";
-import { esgPillars, esgMetrics } from "@/lib/esg";
+import { esgPillars } from "@/lib/esg";
 
 /** Icon per ESG pillar (Environment / Social / Governance). */
 const esgPillarIcon: Record<string, IconName> = {
@@ -149,18 +145,6 @@ export default function SustainabilityPage() {
         </div>
       </Section>
 
-      {/* Quick answer + entity summary + key terms (AEO/GEO) */}
-      <Section tone="paper" bordered>
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <QuickAnswer question={quickAnswers.sustainability.question} answer={quickAnswers.sustainability.answer} />
-          <EntitySummary links={[{ label: "Explore products", href: "/products" }, { label: "Strategic ventures", href: "/ventures" }]} />
-        </div>
-        <div className="mt-10">
-          <Eyebrow>Key terms</Eyebrow>
-          <Definitions items={sustainabilityDefinitions} className="mt-5" />
-        </div>
-      </Section>
-
       {/* 2 — ESG Strategy / Pillars — dark, premium treatment */}
       <Section tone="ink" id="esg" className="scroll-mt-24">
         <SectionHeading
@@ -189,20 +173,16 @@ export default function SustainabilityPage() {
         </div>
       </Section>
 
-      {/* 3 — Reporting & Metrics */}
-      <Section tone="white" id="reports" className="scroll-mt-24">
+      {/* 3 — VRV's Initiatives — interactive */}
+      <Section tone="white" id="initiatives" className="scroll-mt-24">
         <SectionHeading
-          eyebrow="Reporting & metrics"
-          title="ESG performance, transparently reported"
-          intro="Our reporting dashboard is structured to be populated with verified figures. The metrics below are editable placeholders pending audited data."
+          eyebrow="On the ground"
+          title="VRV&rsquo;s Initiatives"
+          intro="Select an initiative to explore the metrics and progress behind our responsible sourcing and circular economy work."
         />
         <div className="mt-12">
-          <KPIGrid items={esgMetrics} cols={3} />
+          <SustainabilityInitiatives />
         </div>
-        <p className="mt-6 text-sm text-ink/50">
-          Note: metrics shown are editable placeholders and will be replaced with verified ESG
-          figures before publication.
-        </p>
       </Section>
 
       {/* FAQ */}
