@@ -6,6 +6,7 @@ export const metadata = pageMeta({
   description:
     "An alternate minimalist VRV Global homepage concept focused on sustainable sourcing, technology, ESG and global connectivity.",
   path: "/home2",
+  noindex: true,
 });
 
 export default function Home2Page() {

@@ -6,10 +6,13 @@ export function pageMeta({
   title,
   description,
   path = "/",
+  noindex = false,
 }: {
   title: string;
   description: string;
   path?: string;
+  /** Keep the page out of search / answer-engine indexes (e.g. experiments). */
+  noindex?: boolean;
 }): Metadata {
   const url = `${site.url}${path}`;
   const fullTitle = `${title} | ${site.name}`;
@@ -17,6 +20,7 @@ export function pageMeta({
     title,
     description,
     alternates: { canonical: url },
+    ...(noindex ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
       title: fullTitle,
       description,

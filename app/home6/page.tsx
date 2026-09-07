@@ -6,6 +6,7 @@ export const metadata = pageMeta({
   description:
     "An alternate VRV Global homepage concept: a cinematic scroll voyage through sourcing, processing, assurance, logistics and responsible growth, from origin to destination.",
   path: "/home6",
+  noindex: true,
 });
 
 export default function Home6Page() {

@@ -6,6 +6,7 @@ export const metadata = pageMeta({
   description:
     "An alternate VRV Global homepage concept showing an end-to-end integrated supply chain through a maritime route journey.",
   path: "/home3",
+  noindex: true,
 });
 
 export default function Home3Page() {

@@ -1,0 +1,30 @@
+{
+  "site": "VRV Global",
+  "summary": "Route context for AI agents: which page best answers a given user intent. Only routes that exist on the site are listed.",
+  "preferredEntryPoints": [
+    { "intent": "Understand VRV Global (company, journey, footprint)", "url": "/about" },
+    { "intent": "Explore agro commodities and natural rubber", "url": "/products" },
+    { "intent": "Explore industrial metals and mining-linked metals", "url": "/products" },
+    { "intent": "Understand sustainability, ESG and traceability", "url": "/sustainability" },
+    { "intent": "Explore ventures and startup partnerships", "url": "/ventures" },
+    { "intent": "Explore ventures trade corridors", "url": "/ventures/trade-corridors" },
+    { "intent": "Explore venture focus areas", "url": "/ventures/focus-verticals" },
+    { "intent": "Submit a venture pitch", "url": "/ventures/pitch" },
+    { "intent": "Read case studies", "url": "/case-studies" },
+    { "intent": "Read news and insights", "url": "/news" },
+    { "intent": "Contact VRV Global", "url": "/contact" }
+  ],
+  "contactRouting": {
+    "buyerOrTrade": "/contact?type=product",
+    "supplier": "/contact?type=product",
+    "ventures": "/contact?type=ventures",
+    "partnership": "/contact?type=partnership",
+    "sustainability": "/contact?type=sustainability",
+    "governance": "/contact?type=governance",
+    "general": "/contact"
+  },
+  "notes": [
+    "Contact routing uses real, supported query parameters only.",
+    "The homepage is / — experimental concept routes (/home2 to /home6) are non-canonical and set to noindex."
+  ]
+}

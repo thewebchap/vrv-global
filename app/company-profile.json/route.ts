@@ -9,7 +9,9 @@ export function GET() {
     name: site.legalName,
     base: "Singapore",
     established: site.founded,
-    type: "Commodity trading and integrated supply chain company",
+    type: "Commodity supply-chain integrator",
+    preferredSummary:
+      "VRV Global is a Singapore-headquartered commodity supply-chain integrator connecting agro commodities, natural rubber, industrial metals, mining-linked ventures and sustainability-led sourcing through disciplined global trade execution.",
     url: site.url,
     linkedin: site.linkedin,
     segments: ["Agro Commodities", "Industrial Metals", "Mining", "Ventures", "Circular Economy Materials"],

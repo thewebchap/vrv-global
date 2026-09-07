@@ -13,6 +13,7 @@ export const metadata = pageMeta({
   description:
     "An alternate VRV Global homepage concept with a spacious scroll-driven hero — a banner image framed by a maritime ship route — above the standard homepage sections.",
   path: "/home5",
+  noindex: true,
 });
 
 export default function Home5Page() {

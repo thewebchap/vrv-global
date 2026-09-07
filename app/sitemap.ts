@@ -30,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/ventures-overview", changeFrequency: "monthly", priority: 0.6 },
     { path: "/contact-vrv-global", changeFrequency: "monthly", priority: 0.6 },
     { path: "/news", changeFrequency: "weekly", priority: 0.8 },
+    { path: "/case-studies", changeFrequency: "monthly", priority: 0.7 },
     { path: "/careers", changeFrequency: "monthly", priority: 0.6 },
     { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
     { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
@@ -52,6 +53,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const venturePages: MetadataRoute.Sitemap = [
     { url: `${site.url}/ventures`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    // Ventures VC subpages (static routes)
+    { url: `${site.url}/ventures/trade-corridors`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${site.url}/ventures/focus-verticals`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${site.url}/ventures/pitch`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     ...ventures.map((v) => ({
       url: `${site.url}/ventures/${v.slug}`,
       lastModified: now,
