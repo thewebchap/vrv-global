@@ -63,10 +63,10 @@ export const productSegments: ProductSegment[] = [
       "VRV Global's Agro Commodities segment focuses on natural rubber supply chains, including cuplumps and block rubber / TSR. Through origin relationships, supplier engagement, and disciplined quality control, VRV supports reliable rubber flows from producing regions to global customers.",
     image: "/pictures/Home page - Agro products.png",
     imageAlt: "Latex collected from tapped trees in a natural rubber plantation",
-    tags: ["Natural Rubber Cuplumps", "Natural Rubber Block Rubber / TSR"],
+    tags: ["Natural Rubber - Cuplumps", "Natural Rubber - Block Rubber / TSR"],
     products: [
       {
-        title: "Natural Rubber Cuplumps",
+        title: "Natural Rubber - Cuplumps",
         slug: "natural-rubber-cuplumps",
         copy:
           "Cuplumps are a primary form of natural rubber collected at origin before further processing. VRV Global works with sourcing networks and supply partners to support reliable procurement, quality consistency, and responsible movement of natural rubber cuplumps from producing regions to global markets.",
@@ -76,7 +76,7 @@ export const productSegments: ProductSegment[] = [
         imageAlt: "Natural rubber cuplumps collected from rubber plantation",
       },
       {
-        title: "Natural Rubber Block Rubber / TSR",
+        title: "Natural Rubber - Block Rubber / TSR",
         slug: "block-rubber-tsr",
         copy:
           "Block Rubber, including Technically Specified Rubber (TSR) grades, supports customers requiring standardized rubber inputs for industrial and manufacturing use. VRV Global focuses on specification discipline, dependable supply, and traceable sourcing relationships across natural rubber markets.",

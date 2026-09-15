@@ -190,6 +190,8 @@ function SegmentCategories({ segment, tint }: { segment: ProductSegment; tint?: 
 
 /** A single product subsection — alternating image / content band. */
 function Subsection({ product, segment, index, tint }: { product: SegmentProduct; segment: ProductSegment; index: number; tint?: string }) {
+  // Alternating bands: the first Natural Rubber subsection keeps the segment
+  // tint; the next returns to a plain white background.
   const even = index % 2 === 0;
   const bandClass = even ? "" : "bg-white";
   const bandStyle = even && tint ? { backgroundColor: tint } : undefined;

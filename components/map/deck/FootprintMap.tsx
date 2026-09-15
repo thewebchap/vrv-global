@@ -2,9 +2,11 @@
 
 import { useMemo, useState } from "react";
 import DeckGL from "@deck.gl/react";
-import { ScatterplotLayer } from "@deck.gl/layers";
+import { FlyToInterpolator } from "@deck.gl/core";
+import { ScatterplotLayer, GeoJsonLayer } from "@deck.gl/layers";
 import { Map } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { countryFeatures } from "@/lib/map/worldFeatures";
 import {
   commodityCountries,
   countryById,
@@ -17,13 +19,19 @@ import {
   type CommodityCountry,
 } from "@/data/commodityNetwork";
 import { MapFilters, type FilterOption } from "../MapFilters";
-import { vrvGroupLocations } from "@/data/vrvGroup";
+import { vrvGroupLocations, vrvGroupIso, SINGAPORE_ISO } from "@/data/vrvGroup";
 import { Icon } from "@/components/ui/Icon";
 
 // VRV Group presence: Singapore (HQ) + India, UAE, Ivory Coast, Tanzania, Zambia.
 const VRV_GROUP_IDS = new Set(vrvGroupLocations.map((l) => l.id));
 const VRV_GROUP_COLOR = "#3E7D5F"; // one shared, muted group colour (matches globe)
+const HQ_BOUNDARY = "#D9822B"; // muted orange — Singapore HQ boundary
+const GROUP_BOUNDARY = "#1F7A5A"; // muted green — other VRV Group boundaries
 const displayLabel = (id: string, label: string) => (id === "singapore" ? "Singapore (HQ)" : label);
+
+// The six VRV Group country polygons (matched by numeric ISO code) — used to
+// draw a distinct, always-on boundary so the group is easy to identify.
+const vrvGroupFeatures = countryFeatures.filter((f: { id?: string | number }) => vrvGroupIso.has(String(f.id)));
 
 /** The six footprint filters (subset of NetFilter, excluding the legacy "active"). */
 type FilterKey = "all" | "agro" | "metals" | "sales" | "purchase" | "headquarters";
@@ -65,8 +73,8 @@ const PANEL: Record<FilterKey, { title: string; blurb: string }> = {
 };
 
 const LEGEND = [
-  { label: "Singapore (HQ)", color: netColors.hq },
-  { label: "VRV Group", color: VRV_GROUP_COLOR },
+  { label: "Singapore (HQ)", color: HQ_BOUNDARY },
+  { label: "VRV Group Countries", color: GROUP_BOUNDARY },
   { label: "Agro Commodities", color: netColors.agro },
   { label: "Metals", color: netColors.metals },
   { label: "Multiple roles", color: netColors.multi },
@@ -94,14 +102,67 @@ function colorFor(c: CommodityCountry): [number, number, number] {
 export function FootprintMap() {
   const [filter, setFilter] = useState<FilterKey>("all");
   const [selected, setSelected] = useState<string | null>(null);
+  // Controlled view so zoom happens only on intent (buttons / country focus),
+  // never on scroll. Wheel zoom is disabled on the controller below.
+  const [viewState, setViewState] = useState<Record<string, unknown>>(INITIAL_VIEW);
+  const zoomOf = (v: Record<string, unknown>) => (v.zoom as number) ?? INITIAL_VIEW.zoom;
+
+  const flyTo = (lon: number, lat: number, zoom: number) =>
+    setViewState((v) => ({
+      ...v,
+      longitude: lon,
+      latitude: lat,
+      zoom: Math.max(zoomOf(v), zoom),
+      transitionDuration: 650,
+      transitionInterpolator: new FlyToInterpolator({ speed: 1.6 }),
+    }));
+
+  const zoomBy = (d: number) =>
+    setViewState((v) => ({ ...v, zoom: Math.min(4.5, Math.max(0.6, zoomOf(v) + d)), transitionDuration: 250, transitionInterpolator: undefined }));
+
+  const resetView = () => {
+    setSelected(null);
+    setViewState({ ...INITIAL_VIEW, transitionDuration: 450 });
+  };
+
+  // Select a country and gently focus the map on it (clear visitor intent).
+  const focusCountry = (id: string) => {
+    setSelected((s) => (s === id ? null : id));
+    const c = countryById[id];
+    if (c) flyTo(c.coordinates[0], c.coordinates[1], 2.6);
+  };
 
   // Under the "VRV Group" filter, the six group countries are the highlighted set.
   const isVrvGroup = filter === "headquarters";
   const inFilter = (d: CommodityCountry) =>
     isVrvGroup ? VRV_GROUP_IDS.has(d.id) : isHighlighted(d, filter);
 
+  // ISO code of the selected country (if it's a VRV Group country) — for a
+  // stronger boundary on focus.
+  const selIso = selected ? vrvGroupLocations.find((l) => l.id === selected)?.iso ?? null : null;
+
   const layers = useMemo(
     () => [
+      // VRV Group country boundaries — always visible: Singapore orange, others
+      // shared green, with a very light fill tint. Non-VRV countries untouched.
+      new GeoJsonLayer({
+        id: "vrv-group-boundaries",
+        data: vrvGroupFeatures as any,
+        stroked: true,
+        filled: true,
+        getLineColor: (f: any) => (String(f.id) === SINGAPORE_ISO ? [...hexRgb(HQ_BOUNDARY), 255] : [...hexRgb(GROUP_BOUNDARY), 235]) as any,
+        getFillColor: (f: any) => (String(f.id) === SINGAPORE_ISO ? [...hexRgb(HQ_BOUNDARY), 46] : [...hexRgb(GROUP_BOUNDARY), 40]) as any,
+        getLineWidth: (f: any) => {
+          const id = String(f.id);
+          const base = id === SINGAPORE_ISO ? 2.5 : 2;
+          return id === selIso ? base + 1.5 : base;
+        },
+        lineWidthUnits: "pixels",
+        lineWidthMinPixels: 1.5,
+        pickable: false,
+        parameters: { depthTest: false },
+        updateTriggers: { getLineWidth: [selIso] },
+      }),
       new ScatterplotLayer({
         id: "markers",
         data: commodityCountries,
@@ -124,8 +185,13 @@ export function FootprintMap() {
           const on = inFilter(d) || d.roles.includes("headquarters");
           return [...c, on ? 235 : 55] as any;
         },
-        getLineColor: (d: CommodityCountry) => (selected === d.id ? hexRgb(netColors.hq) : [255, 255, 255]) as any,
-        getLineWidth: (d: CommodityCountry) => (selected === d.id ? 2.5 : 1),
+        getLineColor: (d: CommodityCountry) =>
+          (d.roles.includes("headquarters")
+            ? hexRgb(HQ_BOUNDARY)
+            : selected === d.id
+              ? hexRgb(netColors.hq)
+              : [255, 255, 255]) as any,
+        getLineWidth: (d: CommodityCountry) => (d.roles.includes("headquarters") || selected === d.id ? 2.5 : 1),
         lineWidthUnits: "pixels",
         stroked: true,
         pickable: true,
@@ -137,7 +203,7 @@ export function FootprintMap() {
         },
       }),
     ],
-    [filter, selected, isVrvGroup],
+    [filter, selected, isVrvGroup, selIso],
   );
 
   const listCountries = commodityCountries.filter((c) => inFilter(c));
@@ -148,10 +214,16 @@ export function FootprintMap() {
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.55fr_1fr]">
       {/* Map */}
       <div>
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-line sm:aspect-[16/10]">
+        <div
+          className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-line sm:aspect-[16/10]"
+          // Let vertical touch-swipes scroll the page instead of panning the map.
+          style={{ touchAction: "pan-y" }}
+        >
           <DeckGL
-            initialViewState={INITIAL_VIEW}
-            controller={{ dragRotate: false, touchRotate: false }}
+            viewState={viewState as any}
+            onViewStateChange={(e: any) => setViewState(e.viewState)}
+            // scrollZoom disabled → normal page scroll is never trapped by the map.
+            controller={{ scrollZoom: false, dragRotate: false, touchRotate: false }}
             layers={layers}
             getTooltip={({ object }: any) => {
               if (!object || !object.coordinates) return null;
@@ -159,12 +231,40 @@ export function FootprintMap() {
               return { html: `<b>${title}</b>${lines.map((l) => `<div style="opacity:.7">${l}</div>`).join("")}` };
             }}
             onClick={(info: any) => {
-              if (info.object && info.object.coordinates) setSelected((s) => (s === info.object.id ? null : info.object.id));
+              if (info.object && info.object.coordinates) focusCountry(info.object.id);
               else if (!info.object) setSelected(null);
             }}
           >
             <Map reuseMaps mapStyle={MAP_STYLE} attributionControl={false} />
           </DeckGL>
+
+          {/* Zoom controls — explicit intent only (scroll never zooms) */}
+          <div className="absolute right-3 top-3 flex flex-col overflow-hidden rounded-xl border border-line bg-white/90 shadow-soft backdrop-blur">
+            <button
+              type="button"
+              aria-label="Zoom in"
+              onClick={() => zoomBy(0.7)}
+              className="flex h-9 w-9 items-center justify-center text-lg leading-none text-ink/70 transition-colors hover:bg-paper hover:text-brand"
+            >
+              +
+            </button>
+            <button
+              type="button"
+              aria-label="Zoom out"
+              onClick={() => zoomBy(-0.7)}
+              className="flex h-9 w-9 items-center justify-center border-t border-line text-lg leading-none text-ink/70 transition-colors hover:bg-paper hover:text-brand"
+            >
+              −
+            </button>
+            <button
+              type="button"
+              aria-label="Reset map view"
+              onClick={resetView}
+              className="flex h-9 w-9 items-center justify-center border-t border-line text-ink/70 transition-colors hover:bg-paper hover:text-brand"
+            >
+              <Icon name="route" className="h-4 w-4" />
+            </button>
+          </div>
 
           {/* Legend */}
           <div className="pointer-events-none absolute bottom-3 left-3 rounded-xl border border-line bg-white/90 px-3 py-2.5 shadow-soft backdrop-blur">
@@ -187,7 +287,7 @@ export function FootprintMap() {
 
         {selCountry ? (
           <div className="mt-5 rounded-2xl border border-line bg-paper p-6">
-            <button onClick={() => setSelected(null)} className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-600">
+            <button onClick={resetView} className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-600">
               <Icon name="arrowRight" className="h-4 w-4 rotate-180" /> Back to {TABS.find((t) => t.key === filter)?.label}
             </button>
             <h3 className="mt-4 font-serif text-xl text-ink">{displayLabel(selCountry.id, selCountry.label)}</h3>
@@ -215,7 +315,7 @@ export function FootprintMap() {
                 {listCountries.map((c) => (
                   <li key={c.id}>
                     <button
-                      onClick={() => setSelected(c.id)}
+                      onClick={() => focusCountry(c.id)}
                       className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-2.5 py-1 text-[12px] font-medium text-ink/75 transition-colors hover:border-brand/40 hover:text-brand"
                     >
                       <span

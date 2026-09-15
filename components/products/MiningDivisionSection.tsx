@@ -245,7 +245,7 @@ function ZambiaDetails() {
             },
           ].map((card, i) => (
             <Reveal as="div" key={card.title} delay={i * 0.08}>
-              <div className="flex h-full flex-col rounded-2xl border border-line bg-white p-8 shadow-soft">
+              <div className="flex h-full flex-col rounded-2xl border border-[#B8955B]/25 bg-[#FBF6E8] p-8 shadow-soft">
                 <span aria-hidden className="inline-block h-2.5 w-2.5 rotate-45" style={{ backgroundColor: COPPER }} />
                 <h3 className="mt-5 font-serif text-[clamp(1.35rem,2vw,1.7rem)] font-medium leading-snug text-ink text-balance">{card.title}</h3>
                 <TickList className="mt-6" items={card.bullets} />
@@ -293,9 +293,9 @@ export function MiningSection({ tint }: { tint?: string }) {
                     type="button"
                     onClick={() => setCountry(id)}
                     aria-pressed={activeSel}
-                    className={cn("group rounded-2xl bg-white p-7 text-left transition-all sm:p-8", activeSel ? "shadow-card" : "shadow-soft hover:shadow-card")}
+                    className={cn("group rounded-2xl bg-[#FBF6E8] p-7 text-left transition-all sm:p-8", activeSel ? "shadow-card" : "shadow-soft hover:shadow-card")}
                     style={{
-                      border: `1.5px solid ${activeSel ? c.accent : "rgba(15,45,65,0.10)"}`,
+                      border: `1.5px solid ${activeSel ? c.accent : "rgba(184,149,91,0.28)"}`,
                       boxShadow: activeSel ? `0 0 0 3px ${c.accent}22, 0 24px 60px rgba(7,31,46,0.12)` : undefined,
                     }}
                   >

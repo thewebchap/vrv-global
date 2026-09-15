@@ -3,7 +3,7 @@ import { Section, SectionHeading } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { LeadershipGrid } from "@/components/sections/LeadershipGrid";
-import { FootprintSection } from "@/components/map/deck/FootprintSection";
+import { GlobePresence } from "@/components/about/GlobePresence";
 import { AutoMovingGrowthLedger } from "@/components/sections/AutoMovingGrowthLedger";
 import { AboutGrowthMetrics } from "@/components/sections/AboutGrowthMetrics";
 import { FounderSpotlight } from "@/components/sections/FounderSpotlight";
@@ -181,7 +181,7 @@ export default function AboutPage() {
           intro="A Singapore-based platform connected to sourcing, purchase and customer markets across agro commodities, industrial metals and mining-linked opportunities."
         />
         <div className="mt-12">
-          <FootprintSection />
+          <GlobePresence />
         </div>
       </Section>
 
