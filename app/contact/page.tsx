@@ -96,6 +96,7 @@ export default function ContactPage({ searchParams }: { searchParams?: { type?: 
         imageSrc="/pictures/Contactus Page - Banner.jpg"
         imageAlt="Customer support representative for VRV Global contact enquiries"
         imagePosition="right center"
+        overlayStrength="strong"
       />
 
       <Section tone="white" className="!pb-0">

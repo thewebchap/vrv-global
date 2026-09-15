@@ -60,6 +60,7 @@ export default async function MediaPage() {
         imageSrc="/pictures/Products Page - Banner 2.jpg"
         imageAlt="Cargo vessel moving commodities across global markets"
         imagePosition="center"
+        overlayStrength="strong"
       />
 
       {/* Subsection 1 — Case Studies */}

@@ -85,21 +85,35 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
           className="absolute inset-0 -z-10 h-full w-full object-cover"
           style={{ objectPosition: product.imagePosition ?? "center" }}
         />
-        <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-900/92 via-ink-900/72 to-ink-900/35" />
-        <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-800/55 via-transparent to-transparent" />
+        {/* Readability system — navy overlay + scrims (matches PageBanner) */}
+        <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-[#071626]/90 via-[#071626]/66 to-[#071626]/24" />
+        <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#071626]/55 via-transparent to-transparent" />
+        <span aria-hidden className="absolute inset-0 -z-10 bg-[#071626]/30 sm:hidden" />
+        <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-900/22 via-transparent to-transparent" />
 
         <div className="container-x py-24 lg:py-32">
-          <nav aria-label="Breadcrumb" className="text-[13px] text-white/70">
-            <Link href="/products" className="hover:text-gold">Products</Link>
-            <span className="px-2 text-white/35">/</span>
-            <span className="text-white/90">{product.title}</span>
-          </nav>
-          <p className="mt-6 eyebrow !text-gold">{product.segment}</p>
-          <h1 className="mt-4 max-w-3xl text-display text-white text-balance">{product.title}</h1>
-          <p className="mt-5 max-w-2xl text-[18px] leading-relaxed text-white/75 text-pretty">{product.summary}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="#enquiry" variant="primary" size="lg" withArrow>Contact Product Team</Button>
-            <Button href="/products" variant="outlineLight" size="lg">All products</Button>
+          {/* Copy wrapper with an always-on soft local scrim behind the text */}
+          <div className="relative isolate max-w-3xl">
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -inset-x-6 -inset-y-5 -z-10 rounded-[32px]"
+              style={{
+                background:
+                  "radial-gradient(115% 130% at 18% 50%, rgba(7,22,38,0.55) 0%, rgba(7,22,38,0.24) 52%, rgba(7,22,38,0) 100%)",
+              }}
+            />
+            <nav aria-label="Breadcrumb" className="text-[13px] text-white/80 [text-shadow:0_2px_14px_rgba(0,0,0,0.46)]">
+              <Link href="/products" className="hover:text-gold">Products</Link>
+              <span className="px-2 text-white/40">/</span>
+              <span className="text-white/95">{product.title}</span>
+            </nav>
+            <p className="mt-6 eyebrow !text-gold [text-shadow:0_2px_14px_rgba(0,0,0,0.42)]">{product.segment}</p>
+            <h1 className="mt-4 text-display text-white text-balance [text-shadow:0_3px_20px_rgba(0,0,0,0.50)]">{product.title}</h1>
+            <p className="mt-5 max-w-2xl text-[18px] leading-relaxed text-white/90 text-pretty [text-shadow:0_2px_14px_rgba(0,0,0,0.46)]">{product.summary}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button href="#enquiry" variant="primary" size="lg" withArrow>Contact Product Team</Button>
+              <Button href="/products" variant="outlineLight" size="lg">All products</Button>
+            </div>
           </div>
         </div>
       </section>

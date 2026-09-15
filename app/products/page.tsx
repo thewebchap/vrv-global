@@ -10,7 +10,6 @@ import { MiningSection } from "@/components/products/MiningDivisionSection";
 import { CommodityPattern, SectionRouteConnector, commodityKind, commodityTheme } from "@/components/products/CommodityDecor";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
-import { Definitions } from "@/components/seo/Definitions";
 import { Faq } from "@/components/seo/Faq";
 import { ProofBlocks } from "@/components/seo/ProofBlock";
 import { SupplyChainOperatingModel } from "@/components/sections/SupplyChainOperatingModel";
@@ -21,7 +20,7 @@ import {
   type ProductSegment,
   type SegmentProduct,
 } from "@/data/productSegments";
-import { quickAnswers, productsFaqs, productDefinitions } from "@/data/aeo";
+import { quickAnswers, productsFaqs } from "@/data/aeo";
 import { site } from "@/lib/site";
 import { pageMeta } from "@/lib/seo";
 import { cn } from "@/lib/cn";
@@ -276,7 +275,7 @@ export default function ProductsPage() {
         imageSrc="/pictures/Products - Page Banner 1.jpg"
         imageAlt="Container ship representing global commodity trade and product supply chains"
         imagePosition="center"
-        overlay="strong"
+        overlayStrength="strong"
       />
 
       <Section tone="white" className="!pb-0">
@@ -413,16 +412,6 @@ export default function ProductsPage() {
         <div className="mt-12">
           <Faq items={productsFaqs} idBase="products-faq" />
         </div>
-      </Section>
-
-      {/* Key Terms — moved to the bottom, below the Mining Division */}
-      <Section tone="paper" bordered>
-        <SectionHeading
-          eyebrow="Key terms"
-          title="Commodity definitions"
-          intro="Plain-language definitions of the commodities and supply-chain terms used across VRV Global's products."
-        />
-        <Definitions items={productDefinitions} className="mt-8" />
       </Section>
 
       {/* 8 — Product / partner enquiry CTA */}

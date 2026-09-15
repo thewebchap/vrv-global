@@ -70,6 +70,7 @@ export default function CareersPage() {
         imageSrc="/pictures/Careers Page - Banner.jpg"
         imageAlt="Team collaboration and planning for VRV Global careers"
         imagePosition="center"
+        overlayStrength="strong"
       />
 
       {/* Why work with us */}

@@ -56,6 +56,7 @@ export default function AboutPage() {
         imageSrc="/pictures/About us - Page Banner.jpg"
         imageAlt="Business collaboration and growth concept for VRV Global"
         imagePosition="right center"
+        overlayStrength="strong"
       />
 
       {/* Quick answer + entity summary (AEO/GEO) */}
