@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { netColors, MAP_DISCLAIMER } from "@/data/commodityNetwork";
+import { vrvGroupColors } from "@/data/vrvGroup";
 
 const GlobeMap = dynamic(() => import("./GlobeMap").then((m) => m.GlobeMap), {
   ssr: false,
@@ -24,19 +25,22 @@ export function GlobeSection() {
   return (
     <div>
       <GlobeMap />
-      <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
-        <Swatch color={netColors.hq} label="Singapore HQ" />
-        <Swatch color="#1F8459" label="Agro purchase" />
-        <Swatch color="#17968B" label="Agro sales" />
-        <Swatch color="#C2703D" label="Metals purchase" />
-        <Swatch color="#2E84AC" label="Metals sales" />
-        <Swatch color={netColors.multi} ring label="Multiple roles" />
-        <span className="inline-flex items-center gap-2 text-xs text-white/65">
-          <span className="inline-block h-0.5 w-6 rounded bg-gradient-to-r from-[#1F8459] to-[#2E84AC]" />
-          Commodity corridor
-        </span>
+      <div className="mt-6 space-y-3">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <span className="text-[11px] font-semibold uppercase tracking-label text-gold">VRV Group</span>
+          <Swatch color={vrvGroupColors.hq} label="Singapore (HQ)" />
+          <Swatch color={vrvGroupColors.group} label="VRV Group countries" />
+        </div>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <span className="text-[11px] font-semibold uppercase tracking-label text-white/40">Commodity network</span>
+          <Swatch color="#1F8459" label="Agro purchase" />
+          <Swatch color="#17968B" label="Agro sales" />
+          <Swatch color="#C2703D" label="Metals purchase" />
+          <Swatch color="#2E84AC" label="Metals sales" />
+          <Swatch color={netColors.multi} ring label="Multiple roles" />
+        </div>
       </div>
-      <p className="mt-4 text-xs text-white/45">Highlighted corridors rotate to keep the globe readable.</p>
+      <p className="mt-4 text-xs text-white/45">The globe focuses on each VRV Group country in turn — active borders and names are highlighted automatically.</p>
       <p className="mt-4 max-w-2xl text-[11px] leading-relaxed text-white/35">{MAP_DISCLAIMER}</p>
     </div>
   );

@@ -17,7 +17,13 @@ import {
   type CommodityCountry,
 } from "@/data/commodityNetwork";
 import { MapFilters, type FilterOption } from "../MapFilters";
+import { vrvGroupLocations } from "@/data/vrvGroup";
 import { Icon } from "@/components/ui/Icon";
+
+// VRV Group presence: Singapore (HQ) + India, UAE, Ivory Coast, Tanzania, Zambia.
+const VRV_GROUP_IDS = new Set(vrvGroupLocations.map((l) => l.id));
+const VRV_GROUP_COLOR = "#3E7D5F"; // one shared, muted group colour (matches globe)
+const displayLabel = (id: string, label: string) => (id === "singapore" ? "Singapore (HQ)" : label);
 
 /** The six footprint filters (subset of NetFilter, excluding the legacy "active"). */
 type FilterKey = "all" | "agro" | "metals" | "sales" | "purchase" | "headquarters";
@@ -28,7 +34,7 @@ const TABS: FilterOption<FilterKey>[] = [
   { key: "metals", label: "Metals" },
   { key: "sales", label: "Sales Geographies" },
   { key: "purchase", label: "Purchase Geographies" },
-  { key: "headquarters", label: "Headquarters" },
+  { key: "headquarters", label: "VRV Group" },
 ];
 
 const PANEL: Record<FilterKey, { title: string; blurb: string }> = {
@@ -53,13 +59,14 @@ const PANEL: Record<FilterKey, { title: string; blurb: string }> = {
     blurb: "Sourcing geographies engaged through responsible-sourcing relationships.",
   },
   headquarters: {
-    title: "Headquarters",
-    blurb: "Singapore — strategic coordination, governance, investor relations and global trade management.",
+    title: "VRV Group",
+    blurb: "VRV Group's own country presence — the Singapore headquarters together with India, the UAE, Côte d'Ivoire (Ivory Coast), Tanzania and Zambia.",
   },
 };
 
 const LEGEND = [
-  { label: "Headquarters", color: netColors.hq },
+  { label: "Singapore (HQ)", color: netColors.hq },
+  { label: "VRV Group", color: VRV_GROUP_COLOR },
   { label: "Agro Commodities", color: netColors.agro },
   { label: "Metals", color: netColors.metals },
   { label: "Multiple roles", color: netColors.multi },
@@ -88,17 +95,33 @@ export function FootprintMap() {
   const [filter, setFilter] = useState<FilterKey>("all");
   const [selected, setSelected] = useState<string | null>(null);
 
+  // Under the "VRV Group" filter, the six group countries are the highlighted set.
+  const isVrvGroup = filter === "headquarters";
+  const inFilter = (d: CommodityCountry) =>
+    isVrvGroup ? VRV_GROUP_IDS.has(d.id) : isHighlighted(d, filter);
+
   const layers = useMemo(
     () => [
       new ScatterplotLayer({
         id: "markers",
         data: commodityCountries,
         getPosition: (d: CommodityCountry) => d.coordinates,
-        getRadius: (d: CommodityCountry) => (d.roles.includes("headquarters") ? 7 : selected === d.id ? 6.5 : 4.5),
+        getRadius: (d: CommodityCountry) =>
+          d.roles.includes("headquarters")
+            ? 7
+            : isVrvGroup && VRV_GROUP_IDS.has(d.id)
+              ? 6
+              : selected === d.id
+                ? 6.5
+                : 4.5,
         radiusUnits: "pixels",
         getFillColor: (d: CommodityCountry) => {
-          const c = colorFor(d);
-          const on = isHighlighted(d, filter) || d.roles.includes("headquarters");
+          // Singapore stays orange (HQ); other VRV Group countries take the shared
+          // group colour ONLY under the VRV Group filter. All other categories and
+          // countries keep their existing colours unchanged.
+          const grouped = isVrvGroup && VRV_GROUP_IDS.has(d.id) && !d.roles.includes("headquarters");
+          const c = grouped ? hexRgb(VRV_GROUP_COLOR) : colorFor(d);
+          const on = inFilter(d) || d.roles.includes("headquarters");
           return [...c, on ? 235 : 55] as any;
         },
         getLineColor: (d: CommodityCountry) => (selected === d.id ? hexRgb(netColors.hq) : [255, 255, 255]) as any,
@@ -108,16 +131,16 @@ export function FootprintMap() {
         pickable: true,
         updateTriggers: {
           getFillColor: [filter, selected],
-          getRadius: [selected],
+          getRadius: [filter, selected],
           getLineColor: [selected],
           getLineWidth: [selected],
         },
       }),
     ],
-    [filter, selected],
+    [filter, selected, isVrvGroup],
   );
 
-  const listCountries = commodityCountries.filter((c) => isHighlighted(c, filter));
+  const listCountries = commodityCountries.filter((c) => inFilter(c));
   const selCountry = selected ? countryById[selected] : null;
   const panel = PANEL[filter];
 
@@ -167,7 +190,7 @@ export function FootprintMap() {
             <button onClick={() => setSelected(null)} className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-600">
               <Icon name="arrowRight" className="h-4 w-4 rotate-180" /> Back to {TABS.find((t) => t.key === filter)?.label}
             </button>
-            <h3 className="mt-4 font-serif text-xl text-ink">{selCountry.label}</h3>
+            <h3 className="mt-4 font-serif text-xl text-ink">{displayLabel(selCountry.id, selCountry.label)}</h3>
             <p className="text-sm text-ink/55">{selCountry.country}</p>
             <div className="mt-4 flex flex-wrap gap-1.5">
               {selCountry.roles.map((r) => (
@@ -195,8 +218,16 @@ export function FootprintMap() {
                       onClick={() => setSelected(c.id)}
                       className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-2.5 py-1 text-[12px] font-medium text-ink/75 transition-colors hover:border-brand/40 hover:text-brand"
                     >
-                      <span className="inline-block h-1.5 w-1.5 rounded-full" style={{ backgroundColor: `rgb(${colorFor(c).join(",")})` }} />
-                      {c.label}
+                      <span
+                        className="inline-block h-1.5 w-1.5 rounded-full"
+                        style={{
+                          backgroundColor:
+                            isVrvGroup && VRV_GROUP_IDS.has(c.id) && !c.roles.includes("headquarters")
+                              ? VRV_GROUP_COLOR
+                              : `rgb(${colorFor(c).join(",")})`,
+                        }}
+                      />
+                      {displayLabel(c.id, c.label)}
                     </button>
                   </li>
                 ))}

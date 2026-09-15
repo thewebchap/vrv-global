@@ -23,6 +23,7 @@ function Portrait({ leader, className }: { leader: LeadershipImage; className?: 
         src={leader.image}
         alt={`${leader.name}, ${leader.role}`}
         objectPosition={leader.imagePosition ?? "center top"}
+        zoom={leader.imageZoom ?? 1}
         rounded="rounded-none"
         className={className}
       />

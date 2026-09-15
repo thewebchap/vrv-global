@@ -38,6 +38,7 @@ export function FounderSpotlight({ image = founder.mainImage }: { image?: string
             src={image}
             alt={`${founder.name}, ${founder.role}`}
             objectPosition={founder.mainImagePosition}
+            zoom={founder.mainImageZoom}
             sizes="(max-width: 1024px) 100vw, 420px"
             rounded="rounded-[2rem]"
             className="border border-white/10 shadow-card"

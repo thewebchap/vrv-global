@@ -276,6 +276,7 @@ export default function ProductsPage() {
         imageSrc="/pictures/Products - Page Banner 1.jpg"
         imageAlt="Container ship representing global commodity trade and product supply chains"
         imagePosition="center"
+        overlay="strong"
       />
 
       <Section tone="white" className="!pb-0">

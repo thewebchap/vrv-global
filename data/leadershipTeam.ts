@@ -19,8 +19,10 @@ export const founder = {
   role: "Founder and Managing Director",
   mainImage: "/pictures/team/manoj.jpg", // large founder spotlight only
   cardImage: "/pictures/team/manoj-vembu.jpg", // carousel / leadership card only
-  mainImagePosition: "center top",
-  cardImagePosition: "center top",
+  mainImagePosition: "center 18%",
+  mainImageZoom: 1.4,
+  cardImagePosition: "center 18%",
+  cardImageZoom: 1.45,
   profileUrl: "https://vrv.campaigntag.com/managing-director/",
   focus: "Sustainable integrated supply chains, trade finance, strategy and long-term value creation",
   linkedin: "https://www.linkedin.com/in/manoj-vembu-b8349914",
@@ -37,6 +39,7 @@ export const founderCard: LeadershipImage = {
   role: founder.role,
   image: founder.cardImage,
   imagePosition: founder.cardImagePosition,
+  imageZoom: founder.cardImageZoom,
   bio: founder.bio,
   focus: founder.focus,
   linkedin: founder.linkedin,
@@ -51,7 +54,8 @@ export const leadershipTeam = {
       name: "Riaz Altaff Hussien",
       role: "Deputy Managing Director",
       image: "/pictures/team/riaz-altaff-hussien.jpg",
-      imagePosition: "center top",
+      imagePosition: "center 16%",
+      imageZoom: 1.5,
       message:
         "At VRV Global, I see more than a trading platform — I see a long-term institution in the making. Sustainable growth must be built on strong fundamentals, disciplined execution and trusted partnerships.",
       bio: "Riaz Altaff Hussien is a seasoned business leader with over two decades of experience in global commodities, trade structuring, supply chain operations and strategic expansion across emerging and developed markets. He has built and led commercial platforms across commodity trading and operating businesses, with expertise in trade execution, procurement, logistics, risk management and cross-border structuring. His work integrates sustainability and responsible-sourcing practices — including traceability and long-term resource stewardship — into commercial decision-making. He holds a Bachelor's degree in Economics and Finance from RMIT University.",
@@ -63,7 +67,8 @@ export const leadershipTeam = {
       name: "Sathiya Muthiah",
       role: "Chief Executive Officer",
       image: "/pictures/team/sathiya-muthiah.jpg",
-      imagePosition: "center top",
+      imagePosition: "center 16%",
+      imageZoom: 1.5,
       message:
         "What excites me about VRV is the chance to build a trading business with institutional depth — one that understands capital, policy and risk as much as it understands markets.",
       bio: "Sathiya Muthiah is Chief Executive Officer of VRV Global, leading the firm's strategy and the development of its trading and operating platforms across commodities. With nearly a decade of experience spanning the public and private sectors, he has built and scaled commodity trading businesses while working closely with policymakers, financial institutions and global counterparties. His leadership emphasises execution discipline, risk management and long-term partnerships between producers, customers and capital providers. He holds a Master's degree in Financial Management and a Master's degree in Government and Commercial Law.",
@@ -75,7 +80,8 @@ export const leadershipTeam = {
       name: "Yasuswini Subramanian",
       role: "Chief Financial Officer",
       image: "/pictures/team/yasuswini-subramanian.jpg",
-      imagePosition: "center top",
+      imagePosition: "center 20%",
+      imageZoom: 1.45,
       message:
         "At VRV, we are building a globally connected trading ecosystem driven by trust, discipline and financial strength.",
       bio: "Yasuswini Subramanian is a finance leader with over 15 years of experience across international finance and global commodities. As Chief Financial Officer she oversees financial operations, governance and performance management, ensuring discipline and efficiency across diverse business verticals. A Chartered Accountant from ICAI with broad exposure to global markets, she previously served as Finance Controller for a large Singapore-based family-managed enterprise, leading financial planning, reporting and operational controls. Her expertise spans financial strategy, compliance and process optimisation in fast-growing, multi-market organisations.",
@@ -87,7 +93,8 @@ export const leadershipTeam = {
       name: "Rakesh Bangera",
       role: "Chief Operating Officer",
       image: "/pictures/team/rakesh-bangera.jpg",
-      imagePosition: "center top",
+      imagePosition: "center 16%",
+      imageZoom: 1.5,
       message:
         "At VRV, our focus is to build resilient trade-finance frameworks that enable global commerce to move with confidence.",
       bio: "Rakesh Bangera is Chief Operating Officer at VRV Global, with over two decades of experience across trade, supply chain, treasury and structured finance. He leads business operations and trade-finance initiatives while strengthening financial partnerships for global transactions. He previously served as Head of Trade Finance & Cash Management at Agrocorp International in Singapore and led distribution and treasury solutions for Asia and the Middle East at Bunge. His expertise spans banking relationships, structured trade finance and operational strategy across global commodity markets. He holds a Master's degree in Commerce.",
@@ -101,7 +108,8 @@ export const leadershipTeam = {
       name: "Zac Ng",
       role: "Director — Agro Commodities",
       image: "/pictures/team/zac-ng.jpg",
-      imagePosition: "center top",
+      imagePosition: "center 18%",
+      imageZoom: 1.5,
       message:
         "At VRV, I'm passionate about driving growth in the rubber sector by strengthening connections across markets and supply chains.",
       bio: "Zac Ng oversees VRV Global's rubber business strategy and growth, leveraging deep expertise across ASEAN and Greater China to connect with key end users of rubber products. He manages raw-material procurement in Africa alongside factory tolling operations in Malaysia. With prior experience at a leading Southeast Asian rubber producer and a graduate degree, Zac brings strong market insight and operational leadership to VRV's agro product division.",
@@ -115,7 +123,8 @@ export const leadershipTeam = {
       // No portrait supplied in the source set (public/pictures/team/raghu.jpg is
       // absent) → initials fallback. Drop a file there to show a photo.
       image: "/pictures/team/raghu.jpg",
-      imagePosition: "center top",
+      imagePosition: "center 26%",
+      imageZoom: 1.1,
       message: "At VRV Global, every project is built around reliability, collaboration and long-term impact. Our focus is to turn ideas into well-executed solutions that create sustainable value for our partners, communities and the markets we serve.",
       bio: "Raghu leads project planning and execution at VRV Global, supporting the development of efficient, reliable and sustainable supply chain initiatives. He works closely with internal teams, partners and stakeholders to ensure projects are delivered with clear coordination, operational discipline and long-term business value.",
       focus: "Projects",

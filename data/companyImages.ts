@@ -24,7 +24,8 @@ export type LeadershipImage = {
   linkedin: string;
   message?: string; // personal quote from the individual profile page
   profileUrl?: string; // source profile page (reference; not linked in UI)
-  imagePosition?: string; // CSS object-position override (default "center top")
+  imagePosition?: string; // CSS object-position + zoom focus point (default "center top")
+  imageZoom?: number; // zoom factor to crop three-quarter portraits to a headshot (default 1)
 };
 
 export const leadershipImages: LeadershipImage[] = [

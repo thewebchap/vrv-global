@@ -132,21 +132,33 @@ function StageCard({
     </span>
   );
 
-  const body = (
+  const header = (
     <>
       <p className="text-[11px] font-semibold uppercase tracking-label text-brand">{String(index + 1).padStart(2, "0")}</p>
       <h3 className="mt-1 font-serif text-[16px] text-ink">{stage.title}</h3>
-      <div className={cn("grid transition-all duration-300 ease-out-soft", expanded ? "mt-1 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0")}>
-        <p className="overflow-hidden text-[12.5px] leading-snug text-ink/55">{stage.detail}</p>
-      </div>
     </>
   );
 
   if (layout === "h") {
+    // Desktop: the card reserves a fixed height and the detail is absolutely
+    // positioned, so the auto-cycling expand/collapse only fades opacity and
+    // never changes the section height (keeps the following section fixed).
     return (
-      <div className="flex flex-col items-center text-center" onMouseEnter={onEnter} onMouseLeave={onLeave}>
+      <div className="relative flex min-h-[220px] flex-col items-center text-center" onMouseEnter={onEnter} onMouseLeave={onLeave}>
         <div className="relative z-10">{node}</div>
-        <div className="mt-4 w-full">{body}</div>
+        <div className="mt-4 w-full">
+          {header}
+          <div className="relative mt-1">
+            <p
+              className={cn(
+                "absolute inset-x-0 top-0 text-[12.5px] leading-snug text-ink/55 transition-all duration-300 ease-out-soft",
+                expanded ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-1",
+              )}
+            >
+              {stage.detail}
+            </p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -157,7 +169,12 @@ function StageCard({
         <div className="relative z-10">{node}</div>
         {!last && <span aria-hidden className={cn("my-2 w-0.5 flex-1 rounded-full transition-colors duration-500", passed ? "bg-gradient-to-b from-brand to-gold" : "bg-line")} />}
       </div>
-      <div className="flex-1 pb-6 pt-1">{body}</div>
+      <div className="flex-1 pb-6 pt-1">
+        {header}
+        <div className={cn("grid transition-all duration-300 ease-out-soft", expanded ? "mt-1 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0")}>
+          <p className="overflow-hidden text-[12.5px] leading-snug text-ink/55">{stage.detail}</p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -34,15 +34,33 @@ export function Header() {
   };
 
   return (
-    // Sticky wrapper reserves the floating bar's space (no layout shift / overlap),
-    // with a small margin from the top + sides. The visible pill floats inside it.
-    <header className="sticky top-0 z-50 px-2.5 pt-2.5 sm:px-4 sm:pt-4">
+    <>
+      {/* Navigation safe-zone — a soft off-white fade behind the floating navbar
+          so the imagery above/around it feels calmer and the pill reads as
+          intentional. Fixed, non-interactive, layered BELOW the navbar (z-40),
+          and feathered with a mask so the light blur fades out with no hard edge
+          (never a rectangle or cloudy patch). */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-x-0 top-0 z-40 h-[92px] sm:h-[118px]"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(248,246,240,0.82) 0%, rgba(248,246,240,0.60) 42%, rgba(248,246,240,0.22) 76%, rgba(248,246,240,0) 100%)",
+          backdropFilter: "blur(3px)",
+          WebkitBackdropFilter: "blur(3px)",
+          maskImage: "linear-gradient(180deg, #000 0%, #000 58%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(180deg, #000 0%, #000 58%, transparent 100%)",
+        }}
+      />
+      {/* Sticky wrapper reserves the floating bar's space (no layout shift / overlap),
+          with a small margin from the top + sides. The visible pill floats inside it. */}
+      <header className="sticky top-0 z-[60] px-2.5 pt-2 sm:px-4 sm:pt-3">
       <div
         className={cn(
           "mx-auto flex h-[62px] max-w-[1180px] items-center justify-between gap-4 rounded-full border pl-5 pr-2.5 backdrop-blur-[14px] transition-[background-color,box-shadow,border-color] duration-200 ease-out",
           scrolled
-            ? "border-[rgba(15,45,65,0.10)] bg-white/95 shadow-[0_12px_30px_rgba(15,45,65,0.12)]"
-            : "border-[rgba(15,45,65,0.08)] bg-white/85 shadow-[0_10px_28px_rgba(15,45,65,0.08)]",
+            ? "border-[rgba(8,24,40,0.10)] bg-white/97 shadow-[0_12px_34px_rgba(8,24,40,0.12)]"
+            : "border-[rgba(8,24,40,0.08)] bg-white/92 shadow-[0_12px_34px_rgba(8,24,40,0.10)]",
         )}
       >
         <Link href="/" aria-label={`${site.name} home`} className="shrink-0">
@@ -152,13 +170,14 @@ export function Header() {
           </div>
         </div>
       )}
-    </header>
+      </header>
+    </>
   );
 }
 
 function Dropdown({ item }: { item: NavItem }) {
   return (
-    <div className="absolute left-0 top-full z-50 w-[340px] max-w-[92vw] pt-3">
+    <div className="absolute left-0 top-full z-[80] w-[340px] max-w-[92vw] pt-3">
       <div className="origin-top animate-[dropdown-in_180ms_ease_both] rounded-[20px] border border-[rgba(15,45,65,0.08)] bg-white/95 p-3 shadow-[0_18px_45px_rgba(15,45,65,0.12)] backdrop-blur-[12px]">
         <div className="flex flex-col gap-0.5">
           {item.children!.map((c) => (
@@ -194,7 +213,7 @@ const segmentDesc: Record<string, string> = {
 
 function ProductsMega() {
   return (
-    <div className="absolute left-1/2 top-full z-50 w-[min(920px,94vw)] -translate-x-1/2 pt-3">
+    <div className="absolute left-1/2 top-full z-[80] w-[min(920px,94vw)] -translate-x-1/2 pt-3">
       <div className="grid grid-cols-1 gap-3 rounded-[20px] border border-[rgba(15,45,65,0.08)] bg-white/95 p-4 shadow-[0_18px_45px_rgba(15,45,65,0.12)] backdrop-blur-[12px] md:grid-cols-3 origin-top animate-[dropdown-in_180ms_ease_both]">
         {productDetailsBySegment.map(({ segment, items }) => (
           <div key={segment} className="rounded-2xl border border-transparent p-3 transition-colors hover:border-line">

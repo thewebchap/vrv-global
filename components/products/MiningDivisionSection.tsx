@@ -42,7 +42,7 @@ const COUNTRIES: Record<CountryId, {
     number: "2",
     numberLabel: "mines",
     details: [
-      ["Area", "250 Ha"],
+      ["Area", "25000 Ha"],
       ["Type", "PML Licenses"],
       ["Facilities", "Mining, processing and trading"],
       ["Metals", "Precious metals"],

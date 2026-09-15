@@ -25,6 +25,7 @@ const COPPER = "#B26A2B";
 type Initiative = {
   id: "deforestation-rubber" | "circular-metals";
   title: string;
+  short: [string, string]; // compact two-line label for the selector tab
   icon: IconName;
   accent: string;
   chartTitle: string;
@@ -35,6 +36,7 @@ const INITIATIVES: Initiative[] = [
   {
     id: "deforestation-rubber",
     title: "Deforestation Free Natural Rubber",
+    short: ["Deforestation Free", "Natural Rubber"],
     icon: "tree",
     accent: GREEN,
     chartTitle: "Traceability progression",
@@ -43,6 +45,7 @@ const INITIATIVES: Initiative[] = [
   {
     id: "circular-metals",
     title: "Circular Economy Metals",
+    short: ["Circular Economy", "Metals"],
     icon: "recycle",
     accent: COPPER,
     chartTitle: "Metals sourcing mix",
@@ -55,7 +58,7 @@ type MetricCardData = { value?: string; heading?: string; sub?: string; label: s
 
 // --- Deforestation metrics (approved figures) ---
 const rubberMetrics: MetricCardData[] = [
-  { value: "2,500 Ha", label: "Deforestation Free Rubber sourced from ASEAN and Africa" },
+  { value: "25,000 Ha", label: "Deforestation Free Rubber sourced from ASEAN and Africa" },
   { value: "50,000 MT", label: "Fully Traceable, Deforestation Free Natural Rubber sourced from ASEAN and African farmers" },
 ];
 
@@ -87,13 +90,13 @@ export function SustainabilityInitiatives() {
   const current = INITIATIVES.find((i) => i.id === active) ?? INITIATIVES[0];
 
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
-      {/* Left — selector */}
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(150px,21%)_1fr] lg:items-start lg:gap-8">
+      {/* Left — compact segmented initiative selector (wraps only the tabs) */}
       <div
         role="tablist"
         aria-label="VRV initiatives"
         aria-orientation="vertical"
-        className="flex gap-3 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0"
+        className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:self-start lg:overflow-visible lg:pb-0"
       >
         {INITIATIVES.map((it) => {
           const isActive = it.id === active;
@@ -106,14 +109,23 @@ export function SustainabilityInitiatives() {
               aria-controls={`panel-${it.id}`}
               onClick={() => setActive(it.id)}
               className={cn(
-                "group flex min-w-[200px] flex-1 items-center gap-3 rounded-[14px] border px-4 py-3.5 text-left transition-all duration-300 ease-out-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 lg:min-w-0",
+                "group relative flex min-h-[88px] min-w-[150px] flex-1 flex-col justify-center gap-3 rounded-2xl border p-4 pl-5 text-left transition-all duration-200 ease-out-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 lg:min-h-[118px] lg:min-w-0 lg:flex-none lg:p-5 lg:pl-6",
                 isActive
-                  ? "border-brand/40 bg-white shadow-card"
-                  : "border-line bg-white/60 hover:border-brand/25 hover:bg-white",
+                  ? "scale-[1.01] border-transparent"
+                  : "border-line bg-white/70 shadow-sm hover:-translate-y-0.5 hover:border-brand/25 hover:bg-white",
               )}
+              style={isActive ? { backgroundColor: `${it.accent}1a`, boxShadow: "0 10px 26px rgba(0,0,0,0.08)" } : undefined}
             >
+              {/* Single premium active indicator — an animated left marker bar */}
+              {isActive && (
+                <motion.span
+                  layoutId="esg-tab-marker"
+                  className="absolute left-1.5 top-1/2 h-9 w-[3px] -translate-y-1/2 rounded-full"
+                  style={{ backgroundColor: it.accent }}
+                />
+              )}
               <span
-                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors"
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors"
                 style={{
                   backgroundColor: isActive ? it.accent : `${it.accent}14`,
                   color: isActive ? "#ffffff" : it.accent,
@@ -121,22 +133,27 @@ export function SustainabilityInitiatives() {
               >
                 <Icon name={it.icon} className="h-[18px] w-[18px]" />
               </span>
-              <span className="min-w-0">
-                <span className={cn("block text-[0.95rem] font-semibold leading-[1.25]", isActive ? "text-ink" : "text-ink/80")}>
-                  {it.title}
-                </span>
+              <span className={cn("block text-[0.9rem] font-semibold leading-[1.22]", isActive ? "text-ink" : "text-ink/75")}>
+                {it.short[0]}
+                <br />
+                {it.short[1]}
               </span>
             </button>
           );
         })}
       </div>
 
-      {/* Right — active panel */}
+      {/* Right — active panel (theme follows the selected initiative) */}
       <div
         id={`panel-${current.id}`}
         role="tabpanel"
         aria-labelledby={`tab-${current.id}`}
-        className="rounded-3xl border border-line bg-paper p-5 shadow-soft sm:p-8"
+        className="rounded-3xl border p-5 shadow-soft transition-colors duration-300 sm:p-8"
+        style={
+          current.id === "circular-metals"
+            ? { backgroundColor: "#F6EEE5", borderColor: "#E6D5C0" } // muted copper / earth
+            : { backgroundColor: "#F1F7F2", borderColor: "#DBEAE0" } // green / sustainability
+        }
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -238,26 +255,31 @@ function DeforestationLineChart({ initiativeTitle }: { initiativeTitle: string }
             </linearGradient>
           </defs>
 
-          {/* Horizontal gridlines + y-axis labels */}
-          {ticks.map((t) => (
-            <g key={t} aria-hidden>
-              <line x1={padL} x2={W - padR} y1={y(t)} y2={y(t)} stroke="#E7E3DA" strokeWidth="1" />
-              <text x={padL - 8} y={y(t) + 4} textAnchor="end" fontSize="11" fill="#9C998F">
-                {t}
-              </text>
-            </g>
-          ))}
-          {/* y-axis caption */}
-          <text
-            aria-hidden
-            transform={`translate(12 ${padT + plotH / 2}) rotate(-90)`}
-            textAnchor="middle"
-            fontSize="11"
-            fontWeight="600"
-            fill="#9C998F"
+          {/* Axes / grid — fade in first */}
+          <motion.g
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.45, delay: 0.1 }}
           >
-            Progress index
-          </text>
+            {ticks.map((t) => (
+              <g key={t} aria-hidden>
+                <line x1={padL} x2={W - padR} y1={y(t)} y2={y(t)} stroke="#E7E3DA" strokeWidth="1" />
+                <text x={padL - 8} y={y(t) + 4} textAnchor="end" fontSize="11" fill="#9C998F">
+                  {t}
+                </text>
+              </g>
+            ))}
+            <text
+              aria-hidden
+              transform={`translate(12 ${padT + plotH / 2}) rotate(-90)`}
+              textAnchor="middle"
+              fontSize="11"
+              fontWeight="600"
+              fill="#9C998F"
+            >
+              Progress index
+            </text>
+          </motion.g>
 
           {/* Dotted vertical guides (solid highlight when active) */}
           {deforestationRubberData.map((d, i) => (
@@ -275,17 +297,17 @@ function DeforestationLineChart({ initiativeTitle }: { initiativeTitle: string }
             />
           ))}
 
-          {/* Area */}
+          {/* Area — soft fill under the line */}
           <motion.path
             key={`area-${gid}`}
             d={areaPath}
             fill={`url(#${gid}-fill)`}
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.55 }}
           />
 
-          {/* Line — animated draw on mount / tab switch */}
+          {/* Line — draws slowly left to right */}
           <motion.path
             d={linePath}
             fill="none"
@@ -295,7 +317,7 @@ function DeforestationLineChart({ initiativeTitle }: { initiativeTitle: string }
             strokeLinecap="round"
             initial={reduce ? false : { pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.05, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
           />
 
           {/* Dots + accessible hit targets */}
@@ -312,7 +334,7 @@ function DeforestationLineChart({ initiativeTitle }: { initiativeTitle: string }
                   strokeWidth="2.5"
                   initial={reduce ? false : { scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.3, delay: reduce ? 0 : 0.5 + i * 0.08 }}
+                  transition={{ duration: 0.3, delay: reduce ? 0 : 0.4 + (i / (n - 1)) * 1.05 }}
                   style={{ transformOrigin: `${x(i)}px ${y(d.value)}px` }}
                 />
                 {/* x-axis label */}
@@ -352,6 +374,23 @@ function DeforestationLineChart({ initiativeTitle }: { initiativeTitle: string }
               </g>
             );
           })}
+
+          {/* Latest year — subtle one-time final highlight */}
+          {!reduce && (
+            <motion.circle
+              aria-hidden
+              cx={x(n - 1)}
+              cy={y(deforestationRubberData[n - 1].value)}
+              r={6}
+              fill="none"
+              stroke={GREEN}
+              strokeWidth={1.5}
+              initial={{ opacity: 0, scale: 1 }}
+              animate={{ opacity: [0, 0.45, 0], scale: [1, 2.4, 2.4] }}
+              transition={{ duration: 0.9, delay: 1.6, ease: "easeOut" }}
+              style={{ transformOrigin: `${x(n - 1)}px ${y(deforestationRubberData[n - 1].value)}px` }}
+            />
+          )}
         </svg>
 
         {/* HTML tooltip — works on hover, focus and tap (not colour-only) */}
@@ -417,9 +456,23 @@ function CircularMetalsDonutChart() {
             aria-label="Metals sourcing mix: 75% primary metals, 25% recycled and scrap metals"
             className="h-auto w-full"
           >
-            {/* track */}
-            <circle aria-hidden cx={cx} cy={cy} r={r} fill="none" stroke="#EFEBE2" strokeWidth={stroke} />
-            {/* segments */}
+            {/* Premium thin framing rings */}
+            <circle aria-hidden cx={cx} cy={cy} r={r + stroke / 2 + 4} fill="none" stroke="#E5DBCD" strokeWidth="1" />
+            <circle aria-hidden cx={cx} cy={cy} r={r - stroke / 2 - 4} fill="none" stroke="#E5DBCD" strokeWidth="1" />
+            {/* Base track */}
+            <motion.circle
+              aria-hidden
+              cx={cx}
+              cy={cy}
+              r={r}
+              fill="none"
+              stroke="#EFEBE2"
+              strokeWidth={stroke}
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+            />
+            {/* Segments — draw one after another (primary, then recycled) */}
             <g transform={`rotate(-90 ${cx} ${cy})`}>
               {segments.map((seg, i) => (
                 <motion.circle
@@ -452,14 +505,19 @@ function CircularMetalsDonutChart() {
                   style={{ transition: "stroke-width 0.2s ease, opacity 0.2s ease" }}
                   initial={reduce ? false : { strokeDashoffset: -seg.start - seg.len }}
                   animate={{ strokeDashoffset: -seg.start }}
-                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.85, delay: reduce ? 0 : 0.35 + i * 0.85, ease: [0.22, 1, 0.36, 1] }}
                 />
               ))}
             </g>
           </svg>
 
-          {/* Center label — updates with hover / selection */}
-          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+          {/* Center label — fades in after the segments; updates with hover / selection */}
+          <motion.div
+            className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: reduce ? 0 : 1.75 }}
+          >
             <span
               className="text-[11px] font-semibold uppercase tracking-label"
               style={{ color: active === null ? "#7C7A72" : metalsMix[active].color }}
@@ -467,13 +525,18 @@ function CircularMetalsDonutChart() {
               {centerTitle}
             </span>
             <span className="mt-0.5 font-serif text-[clamp(1.1rem,2vw,1.4rem)] leading-tight text-ink">{centerValue}</span>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Legend — clickable, keyboard accessible */}
+        {/* Legend — clickable, keyboard accessible (fades in one by one) */}
         <ul className="w-full space-y-3">
           {metalsMix.map((seg, i) => (
-            <li key={seg.label}>
+            <motion.li
+              key={seg.label}
+              initial={reduce ? false : { opacity: 0, x: 8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4, delay: reduce ? 0 : 1.85 + i * 0.15 }}
+            >
               <button
                 type="button"
                 aria-pressed={selected === i}
@@ -493,7 +556,7 @@ function CircularMetalsDonutChart() {
                 </span>
                 <span className="font-serif text-[17px] text-ink">{seg.value}%</span>
               </button>
-            </li>
+            </motion.li>
           ))}
         </ul>
       </div>

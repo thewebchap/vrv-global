@@ -16,6 +16,8 @@ type TeamImageProps = {
   alt: string;
   priority?: boolean;
   objectPosition?: string;
+  /** Zoom factor to tighten three-quarter portraits into a headshot (default 1). */
+  zoom?: number;
   sizes?: string;
   rounded?: string;
   className?: string;
@@ -26,10 +28,13 @@ export function TeamImage({
   alt,
   priority = false,
   objectPosition = "center top",
+  zoom = 1,
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 360px",
   rounded = "rounded-2xl",
   className,
 }: TeamImageProps) {
+  // The zoom scales the (already object-cover) image around the same focus
+  // point used for object-position, so faces stay framed as the crop tightens.
   return (
     <div className={cn("relative aspect-[4/5] w-full overflow-hidden bg-sand", rounded, className)}>
       <Image
@@ -38,8 +43,12 @@ export function TeamImage({
         fill
         priority={priority}
         sizes={sizes}
-        className="object-cover transition-transform duration-500 ease-out-soft group-hover:scale-[1.03]"
-        style={{ objectPosition }}
+        className="object-cover transition-transform duration-500 ease-out-soft group-hover:scale-[1.02]"
+        style={{
+          objectPosition,
+          transform: zoom !== 1 ? `scale(${zoom})` : undefined,
+          transformOrigin: objectPosition,
+        }}
       />
     </div>
   );
