@@ -31,6 +31,8 @@ export function Button({
   children,
   type,
   withArrow,
+  onClick,
+  disabled,
 }: {
   href?: string;
   variant?: Variant;
@@ -39,6 +41,8 @@ export function Button({
   children: React.ReactNode;
   type?: "button" | "submit";
   withArrow?: boolean;
+  onClick?: () => void;
+  disabled?: boolean;
 }) {
   const showArrow = withArrow ?? variant === "link";
   const cls = cn(base, variants[variant], variant !== "link" && sizes[size], className);
@@ -65,7 +69,7 @@ export function Button({
   }
 
   return (
-    <button type={type ?? "button"} className={cn("group", cls)}>
+    <button type={type ?? "button"} className={cn("group", cls)} onClick={onClick} disabled={disabled}>
       {children}
       {arrow}
     </button>

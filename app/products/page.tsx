@@ -6,7 +6,7 @@ import { Media } from "@/components/ui/Media";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { ProductAnchorNav } from "@/components/products/ProductAnchorNav";
-import { MiningSection } from "@/components/products/MiningDivisionSection";
+import { MiningGateway } from "@/components/products/MiningGateway";
 import { CommodityPattern, SectionRouteConnector, commodityKind, commodityTheme } from "@/components/products/CommodityDecor";
 import { QuickAnswer } from "@/components/seo/QuickAnswer";
 import { EntitySummary } from "@/components/seo/EntitySummary";
@@ -324,9 +324,9 @@ export default function ProductsPage() {
       {productSegments.map((s) => {
         const tint = segmentTint[s.slug];
         const k = commodityKind(s.slug);
-        // Mining is rebuilt as a dedicated Tanzania/Zambia section (not the
-        // generic segment intro band + category cards).
-        if (s.slug === "mining") return <MiningSection key={s.slug} tint={tint} />;
+        // Mining now shows a short, high-level gateway on the Products page; the
+        // full detail lives on the dedicated /products/mining page.
+        if (s.slug === "mining") return <MiningGateway key={s.slug} tint={tint} />;
         return (
         <section key={s.slug} id={s.slug} className="scroll-mt-32" aria-label={s.title}>
           {/* Segment intro band */}

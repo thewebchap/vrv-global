@@ -62,8 +62,9 @@ export const mainNav: NavItem[] = [
     label: "Media",
     href: "/news",
     children: [
-      { label: "Case Studies", href: "/case-studies", desc: "Selected supply-chain examples and project stories." },
       { label: "News & Insights", href: "/news", desc: "LinkedIn-sourced VRV Global updates." },
+      { label: "Case Studies", href: "/case-studies", desc: "Selected supply-chain examples and project stories." },
+      { label: "Blog", href: "/blog", desc: "Perspectives on commodities, sustainability and supply chains." },
     ],
   },
   { label: "Careers", href: "/careers" },

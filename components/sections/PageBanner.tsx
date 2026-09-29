@@ -27,6 +27,15 @@ const OVERLAY = {
   strong: "from-[#071626]/90 via-[#071626]/66 to-[#071626]/24",
 } as const;
 
+// Designed (photo-free) banner palettes — used to give a page its own visual
+// identity without reusing another page's photo (see the unique-image rule).
+const DESIGN = {
+  sea: { mid: "#0C2A44", line: "#5E93B4" },
+  green: { mid: "#123528", line: "#4E9E77" },
+  gold: { mid: "#2A2113", line: "#C7A968" },
+  copper: { mid: "#2A1810", line: "#C67F49" },
+} as const;
+
 export function PageBanner({
   eyebrow,
   title,
@@ -36,6 +45,7 @@ export function PageBanner({
   imagePosition = "center",
   overlayStrength,
   useTextCard,
+  designTone,
   // Back-compat aliases for earlier call sites.
   overlay,
   panel,
@@ -44,13 +54,16 @@ export function PageBanner({
   eyebrow?: string;
   title: string;
   subtitle?: string;
-  imageSrc: string;
-  imageAlt: string;
+  imageSrc?: string;
+  imageAlt?: string;
   imagePosition?: string;
   /** Overlay strength — use "strong" for bright / white / sky-toned images. */
   overlayStrength?: keyof typeof OVERLAY;
   /** Translucent readability card behind the copy — for the hardest images. */
   useTextCard?: boolean;
+  /** Render a designed (photo-free) banner instead of an image — keeps a page's
+   *  banner unique when no dedicated photo exists. */
+  designTone?: keyof typeof DESIGN;
   /** @deprecated alias of overlayStrength */
   overlay?: keyof typeof OVERLAY;
   /** @deprecated alias of useTextCard */
@@ -59,25 +72,58 @@ export function PageBanner({
 }) {
   const strength = overlayStrength ?? overlay ?? "medium";
   const card = useTextCard ?? panel ?? false;
+  const designed = !imageSrc;
+  const d = DESIGN[designTone ?? "sea"];
 
   return (
     <section className="relative isolate overflow-hidden bg-[#071626]">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={imageSrc}
-        alt={imageAlt}
-        className="absolute inset-0 -z-10 h-full w-full object-cover"
-        style={{ objectPosition: imagePosition }}
-      />
+      {designed ? (
+        <>
+          {/* Designed (photo-free) background — premium gradient + subtle
+              mineral-vein / contour lines, tinted by the page accent. */}
+          <span
+            aria-hidden
+            className="absolute inset-0 -z-10"
+            style={{ background: `radial-gradient(120% 130% at 22% 28%, ${d.mid} 0%, #071626 68%)` }}
+          />
+          <span aria-hidden className="absolute inset-0 -z-10 opacity-[0.16]">
+            <svg className="h-full w-full" viewBox="0 0 1200 460" preserveAspectRatio="xMidYMid slice" fill="none">
+              {[70, 150, 235, 320, 400].map((y, i) => (
+                <path
+                  key={y}
+                  d={`M-40,${y} C260,${y - 55} 520,${y + 45} 800,${y - 30} S1160,${y + 20} 1260,${y - 15}`}
+                  stroke={d.line}
+                  strokeWidth={i % 2 === 0 ? 1.2 : 0.75}
+                  strokeDasharray={i % 2 === 0 ? "0" : "3 12"}
+                />
+              ))}
+              {[[180, 120], [640, 250], [980, 360], [420, 330]].map(([cx, cy]) => (
+                <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="3.5" fill={d.line} />
+              ))}
+            </svg>
+          </span>
+          <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#071626]/60 via-transparent to-transparent" />
+        </>
+      ) : (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={imageSrc}
+            alt={imageAlt ?? ""}
+            className="absolute inset-0 -z-10 h-full w-full object-cover"
+            style={{ objectPosition: imagePosition }}
+          />
 
-      {/* Readability layers — image → overlay → text */}
-      <span aria-hidden className={cn("absolute inset-0 -z-10 bg-gradient-to-r", OVERLAY[strength])} />
-      {/* Bottom scrim: depth + protects lower / stacked text */}
-      <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#071626]/55 via-transparent to-transparent" />
-      {/* Small-screen boost: text runs full-width on mobile, so add even cover */}
-      <span aria-hidden className="absolute inset-0 -z-10 bg-[#071626]/30 sm:hidden" />
-      {/* Subtle warm brand accent at the base (kept from the original design) */}
-      <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-900/22 via-transparent to-transparent" />
+          {/* Readability layers — image → overlay → text */}
+          <span aria-hidden className={cn("absolute inset-0 -z-10 bg-gradient-to-r", OVERLAY[strength])} />
+          {/* Bottom scrim: depth + protects lower / stacked text */}
+          <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-[#071626]/55 via-transparent to-transparent" />
+          {/* Small-screen boost: text runs full-width on mobile, so add even cover */}
+          <span aria-hidden className="absolute inset-0 -z-10 bg-[#071626]/30 sm:hidden" />
+          {/* Subtle warm brand accent at the base (kept from the original design) */}
+          <span aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-900/22 via-transparent to-transparent" />
+        </>
+      )}
 
       <div
         className="container-x flex flex-col justify-center py-16 lg:py-20"

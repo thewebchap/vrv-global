@@ -21,9 +21,7 @@ export default function TradeCorridorsPage() {
         eyebrow={corridorsIntro.eyebrow}
         title={corridorsIntro.title}
         subtitle={corridorsIntro.lead}
-        imageSrc="/pictures/Ventures Page - Banner.jpg"
-        imageAlt="Cross-border trade corridors linking origin, processing and settlement hubs"
-        imagePosition="center"
+        designTone="sea"
       >
         <Button href="/ventures/pitch" variant="primary" size="lg" withArrow>Submit Venture Pitch</Button>
         <Button href="/ventures/focus-verticals" variant="outlineLight" size="lg">Venture Focus Areas</Button>

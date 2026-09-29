@@ -23,7 +23,7 @@ const GOLD = "#B8955B";
 const COPPER = "#B87333";
 
 const IMG = {
-  mine: "/pictures/Home Page - Mining.png",
+  mine: "/pictures/Products Page/Products Page - Industrial Metals Banner.png",
   processing: "/pictures/Products Page/Products Page - Industrial Metals - Processing Plant.jpeg",
   trading: "/pictures/Products Page/Products Page - Industrial Metals.jpg",
   exploration: "/pictures/Products Page/Products Page - Industrial Metals - Mining.jpeg",
@@ -76,7 +76,7 @@ function ImageCard({ src, alt }: { src: string; alt: string }) {
             const el = e.currentTarget;
             if (el.dataset.fb) return;
             el.dataset.fb = "1";
-            el.src = "/pictures/Home Page - Mining.png";
+            el.src = "/pictures/Products Page/Products Page - Industrial Metals - Mining.jpeg";
           }}
         />
       </div>
@@ -258,8 +258,9 @@ function ZambiaDetails() {
   );
 }
 
-/** The full Mining Division section, embedded in the Products page. */
-export function MiningSection({ tint }: { tint?: string }) {
+/** The full Mining Division section. Used on the dedicated /products/mining
+ *  page; `hideCta` drops the internal CTA when the host page supplies its own. */
+export function MiningSection({ tint, hideCta = false }: { tint?: string; hideCta?: boolean }) {
   const [country, setCountry] = useState<CountryId>("tanzania");
 
   return (
@@ -328,20 +329,22 @@ export function MiningSection({ tint }: { tint?: string }) {
       {/* Selected-country details (never both at once) */}
       {country === "tanzania" ? <TanzaniaDetails /> : <ZambiaDetails />}
 
-      {/* Mining-section CTA */}
-      <Section tone="white">
-        <div className="rounded-3xl border border-line bg-eco-soft p-8 text-center sm:p-12">
-          <h3 className="mx-auto max-w-2xl font-serif text-[clamp(1.6rem,3vw,2.35rem)] font-medium leading-tight text-ink text-balance">
-            Discuss Your Product Requirements
-          </h3>
-          <p className="mx-auto mt-4 max-w-xl text-[16px] leading-relaxed text-ink/65 text-pretty">
-            Connect with VRV Global for mining-linked supply, trading and partnership enquiries.
-          </p>
-          <div className="mt-7 flex justify-center">
-            <Button href="/contact?type=partner" variant="primary" size="lg" withArrow>Contact VRV Global</Button>
+      {/* Mining-section CTA (hidden when the host page provides its own) */}
+      {!hideCta && (
+        <Section tone="white">
+          <div className="rounded-3xl border border-line bg-eco-soft p-8 text-center sm:p-12">
+            <h3 className="mx-auto max-w-2xl font-serif text-[clamp(1.6rem,3vw,2.35rem)] font-medium leading-tight text-ink text-balance">
+              Discuss Your Product Requirements
+            </h3>
+            <p className="mx-auto mt-4 max-w-xl text-[16px] leading-relaxed text-ink/65 text-pretty">
+              Connect with VRV Global for mining-linked supply, trading and partnership enquiries.
+            </p>
+            <div className="mt-7 flex justify-center">
+              <Button href="/contact?type=partner" variant="primary" size="lg" withArrow>Contact VRV Global</Button>
+            </div>
           </div>
-        </div>
-      </Section>
+        </Section>
+      )}
     </section>
   );
 }

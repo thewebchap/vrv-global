@@ -27,9 +27,7 @@ export default function FocusVerticalsPage() {
         eyebrow={focusIntro.eyebrow}
         title={focusIntro.title}
         subtitle="The sectors where we back founders building the software and hardware layers on top of VRV's physical commodity flows."
-        imageSrc="/pictures/Traceability and Technology Page - Banner.jpg"
-        imageAlt="Core venture sectors spanning AI, deep tech, fintech and clean tech"
-        imagePosition="center"
+        designTone="green"
       >
         <Button href="/ventures/pitch" variant="primary" size="lg" withArrow>Submit Venture Pitch</Button>
         <Button href="/ventures/trade-corridors" variant="outlineLight" size="lg">Explore Geo Rails</Button>

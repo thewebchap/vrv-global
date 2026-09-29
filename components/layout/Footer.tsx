@@ -12,6 +12,7 @@ const footerLinks = [
   { label: "Ventures", href: "/ventures" },
   { label: "Sustainability", href: "/sustainability" },
   { label: "Media", href: "/news" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 

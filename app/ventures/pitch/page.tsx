@@ -26,9 +26,7 @@ export default function PitchPage() {
         eyebrow={pitchIntro.eyebrow}
         title={pitchIntro.title}
         subtitle={pitchIntro.lead}
-        imageSrc="/pictures/Ventures Page - Banner.jpg"
-        imageAlt="Founders portal for submitting a venture pitch to VRV Ventures"
-        imagePosition="center"
+        designTone="gold"
       />
 
       <Section tone="white">

@@ -179,7 +179,7 @@ export function SustainabilityInitiatives() {
               {current.id === "deforestation-rubber" ? (
                 <DeforestationLineChart initiativeTitle={current.title} />
               ) : (
-                <CircularMetalsDonutChart />
+                <MetalsMixChart />
               )}
             </div>
           </motion.div>
@@ -419,146 +419,47 @@ function DeforestationLineChart({ initiativeTitle }: { initiativeTitle: string }
   );
 }
 
-/* --------------------------- Circular metals donut chart --------------------------- */
+/* --------------------------- Metals sourcing mix (stacked bar) --------------------------- */
 
-function CircularMetalsDonutChart() {
+function MetalsMixChart() {
   const reduce = useReducedMotion();
-  const [hover, setHover] = useState<number | null>(null);
-  const [selected, setSelected] = useState<number | null>(null);
-  const active = hover ?? selected;
-
-  const size = 220;
-  const stroke = 34;
-  const r = (size - stroke) / 2;
-  const cx = size / 2;
-  const cy = size / 2;
-  const circ = 2 * Math.PI * r;
-
-  // Precompute each segment's arc length + starting offset.
-  let acc = 0;
-  const segments = metalsMix.map((seg) => {
-    const len = (seg.value / 100) * circ;
-    const start = acc;
-    acc += len;
-    return { ...seg, len, start };
-  });
-
-  const centerTitle = active === null ? "Metals Mix" : metalsMix[active].label;
-  const centerValue = active === null ? "75% / 25%" : `${metalsMix[active].value}%`;
 
   return (
     <figure className="m-0">
-      <div className="flex flex-col items-center gap-6 sm:flex-row sm:gap-8">
-        <div className="relative w-40 shrink-0 sm:w-52">
-          <svg
-            viewBox={`0 0 ${size} ${size}`}
-            role="img"
-            aria-label="Metals sourcing mix: 75% primary metals, 25% recycled and scrap metals"
-            className="h-auto w-full"
-          >
-            {/* Premium thin framing rings */}
-            <circle aria-hidden cx={cx} cy={cy} r={r + stroke / 2 + 4} fill="none" stroke="#E5DBCD" strokeWidth="1" />
-            <circle aria-hidden cx={cx} cy={cy} r={r - stroke / 2 - 4} fill="none" stroke="#E5DBCD" strokeWidth="1" />
-            {/* Base track */}
-            <motion.circle
-              aria-hidden
-              cx={cx}
-              cy={cy}
-              r={r}
-              fill="none"
-              stroke="#EFEBE2"
-              strokeWidth={stroke}
-              initial={reduce ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            />
-            {/* Segments — draw one after another (primary, then recycled) */}
-            <g transform={`rotate(-90 ${cx} ${cy})`}>
-              {segments.map((seg, i) => (
-                <motion.circle
-                  key={seg.label}
-                  cx={cx}
-                  cy={cy}
-                  r={r}
-                  fill="none"
-                  stroke={seg.color}
-                  strokeWidth={active === i ? stroke + 5 : stroke}
-                  strokeDasharray={`${seg.len} ${circ - seg.len}`}
-                  strokeDashoffset={-seg.start}
-                  strokeLinecap="butt"
-                  opacity={active === null || active === i ? 1 : 0.45}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`${seg.label}: ${seg.value}%`}
-                  className="cursor-pointer focus-visible:outline-none"
-                  onMouseEnter={() => setHover(i)}
-                  onMouseLeave={() => setHover(null)}
-                  onFocus={() => setHover(i)}
-                  onBlur={() => setHover(null)}
-                  onClick={() => setSelected(i)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setSelected(i);
-                    }
-                  }}
-                  style={{ transition: "stroke-width 0.2s ease, opacity 0.2s ease" }}
-                  initial={reduce ? false : { strokeDashoffset: -seg.start - seg.len }}
-                  animate={{ strokeDashoffset: -seg.start }}
-                  transition={{ duration: 0.85, delay: reduce ? 0 : 0.35 + i * 0.85, ease: [0.22, 1, 0.36, 1] }}
-                />
-              ))}
-            </g>
-          </svg>
+      {/* Clean horizontal stacked bar — 75% / 25% segments sit side by side,
+          clipped by overflow-hidden with a subtle divider (no overlap). */}
+      <div
+        role="img"
+        aria-label="Metals sourcing mix: 75% primary metals, 25% recycled and scrap metals"
+        className="flex h-4 w-full overflow-hidden rounded-full border border-line"
+      >
+        <motion.div
+          className="h-full shrink-0"
+          style={{ backgroundColor: BLUE, borderRight: "1px solid rgba(255,255,255,0.7)" }}
+          initial={reduce ? false : { width: "0%" }}
+          animate={{ width: "75%" }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        />
+        <motion.div
+          className="h-full shrink-0"
+          style={{ backgroundColor: COPPER }}
+          initial={reduce ? false : { width: "0%" }}
+          animate={{ width: "25%" }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </div>
 
-          {/* Center label — fades in after the segments; updates with hover / selection */}
-          <motion.div
-            className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
-            initial={reduce ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: reduce ? 0 : 1.75 }}
-          >
-            <span
-              className="text-[11px] font-semibold uppercase tracking-label"
-              style={{ color: active === null ? "#7C7A72" : metalsMix[active].color }}
-            >
-              {centerTitle}
-            </span>
-            <span className="mt-0.5 font-serif text-[clamp(1.1rem,2vw,1.4rem)] leading-tight text-ink">{centerValue}</span>
-          </motion.div>
-        </div>
-
-        {/* Legend — clickable, keyboard accessible (fades in one by one) */}
-        <ul className="w-full space-y-3">
-          {metalsMix.map((seg, i) => (
-            <motion.li
-              key={seg.label}
-              initial={reduce ? false : { opacity: 0, x: 8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: reduce ? 0 : 1.85 + i * 0.15 }}
-            >
-              <button
-                type="button"
-                aria-pressed={selected === i}
-                onMouseEnter={() => setHover(i)}
-                onMouseLeave={() => setHover(null)}
-                onFocus={() => setHover(i)}
-                onBlur={() => setHover(null)}
-                onClick={() => setSelected(selected === i ? null : i)}
-                className={cn(
-                  "flex w-full items-center justify-between gap-3 rounded-xl border p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2",
-                  active === i ? "border-brand/30 bg-white" : "border-line bg-white/60 hover:bg-white",
-                )}
-              >
-                <span className="flex items-center gap-2.5">
-                  <span aria-hidden className="h-3 w-3 shrink-0 rounded-sm" style={{ backgroundColor: seg.color }} />
-                  <span className="text-[14px] font-medium text-ink/80">{seg.label}</span>
-                </span>
-                <span className="font-serif text-[17px] text-ink">{seg.value}%</span>
-              </button>
-            </motion.li>
-          ))}
-        </ul>
+      {/* Compact labels below — both the same size, wrap cleanly, never over the bar */}
+      <div className="mt-4 grid grid-cols-2 gap-4">
+        {metalsMix.map((seg) => (
+          <div key={seg.label} className="flex min-w-0 items-start gap-2">
+            <span aria-hidden className="mt-[3px] h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: seg.color }} />
+            <p className="min-w-0 text-[11px] font-medium leading-[1.2] text-ink/70 [overflow-wrap:anywhere]">
+              {seg.label}
+              <span className="ml-1 font-semibold text-ink">{seg.value}%</span>
+            </p>
+          </div>
+        ))}
       </div>
     </figure>
   );
