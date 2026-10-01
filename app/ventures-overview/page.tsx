@@ -1,5 +1,4 @@
 import { OverviewPage } from "@/components/seo/OverviewPage";
-import { quickAnswers } from "@/data/aeo";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
@@ -15,7 +14,8 @@ export default function Page() {
       eyebrow="Overview"
       title="Ventures Overview"
       intro="A direct, factual summary of VRV Global's strategic ventures, for visitors, search engines and AI systems."
-      quick={quickAnswers.ventures}
+      stat="10-Day SLA"
+      statLabel="Venture submissions are screened for an initial status within 10 business days."
       links={[
         { label: "Ventures (full page)", href: "/ventures" },
         { label: "Mining & Resource Ventures", href: "/ventures/mining" },

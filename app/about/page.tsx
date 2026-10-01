@@ -2,6 +2,7 @@ import { PageBanner } from "@/components/sections/PageBanner";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
+import { Icon } from "@/components/ui/Icon";
 import { LeadershipGrid } from "@/components/sections/LeadershipGrid";
 import { GlobePresence } from "@/components/about/GlobePresence";
 import { AutoMovingGrowthLedger } from "@/components/sections/AutoMovingGrowthLedger";
@@ -11,10 +12,9 @@ import { companyStats } from "@/data/companyStats";
 import { journeyMilestones } from "@/data/journey";
 import { aboutGroupImages } from "@/data/companyImages";
 import { leadershipTeam } from "@/data/leadershipTeam";
-import { QuickAnswer } from "@/components/seo/QuickAnswer";
+import { QuickStat } from "@/components/seo/QuickStat";
 import { EntitySummary } from "@/components/seo/EntitySummary";
 import { CompanyResources } from "@/components/company/CompanyResources";
-import { quickAnswers } from "@/data/aeo";
 import { site } from "@/lib/site";
 import { pageMeta } from "@/lib/seo";
 
@@ -41,6 +41,24 @@ const aboutSchema = {
   },
 };
 
+// Confirmed awards only. Images live in /public/pictures/Awards when available;
+// until then each card renders a clean certificate-style placeholder (no reuse
+// of hero/banner/product/team imagery).
+const awards: { title: string; year: string; desc: string; alt: string }[] = [
+  {
+    title: "Fast Growing SME 100 Award",
+    year: "2023",
+    desc: "Recognition of VRV's growth and business momentum.",
+    alt: "Fast Growing SME 100 Award recognition",
+  },
+  {
+    title: "Best Sustainable Business Brand Award",
+    year: "2023",
+    desc: "Recognition linked to VRV's sustainability technology integration initiative.",
+    alt: "Best Sustainable Business Brand Award recognition",
+  },
+];
+
 export default function AboutPage() {
   return (
     <>
@@ -59,10 +77,13 @@ export default function AboutPage() {
         overlayStrength="strong"
       />
 
-      {/* Quick answer + entity summary (AEO/GEO) */}
+      {/* Quick stat + entity summary (AEO/GEO) */}
       <Section tone="white">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <QuickAnswer question={quickAnswers.about.question} answer={quickAnswers.about.answer} />
+          <QuickStat
+            stat="Founded in 2012"
+            label="Singapore-headquartered commodity supply-chain platform connecting agro commodities, industrial metals and mining-linked ventures."
+          />
           <EntitySummary links={[{ label: "Leadership team", href: "/about#leadership" }, { label: "Ventures", href: "/ventures" }]} />
         </div>
       </Section>
@@ -235,6 +256,47 @@ export default function AboutPage() {
           <div className="mt-12">
             <LeadershipGrid members={leadershipTeam.directors} columns={4} />
           </div>
+        </div>
+      </Section>
+
+      {/* Awards — placed immediately after Leadership/Team. Certificate-style
+          placeholder cards until official award images are added to /pictures/Awards. */}
+      <Section tone="paper" bordered id="awards" className="scroll-mt-24">
+        <SectionHeading
+          eyebrow="Recognition"
+          title="Awards"
+          intro="Recognitions that reflect VRV's growth, sustainability focus and commitment to responsible commodity supply chains."
+          align="center"
+        />
+        <div className="mx-auto mt-12 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2">
+          {awards.map((a) => (
+            <Reveal key={a.title}>
+              <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-gold/30 bg-white shadow-soft">
+                {/* Certificate-style placeholder (no hero/banner/product/team image reuse) */}
+                <div
+                  role="img"
+                  aria-label={a.alt}
+                  className="relative flex aspect-[16/10] items-center justify-center border-b border-gold/15 bg-gradient-to-b from-gold/[0.06] to-white"
+                >
+                  <span aria-hidden className="pointer-events-none absolute inset-3 rounded-xl border border-dashed border-gold/25" />
+                  <div className="relative flex flex-col items-center gap-2.5 text-center">
+                    <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border border-gold/40 bg-gold/10 text-gold-700">
+                      <Icon name="shield" className="h-7 w-7" />
+                    </span>
+                    <span className="text-[11px] font-semibold uppercase tracking-label text-gold-700">Award · Recognition</span>
+                  </div>
+                  <span className="absolute right-4 top-4 rounded-full border border-gold/30 bg-white px-2.5 py-1 text-[11px] font-semibold text-gold-700">
+                    {a.year}
+                  </span>
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="font-serif text-[1.15rem] leading-snug text-ink">{a.title}</h3>
+                  <p className="mt-1 text-[12px] font-semibold uppercase tracking-label text-ink/40">{a.year}</p>
+                  <p className="mt-3 text-[14px] leading-relaxed text-ink/65 text-pretty">{a.desc}</p>
+                </div>
+              </article>
+            </Reveal>
+          ))}
         </div>
       </Section>
 

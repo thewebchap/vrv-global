@@ -2,7 +2,7 @@ import Link from "next/link";
 import { PageHero } from "@/components/sections/PageHero";
 import { Section } from "@/components/ui/Section";
 import { Icon } from "@/components/ui/Icon";
-import { QuickAnswer } from "@/components/seo/QuickAnswer";
+import { QuickStat } from "@/components/seo/QuickStat";
 import { EntitySummary } from "@/components/seo/EntitySummary";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/lib/site";
@@ -17,7 +17,8 @@ export function OverviewPage({
   eyebrow,
   title,
   intro,
-  quick,
+  stat,
+  statLabel,
   links,
   contactPath,
   path,
@@ -25,7 +26,8 @@ export function OverviewPage({
   eyebrow: string;
   title: string;
   intro: string;
-  quick: { question: string; answer: string };
+  stat: string;
+  statLabel: string;
   links: { label: string; href: string }[];
   contactPath: string;
   path: string;
@@ -36,7 +38,7 @@ export function OverviewPage({
 
       <Section tone="white">
         <div className="mx-auto max-w-3xl space-y-6">
-          <QuickAnswer question={quick.question} answer={quick.answer} />
+          <QuickStat stat={stat} label={statLabel} />
           <EntitySummary />
 
           <div className="rounded-2xl border border-line bg-paper p-6">

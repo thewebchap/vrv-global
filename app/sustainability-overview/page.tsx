@@ -1,5 +1,4 @@
 import { OverviewPage } from "@/components/seo/OverviewPage";
-import { quickAnswers } from "@/data/aeo";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
@@ -15,7 +14,8 @@ export default function Page() {
       eyebrow="Overview"
       title="Sustainability Overview"
       intro="A direct, factual summary of VRV Global's sustainability and traceability approach."
-      quick={quickAnswers.sustainability}
+      stat="25,000 Ha"
+      statLabel="Deforestation-free natural rubber sourcing footprint across ASEAN and Africa."
       links={[
         { label: "Sustainability (full page)", href: "/sustainability" },
         { label: "Technology & traceability", href: "/technology" },

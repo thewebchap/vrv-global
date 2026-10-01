@@ -5,8 +5,6 @@ export type NavItem = {
   label: string;
   href: string;
   children?: NavLink[];
-  /** Renders the wide, grouped products mega menu. */
-  mega?: "products";
 };
 
 export const productNav: NavLink[] = products.map((p) => ({
@@ -29,46 +27,53 @@ export const mainNav: NavItem[] = [
     label: "About",
     href: "/about",
     children: [
-      { label: "Company Overview", href: "/about", desc: "Singapore-based commodity supply-chain platform." },
-      { label: "Global Presence", href: "/about#global-presence", desc: "Sourcing, purchase and customer markets across global commodities." },
-      { label: "Leadership", href: "/about#leadership", desc: "Meet VRV Global's executive and director team." },
-      { label: "Our Journey", href: "/about#milestones", desc: "Timeline of VRV Global's growth and milestones." },
+      { label: "About VRV", href: "/about", desc: "Singapore-headquartered commodity supply-chain platform." },
+      { label: "Global Presence", href: "/about#global-presence", desc: "VRV Group presence, sales geography and purchase geography." },
+      { label: "Leadership", href: "/about#leadership", desc: "Meet VRV's leadership team." },
+      { label: "Awards", href: "/about#awards", desc: "Recognitions for VRV's growth and sustainability focus." },
+      { label: "Our Journey", href: "/about#milestones", desc: "Key milestones in VRV's growth." },
     ],
   },
-  { label: "Products", href: "/products", mega: "products" },
+  {
+    label: "Products",
+    href: "/products",
+    children: [
+      { label: "Agro Commodities", href: "/products#agro-commodities", desc: "Natural rubber and agro-origin supply chains." },
+      { label: "Industrial Metals", href: "/products#industrial-metals", desc: "Refined metals, alloys, recycled metals and hedging services." },
+      { label: "Mining", href: "/products/mining", desc: "Industrial, precious and rare earth metals focus." },
+    ],
+  },
   {
     label: "Sustainability",
     href: "/sustainability",
     children: [
-      { label: "ESG Commitment", href: "/sustainability", desc: "Our sustainability strategy" },
-      { label: "Environmental Responsibility", href: "/sustainability#environment", desc: "Reduce, reuse, recycle" },
-      { label: "Social Responsibility", href: "/sustainability#social", desc: "Suppliers & communities" },
-      { label: "Governance & Ethics", href: "/sustainability#governance", desc: "Conduct & compliance" },
-      { label: "Reports & Metrics", href: "/sustainability#reports", desc: "ESG reports & data" },
+      { label: "Sustainability Overview", href: "/sustainability", desc: "VRV's 3C sustainability program across Company, Community and Commodities." },
+      { label: "ESG Program", href: "/sustainability#esg-program", desc: "The 3C ESG program and sustainability policy overview." },
+      { label: "Our Commitment", href: "/sustainability#our-commitment", desc: "Origin-to-end-user traceability and responsible sourcing." },
+      { label: "VRV's Initiatives", href: "/sustainability#initiatives", desc: "Deforestation-free natural rubber and circular economy metals." },
+      { label: "Sustainability Questions", href: "/sustainability#faq", desc: "Answers to common sustainability and ESG questions." },
     ],
   },
   {
     label: "Ventures",
     href: "/ventures",
     children: [
-      { label: "Mining & Resource Ventures", href: "/ventures/mining", desc: "Upstream industrial & precious metals" },
-      { label: "Natural Rubber Processing", href: "/ventures/natural-rubber-processing", desc: "Origin-linked rubber processing" },
-      { label: "Circular Economy Materials", href: "/ventures/circular-economy", desc: "Recovered & recycled flows" },
-      { label: "Regional Expansion", href: "/ventures/regional-expansion", desc: "Africa, Asia & strategic geographies" },
-      { label: "Supply Chain Infrastructure", href: "/ventures/supply-chain-infrastructure", desc: "Processing, logistics & quality" },
+      { label: "Ventures Overview", href: "/ventures", desc: "Strategic growth initiatives around physical commodity infrastructure." },
+      { label: "Trade Corridors", href: "/ventures/trade-corridors", desc: "Regional rails connecting origin, processing and global hubs." },
+      { label: "Focus Verticals", href: "/ventures/focus-verticals", desc: "AI, deeptech, fintech and cleantech venture focus areas." },
+      { label: "Pitch Venture", href: "/ventures/pitch", desc: "Founder submission portal for venture opportunities." },
     ],
   },
   {
     label: "Media",
     href: "/news",
     children: [
-      { label: "News & Insights", href: "/news", desc: "LinkedIn-sourced VRV Global updates." },
-      { label: "Case Studies", href: "/case-studies", desc: "Selected supply-chain examples and project stories." },
-      { label: "Blog", href: "/blog", desc: "Perspectives on commodities, sustainability and supply chains." },
+      { label: "Media Overview", href: "/news", desc: "Case studies and VRV updates." },
+      { label: "Case Studies", href: "/case-studies", desc: "Selected examples and project stories." },
+      { label: "News & Insights", href: "/news", desc: "Latest VRV updates and LinkedIn-backed insights." },
+      { label: "Blog", href: "/blog", desc: "Long-form articles from approved VRV contributors." },
     ],
   },
-  { label: "Careers", href: "/careers" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export const footerNav: { heading: string; links: NavLink[] }[] = [

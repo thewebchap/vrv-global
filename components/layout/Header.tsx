@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { mainNav, type NavItem } from "@/lib/nav";
-import { productDetails, productDetailsBySegment } from "@/data/productDetails";
 import { site } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/layout/Logo";
@@ -28,10 +27,14 @@ export function Header() {
     setOpenKey(null);
   }, [pathname]);
 
-  const isActive = (href: string) => {
+  const matchHref = (href: string) => {
     const base = href.split("#")[0];
     return base === "/" ? pathname === "/" : pathname.startsWith(base);
   };
+  // Active if the item's own route matches, or any of its dropdown children do
+  // (keeps e.g. Media active on /blog and /case-studies, which live outside /news).
+  const isActive = (item: NavItem) =>
+    matchHref(item.href) || (item.children?.some((c) => matchHref(c.href)) ?? false);
 
   return (
     <>
@@ -70,7 +73,7 @@ export function Header() {
         {/* Desktop nav */}
         <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Primary">
           {mainNav.map((item) =>
-            item.children || item.mega ? (
+            item.children ? (
               <div
                 key={item.label}
                 className="relative"
@@ -89,14 +92,13 @@ export function Header() {
                   aria-expanded={openKey === item.label}
                   className={cn(
                     "flex items-center gap-1 rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors",
-                    isActive(item.href) ? "bg-brand-50 text-brand" : "text-ink/70 hover:bg-paper hover:text-brand",
+                    isActive(item) ? "bg-brand-50 text-brand" : "text-ink/70 hover:bg-paper hover:text-brand",
                   )}
                 >
                   {item.label}
                   <span aria-hidden className={cn("text-[9px] transition-transform", openKey === item.label && "rotate-180")}>▾</span>
                 </Link>
-                {openKey === item.label &&
-                  (item.mega === "products" ? <ProductsMega /> : <Dropdown item={item} />)}
+                {openKey === item.label && <Dropdown item={item} />}
               </div>
             ) : (
               <Link
@@ -104,7 +106,7 @@ export function Header() {
                 href={item.href}
                 className={cn(
                   "rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors",
-                  isActive(item.href) ? "bg-brand-50 text-brand" : "text-ink/70 hover:bg-paper hover:text-brand",
+                  isActive(item) ? "bg-brand-50 text-brand" : "text-ink/70 hover:bg-paper hover:text-brand",
                 )}
               >
                 {item.label}
@@ -114,7 +116,6 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 xl:flex">
-          <Button href="/ventures" variant="outline" size="md">Ventures</Button>
           <Button href="/contact" variant="primary" size="md">Contact Us</Button>
         </div>
 
@@ -139,14 +140,12 @@ export function Header() {
           <div className="overflow-hidden rounded-3xl border border-[rgba(15,45,65,0.08)] bg-white/95 shadow-[0_12px_30px_rgba(15,45,65,0.12)] backdrop-blur-[14px]">
             <nav className="max-h-[calc(100vh-96px)] space-y-1 overflow-y-auto p-4" aria-label="Mobile">
               {mainNav.map((item) => {
-                const children = item.mega === "products"
-                  ? productDetails.map((p) => ({ label: p.title, href: `/products/${p.slug}` }))
-                  : item.children;
+                const children = item.children;
                 return (
                   <div key={item.label}>
                     <Link
                       href={item.href}
-                      className={cn("block rounded-xl px-3 py-2.5 text-base font-medium", isActive(item.href) ? "bg-brand-50 text-brand" : "text-ink")}
+                      className={cn("block rounded-xl px-3 py-2.5 text-base font-medium", isActive(item) ? "bg-brand-50 text-brand" : "text-ink")}
                     >
                       {item.label}
                     </Link>
@@ -162,8 +161,7 @@ export function Header() {
                   </div>
                 );
               })}
-              <div className="grid grid-cols-2 gap-3 px-3 pt-3">
-                <Button href="/ventures" variant="outline" size="lg" className="w-full">Ventures</Button>
+              <div className="px-3 pt-3">
                 <Button href="/contact" variant="primary" size="lg" className="w-full">Contact</Button>
               </div>
             </nav>
@@ -194,52 +192,6 @@ function Dropdown({ item }: { item: NavItem }) {
             </Link>
           ))}
         </div>
-      </div>
-    </div>
-  );
-}
-
-const segmentAnchor: Record<string, string> = {
-  "Agro Commodities": "agro-commodities",
-  "Industrial Metals": "industrial-metals",
-  Mining: "mining",
-};
-
-const segmentDesc: Record<string, string> = {
-  "Agro Commodities": "Natural rubber and agro-origin supply chains.",
-  "Industrial Metals": "Refined, recycled and alloy metals for industry.",
-  Mining: "Copper and precious metals mining-linked opportunities.",
-};
-
-function ProductsMega() {
-  return (
-    <div className="absolute left-1/2 top-full z-[80] w-[min(920px,94vw)] -translate-x-1/2 pt-3">
-      <div className="grid grid-cols-1 gap-3 rounded-[20px] border border-[rgba(15,45,65,0.08)] bg-white/95 p-4 shadow-[0_18px_45px_rgba(15,45,65,0.12)] backdrop-blur-[12px] md:grid-cols-3 origin-top animate-[dropdown-in_180ms_ease_both]">
-        {productDetailsBySegment.map(({ segment, items }) => (
-          <div key={segment} className="rounded-2xl border border-transparent p-3 transition-colors hover:border-line">
-            <Link href={`/products#${segmentAnchor[segment]}`} className="block">
-              <span className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-label text-brand">
-                <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-gold" />
-                {segment}
-              </span>
-              {segmentDesc[segment] && (
-                <span className="mt-1.5 block text-xs leading-snug text-ink/55">{segmentDesc[segment]}</span>
-              )}
-            </Link>
-            <div className="mt-3 space-y-0.5">
-              {items.map((p) => (
-                <Link
-                  key={p.slug}
-                  href={`/products/${p.slug}`}
-                  className="group/item flex items-center gap-2.5 rounded-lg border border-transparent px-2.5 py-2 transition-all duration-150 ease-out hover:border-[rgba(32,120,87,0.14)] hover:bg-[rgba(32,120,87,0.06)]"
-                >
-                  <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-line transition-colors duration-150 group-hover/item:bg-brand" />
-                  <span className="text-[13px] font-medium text-ink transition-colors group-hover/item:text-brand">{p.title}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import {
   getAuthorById,
   normalizeEmail,
 } from "./store";
+import { blogConfig, isProd } from "./config";
 import type { BlogAuthor } from "./types";
 
 export const SESSION_COOKIE = "vrv_blog_session";
@@ -15,8 +16,8 @@ export const OTP_TTL_SECONDS = 60 * 10; // 10 minutes
 export const OTP_RESEND_COOLDOWN_SECONDS = 60;
 export const OTP_MAX_ATTEMPTS = 5;
 
-/** Secret used to pepper OTP hashes. Falls back to a stable dev value. */
-const OTP_PEPPER = process.env.BLOG_OTP_SECRET || "vrv-blog-otp-dev-pepper";
+/** Pepper for OTP hashes — from BLOG_SESSION_SECRET (no real default in prod). */
+const OTP_PEPPER = blogConfig.sessionSecret || (isProd ? "" : "vrv-blog-dev-pepper");
 
 export function generateOtp(): string {
   return String(randomInt(0, 1_000_000)).padStart(6, "0");
@@ -31,7 +32,7 @@ export function verifyOtpHash(code: string, hash: string): boolean {
 }
 
 export function isBootstrapAdmin(email: string): boolean {
-  const admin = process.env.BLOG_ADMIN_EMAIL;
+  const admin = blogConfig.adminEmail;
   return Boolean(admin && normalizeEmail(admin) === normalizeEmail(email));
 }
 

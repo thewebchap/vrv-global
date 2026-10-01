@@ -13,7 +13,7 @@ import { Media } from "@/components/ui/Media";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { QuickAnswer } from "@/components/seo/QuickAnswer";
+import { QuickStat } from "@/components/seo/QuickStat";
 import { Definitions } from "@/components/seo/Definitions";
 import { site } from "@/lib/site";
 import { breadcrumbSchema } from "@/lib/seo";
@@ -118,12 +118,18 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
         </div>
       </section>
 
-      {/* Quick answer (AEO) */}
-      {aeo && (
-        <Section tone="white" className="!pb-0">
-          <QuickAnswer question={aeo.question} answer={product.summary} className="max-w-3xl" />
-        </Section>
-      )}
+      {/* Quick stat (category-relevant) */}
+      <Section tone="white" className="!pb-0">
+        {(() => {
+          const stat =
+            product.segment === "Agro Commodities"
+              ? { stat: "50,000 MT", label: "Fully traceable, deforestation-free natural rubber sourced from ASEAN and African farmers." }
+              : product.segment === "Mining"
+                ? { stat: "2 Focus Geographies", label: "VRV's mining focus is structured around Tanzania and Zambia." }
+                : { stat: "75% / 25%", label: "Primary metals and recycled/scrap metals shown as VRV's metals sourcing mix." };
+          return <QuickStat stat={stat.stat} label={stat.label} className="max-w-3xl" />;
+        })()}
+      </Section>
 
       {/* 2 — Product overview (what it is) */}
       <Section tone="white">

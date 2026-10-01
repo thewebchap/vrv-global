@@ -1,5 +1,4 @@
 import { OverviewPage } from "@/components/seo/OverviewPage";
-import { quickAnswers } from "@/data/aeo";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
@@ -15,7 +14,8 @@ export default function Page() {
       eyebrow="Overview"
       title="Contact VRV Global"
       intro="A direct, factual summary of how to reach VRV Global, for visitors, search engines and AI systems."
-      quick={quickAnswers.contact}
+      stat="Singapore HQ"
+      statLabel="VRV Global coordinates commodity supply-chain activity across sourcing, sales and operating geographies."
       links={[
         { label: "Contact (general)", href: "/contact" },
         { label: "Product enquiry", href: "/contact?type=product" },

@@ -8,7 +8,7 @@ import { Icon } from "@/components/ui/Icon";
 import { ProductAnchorNav } from "@/components/products/ProductAnchorNav";
 import { MiningGateway } from "@/components/products/MiningGateway";
 import { CommodityPattern, SectionRouteConnector, commodityKind, commodityTheme } from "@/components/products/CommodityDecor";
-import { QuickAnswer } from "@/components/seo/QuickAnswer";
+import { QuickStat } from "@/components/seo/QuickStat";
 import { EntitySummary } from "@/components/seo/EntitySummary";
 import { Faq } from "@/components/seo/Faq";
 import { ProofBlocks } from "@/components/seo/ProofBlock";
@@ -20,7 +20,7 @@ import {
   type ProductSegment,
   type SegmentProduct,
 } from "@/data/productSegments";
-import { quickAnswers, productsFaqs } from "@/data/aeo";
+import { productsFaqs } from "@/data/aeo";
 import { site } from "@/lib/site";
 import { pageMeta } from "@/lib/seo";
 import { cn } from "@/lib/cn";
@@ -287,10 +287,13 @@ export default function ProductsPage() {
         </div>
       </Section>
 
-      {/* Quick answer + entity summary + definitions (AEO/GEO) */}
+      {/* Quick stat + entity summary + definitions (AEO/GEO) */}
       <Section tone="white">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <QuickAnswer question={quickAnswers.products.question} answer={quickAnswers.products.answer} />
+          <QuickStat
+            stat="3 Core Segments"
+            label="Agro Commodities, Industrial Metals and Mining form VRV's product ecosystem."
+          />
           <EntitySummary links={[{ label: "Sustainability", href: "/sustainability" }, { label: "Ventures", href: "/ventures" }]} />
         </div>
         <div className="mt-10">

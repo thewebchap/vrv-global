@@ -19,7 +19,6 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 
 // VRV palette (kept in sync with ThreeCTriadVisual)
 const GREEN = "#15724E";
-const BLUE = "#14587A";
 const COPPER = "#B26A2B";
 
 type Initiative = {
@@ -81,8 +80,8 @@ const metalsMetrics: MetricCardData[] = [
 
 // Approved split for the sourcing mix chart.
 const metalsMix = [
-  { label: "Primary metals", value: 75, color: BLUE },
-  { label: "Recycled & scrap metals", value: 25, color: COPPER },
+  { label: "Primary metals", value: 75, color: COPPER },
+  { label: "Recycled & scrap metals", value: 25, color: GREEN },
 ];
 
 export function SustainabilityInitiatives() {
@@ -176,11 +175,16 @@ export function SustainabilityInitiatives() {
                 <h3 className="font-serif text-[clamp(1.1rem,1.8vw,1.35rem)] text-ink">{current.chartTitle}</h3>
                 <p className="mt-1 text-[13px] leading-relaxed text-ink/55">{current.chartDesc}</p>
               </div>
-              {current.id === "deforestation-rubber" ? (
-                <DeforestationLineChart initiativeTitle={current.title} />
-              ) : (
-                <MetalsMixChart />
-              )}
+              {/* Shared chart frame — same min-height for both initiatives so the
+                  panel never jumps on tab switch, and both charts sit centred with
+                  comparable visual weight (wide line chart vs. donut). */}
+              <div className="flex min-h-[260px] items-center justify-center">
+                {current.id === "deforestation-rubber" ? (
+                  <DeforestationLineChart initiativeTitle={current.title} />
+                ) : (
+                  <MetalsMixChart />
+                )}
+              </div>
             </div>
           </motion.div>
         </AnimatePresence>
@@ -240,7 +244,7 @@ function DeforestationLineChart({ initiativeTitle }: { initiativeTitle: string }
   const activePoint = active !== null ? deforestationRubberData[active] : null;
 
   return (
-    <figure className="m-0">
+    <figure className="m-0 mx-auto w-full max-w-[520px]">
       <div className="relative">
         <svg
           viewBox={`0 0 ${W} ${H}`}
@@ -419,48 +423,81 @@ function DeforestationLineChart({ initiativeTitle }: { initiativeTitle: string }
   );
 }
 
-/* --------------------------- Metals sourcing mix (stacked bar) --------------------------- */
+/* --------------------------- Metals sourcing mix (donut) --------------------------- */
 
 function MetalsMixChart() {
   const reduce = useReducedMotion();
 
+  // Donut geometry in viewBox units — a lightweight inline SVG (no charting
+  // dependency). The SVG scales to fill its responsive container (below), so it
+  // reaches a comparable visual size to the line chart on the other tab.
+  const VB = 240;
+  const stroke = 38;
+  const r = (VB - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  const gap = 4; // small visual break between segments (in stroke-length units)
+
+  // Cumulative offsets so the two arcs sit end to end around the ring.
+  let acc = 0;
+  const arcs = metalsMix.map((seg) => {
+    const len = (seg.value / 100) * c;
+    const arc = { ...seg, len: Math.max(len - gap, 0), offset: acc };
+    acc += len;
+    return arc;
+  });
+
   return (
-    <figure className="m-0">
-      {/* Clean horizontal stacked bar — 75% / 25% segments sit side by side,
-          clipped by overflow-hidden with a subtle divider (no overlap). */}
-      <div
-        role="img"
-        aria-label="Metals sourcing mix: 75% primary metals, 25% recycled and scrap metals"
-        className="flex h-4 w-full overflow-hidden rounded-full border border-line"
-      >
-        <motion.div
-          className="h-full shrink-0"
-          style={{ backgroundColor: BLUE, borderRight: "1px solid rgba(255,255,255,0.7)" }}
-          initial={reduce ? false : { width: "0%" }}
-          animate={{ width: "75%" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        />
-        <motion.div
-          className="h-full shrink-0"
-          style={{ backgroundColor: COPPER }}
-          initial={reduce ? false : { width: "0%" }}
-          animate={{ width: "25%" }}
-          transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-        />
+    <figure className="m-0 flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:gap-8">
+      {/* Donut — sized to match the line chart's visual weight */}
+      <div className="relative h-[200px] w-[200px] shrink-0 lg:h-[240px] lg:w-[240px]">
+        <svg
+          viewBox={`0 0 ${VB} ${VB}`}
+          role="img"
+          aria-label="Metals sourcing mix: 75% primary metals, 25% recycled and scrap metals"
+          className="h-full w-full"
+        >
+          {/* Track */}
+          <circle cx={VB / 2} cy={VB / 2} r={r} fill="none" stroke="#EDE6DC" strokeWidth={stroke} />
+          {/* Segments — rotated so the ring starts at 12 o'clock */}
+          <g transform={`rotate(-90 ${VB / 2} ${VB / 2})`}>
+            {arcs.map((seg) => (
+              <motion.circle
+                key={seg.label}
+                cx={VB / 2}
+                cy={VB / 2}
+                r={r}
+                fill="none"
+                stroke={seg.color}
+                strokeWidth={stroke}
+                strokeLinecap="butt"
+                strokeDasharray={`${seg.len} ${c - seg.len}`}
+                strokeDashoffset={-seg.offset}
+                initial={reduce ? false : { opacity: 0, strokeDasharray: `0 ${c}` }}
+                animate={{ opacity: 1, strokeDasharray: `${seg.len} ${c - seg.len}` }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              />
+            ))}
+          </g>
+        </svg>
+        {/* Center label */}
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
+          <span className="text-[11px] font-semibold uppercase tracking-label text-ink/45">Metals mix</span>
+          <span className="font-serif text-[1.5rem] leading-none text-ink">75 / 25</span>
+        </div>
       </div>
 
-      {/* Compact labels below — both the same size, wrap cleanly, never over the bar */}
-      <div className="mt-4 grid grid-cols-2 gap-4">
+      {/* Legend — equal-styled rows, never over the chart; stacks under on mobile */}
+      <figcaption className="min-w-0 space-y-3">
         {metalsMix.map((seg) => (
-          <div key={seg.label} className="flex min-w-0 items-start gap-2">
+          <div key={seg.label} className="flex min-w-0 items-start gap-2.5">
             <span aria-hidden className="mt-[3px] h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: seg.color }} />
-            <p className="min-w-0 text-[11px] font-medium leading-[1.2] text-ink/70 [overflow-wrap:anywhere]">
+            <p className="min-w-0 text-[12px] font-medium leading-[1.3] text-ink/70 [overflow-wrap:anywhere]">
               {seg.label}
-              <span className="ml-1 font-semibold text-ink">{seg.value}%</span>
+              <span className="ml-1.5 font-semibold text-ink">{seg.value}%</span>
             </p>
           </div>
         ))}
-      </div>
+      </figcaption>
     </figure>
   );
 }

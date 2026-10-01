@@ -57,10 +57,10 @@ export async function POST(req: Request) {
 
   const result = await sendOtpEmail(email, code);
   if (!result.sent) {
-    const msg =
-      result.error === "email-not-configured"
-        ? "Login email is not configured yet. Please contact the site administrator."
-        : "We couldn't send your code right now. Please try again shortly.";
+    const configErrors = new Set(["email-not-configured", "console-in-production"]);
+    const msg = configErrors.has(result.error ?? "")
+      ? "Login email is not configured yet. Please contact the site administrator."
+      : "We couldn't send your code right now. Please try again shortly.";
     return NextResponse.json({ ok: false, message: msg }, { status: 503 });
   }
 

@@ -3,8 +3,7 @@ import { Section, SectionHeading } from "@/components/ui/Section";
 import { Icon } from "@/components/ui/Icon";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { GovernanceEnquiryForm } from "@/components/forms/GovernanceEnquiryForm";
-import { QuickAnswer } from "@/components/seo/QuickAnswer";
-import { quickAnswers } from "@/data/aeo";
+import { QuickStat } from "@/components/seo/QuickStat";
 import { site } from "@/lib/site";
 import { pageMeta } from "@/lib/seo";
 
@@ -100,7 +99,11 @@ export default function ContactPage({ searchParams }: { searchParams?: { type?: 
       />
 
       <Section tone="white" className="!pb-0">
-        <QuickAnswer question={quickAnswers.contact.question} answer={quickAnswers.contact.answer} className="max-w-3xl" />
+        <QuickStat
+          stat="Singapore HQ"
+          label="VRV Global coordinates commodity supply-chain activity across sourcing, sales and operating geographies."
+          className="max-w-3xl"
+        />
       </Section>
 
       <Section tone="white">

@@ -80,7 +80,7 @@ export default function SustainabilityPage() {
       {/* Sustainability Policy Overview — VRV's impact statement (immediately after the header).
           NOTE: the body wording below is supplied verbatim and must not be edited
           (spelling, punctuation and "its"/"Commodities deal" are intentional). */}
-      <Section tone="paper" bordered>
+      <Section tone="paper" bordered id="esg-program" className="scroll-mt-24">
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
           {/* Text — first on mobile, left on desktop */}
           <div className="order-1">
@@ -116,7 +116,7 @@ export default function SustainabilityPage() {
       </Section>
 
       {/* 1 — Commitment */}
-      <Section tone="white">
+      <Section tone="white" id="our-commitment" className="scroll-mt-24">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           <Reveal>
             <Eyebrow>Our commitment</Eyebrow>
@@ -186,7 +186,7 @@ export default function SustainabilityPage() {
       </Section>
 
       {/* FAQ */}
-      <Section tone="paper">
+      <Section tone="paper" id="faq" className="scroll-mt-24">
         <SectionHeading
           eyebrow="FAQ"
           title="Sustainability & ESG questions"

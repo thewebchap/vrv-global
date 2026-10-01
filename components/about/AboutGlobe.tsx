@@ -6,7 +6,7 @@ import * as THREE from "three";
 import { useReducedMotion } from "framer-motion";
 import { countryFeatures } from "@/lib/map/worldFeatures";
 import { commodityCountries, countryById, roleSummary, type CommodityCountry } from "@/data/commodityNetwork";
-import { vrvGroupLocations, vrvGroupIso, SINGAPORE_ISO } from "@/data/vrvGroup";
+import { vrvGroupLocations, vrvGroupIso } from "@/data/vrvGroup";
 
 /**
  * AboutGlobe — the About page "Global Presence" premium interactive globe
@@ -65,26 +65,107 @@ function computeDark(): boolean {
   return prefersDark || isNight;
 }
 
+const MINING_GOLD = "#B8955B";
+
 // Category lists (from the real role data) for the side panel.
 const salesCountries = commodityCountries.filter(hasSales);
 const purchaseCountries = commodityCountries.filter(hasPurchase);
 const miningFocus = ["tanzania", "zambia"].map((id) => countryById[id]);
 
+// Numeric ISO 3166-1 codes (world-atlas polygon feature ids — leading-zero
+// padded, e.g. Brazil "076"). Singapore has no polygon in the 110m dataset, so
+// it is shown via the orange HQ marker only. Used to draw country boundaries.
+const ISO_BY_ID: Record<string, string> = {
+  singapore: "702", usa: "840", hungary: "348", turkey: "792", uae: "784",
+  india: "356", "sri-lanka": "144", china: "156", "south-korea": "410", japan: "392",
+  malaysia: "458", liberia: "430", "cote-divoire": "384", ghana: "288", nigeria: "566",
+  cameroon: "120", brazil: "076", thailand: "764", vietnam: "704", indonesia: "360",
+  philippines: "608", "united-kingdom": "826", spain: "724", italy: "380", australia: "036",
+  "democratic-republic-of-congo": "180", tanzania: "834", zambia: "894", "south-africa": "710",
+};
+const isoSet = (list: CommodityCountry[]) => new Set(list.map((c) => ISO_BY_ID[c.id]).filter(Boolean));
+const SALES_ISO = isoSet(salesCountries);
+const PURCHASE_ISO = isoSet(purchaseCountries);
+const MINING_ISO = new Set(["834", "894"]); // Tanzania, Zambia
+
+// One display category per country → drives its boundary + marker colour.
+type DisplayCat = "hq" | "vrvGroup" | "sales" | "purchase" | "mining";
+const CAT_COLOR: Record<DisplayCat, string> = {
+  hq: HQ_ORANGE, vrvGroup: GROUP_GREEN, sales: SALES_BLUE, purchase: PURCHASE_BROWN, mining: MINING_GOLD,
+};
+
+/**
+ * In "All" mode, resolve a polygon's single display category (overlaps → a
+ * fixed priority so each country gets one clean boundary, never stacked outlines).
+ * Priority keeps every category visible: Mining Focus (Tanzania/Zambia) reads as
+ * gold, remaining VRV Group countries green, then sales, then purchase.
+ */
+function allDisplayCat(iso: string): DisplayCat | null {
+  if (MINING_ISO.has(iso)) return "mining";
+  if (vrvGroupIso.has(iso)) return "vrvGroup"; // India, UAE, Ivory Coast (Singapore = marker)
+  if (SALES_ISO.has(iso)) return "sales";
+  if (PURCHASE_ISO.has(iso)) return "purchase";
+  return null;
+}
+
+// Selectable legend categories. Category-level selection only (no per-country).
+type CategoryKey = "all" | "vrvGroup" | "sales" | "purchase" | "mining";
+
+// Side-panel category listings (the four real datasets).
+const CATEGORIES: { key: Exclude<CategoryKey, "all">; label: string; color: string; names: string[] }[] = [
+  { key: "vrvGroup", label: "VRV Group", color: GROUP_GREEN, names: vrvGroupLocations.map((l) => l.label) },
+  { key: "sales", label: "Sales Geography", color: SALES_BLUE, names: salesCountries.map((c) => c.label) },
+  { key: "purchase", label: "Purchase Geography", color: PURCHASE_BROWN, names: purchaseCountries.map((c) => c.label) },
+  { key: "mining", label: "Mining Focus", color: MINING_GOLD, names: miningFocus.map((c) => c.label) },
+];
+
+// Chip selector — "All" first, then the four categories. "multi" swatch renders
+// a small 4-colour dot; each item carries an accent for its active-chip tint.
+const SELECTOR: { key: CategoryKey; label: string; swatch: string; accent: string }[] = [
+  { key: "all", label: "All", swatch: "multi", accent: "#5F6F67" },
+  { key: "vrvGroup", label: "VRV Group", swatch: GROUP_GREEN, accent: GROUP_GREEN },
+  { key: "sales", label: "Sales Geography", swatch: SALES_BLUE, accent: SALES_BLUE },
+  { key: "purchase", label: "Purchase Geography", swatch: PURCHASE_BROWN, accent: PURCHASE_BROWN },
+  { key: "mining", label: "Mining Focus", swatch: MINING_GOLD, accent: MINING_GOLD },
+];
+
+/** hex + alpha → rgba() string (react-globe.gl point colours accept rgba). */
+function rgba(hex: string, a: number): string {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+}
+
 type ThemeTokens = {
   ocean: string; land: string; landGroup: string; landHQ: string;
   stroke: string; groupStroke: string; hqStroke: string; atmosphere: string;
   labelGroup: string; labelHQ: string;
+  // Per-category boundary fill (cap) + outline (stroke) for highlighted countries.
+  cat: Record<DisplayCat, { cap: string; stroke: string }>;
 };
 
 const DAY: ThemeTokens = {
   ocean: "#E9F0F4", land: "#D5DED8", landGroup: "#C2D8C8", landHQ: "#EDD9AF",
   stroke: "#B6C4BD", groupStroke: "#3E7D5F", hqStroke: "#C77A2A", atmosphere: "#A6C7DF",
   labelGroup: "#173D2B", labelHQ: "#8A4B12",
+  cat: {
+    hq: { cap: "#EDD9AF", stroke: "#C77A2A" },
+    vrvGroup: { cap: "#C2D8C8", stroke: "#3E7D5F" },
+    sales: { cap: "#C3DAE6", stroke: "#2E84AC" },
+    purchase: { cap: "#E4D3BC", stroke: "#B27A3C" },
+    mining: { cap: "#E1D3B0", stroke: "#B8955B" },
+  },
 };
 const NIGHT: ThemeTokens = {
   ocean: "#0B2238", land: "#233240", landGroup: "#2C4A43", landHQ: "#463619",
   stroke: "#39505C", groupStroke: "#4E9E77", hqStroke: "#D9822B", atmosphere: "#33506E",
   labelGroup: "#CFE6D8", labelHQ: "#F2B872",
+  cat: {
+    hq: { cap: "#463619", stroke: "#D9822B" },
+    vrvGroup: { cap: "#2C4A43", stroke: "#4E9E77" },
+    sales: { cap: "#26414E", stroke: "#4FA6CE" },
+    purchase: { cap: "#46392A", stroke: "#C89A5E" },
+    mining: { cap: "#453D28", stroke: "#CBA972" },
+  },
 };
 
 export function AboutGlobe() {
@@ -95,6 +176,21 @@ export function AboutGlobe() {
 
   const [size, setSize] = useState({ w: 520, h: 520 });
   const [autoRotate, setAutoRotate] = useState(true);
+  // Selectable legend category (default: VRV Group; "all" is an extra option).
+  const [activeCategory, setActiveCategory] = useState<CategoryKey>("vrvGroup");
+  const active = CATEGORIES.find((c) => c.key === activeCategory); // undefined when "all"
+
+  // Resolve a polygon's display category for the current selection (or null →
+  // default land). Singapore has no polygon, so HQ is handled by the marker.
+  const polygonCat = (iso: string): DisplayCat | null => {
+    switch (activeCategory) {
+      case "all": return allDisplayCat(iso);
+      case "vrvGroup": return vrvGroupIso.has(iso) ? "vrvGroup" : null;
+      case "sales": return SALES_ISO.has(iso) ? "sales" : null;
+      case "purchase": return PURCHASE_ISO.has(iso) ? "purchase" : null;
+      case "mining": return MINING_ISO.has(iso) ? "mining" : null;
+    }
+  };
   // Dark globe when the system prefers dark OR it's nighttime locally. Resolved
   // once on the client (no SSR flash — this component is client-only) and kept
   // in sync if the system theme changes.
@@ -108,22 +204,53 @@ export function AboutGlobe() {
   }, []);
   const t = dark ? NIGHT : DAY;
 
-  // Markers coloured by category; VRV Group rendered last (on top).
+  // Markers: highlight the active category, dim the rest. VRV Group keeps a
+  // faint presence in every category; Singapore HQ stays orange. Active markers
+  // render last (on top).
   const points = useMemo(() => {
+    // The active view's display category for a country's marker (null = not in view).
+    const markerCat = (c: CommodityCountry): DisplayCat | null => {
+      const isHQ = c.id === "singapore";
+      switch (activeCategory) {
+        case "all": return isHQ ? "hq" : allDisplayCat(ISO_BY_ID[c.id] ?? "");
+        case "vrvGroup": return isHQ ? "hq" : VRV_GROUP_IDS.has(c.id) ? "vrvGroup" : null;
+        case "sales": return hasSales(c) ? (isHQ ? "hq" : "sales") : null;
+        case "purchase": return hasPurchase(c) ? "purchase" : null;
+        case "mining": return c.id === "tanzania" || c.id === "zambia" ? "mining" : null;
+      }
+    };
     const mapped = commodityCountries.map((c) => {
       const isHQ = c.id === "singapore";
-      const isGroup = VRV_GROUP_IDS.has(c.id);
-      const color = isHQ ? HQ_ORANGE : isGroup ? GROUP_GREEN : hasSales(c) ? SALES_BLUE : PURCHASE_BROWN;
-      const size = isHQ ? 0.95 : isGroup ? 0.6 : 0.32;
-      return { id: c.id, lat: c.coordinates[1], lng: c.coordinates[0], color, size, c, group: isGroup };
+      const dc = markerCat(c);
+      const inActive = dc !== null;
+      let hex: string;
+      let size: number;
+      let alpha: number;
+      if (inActive) {
+        hex = CAT_COLOR[dc];
+        // Hierarchy: Singapore HQ strongest; slightly smaller markers in the
+        // busier "All" view so it never reads as cluttered.
+        size = dc === "hq" ? (activeCategory === "all" ? 0.85 : 0.95) : activeCategory === "all" ? 0.5 : 0.62;
+        alpha = 1;
+      } else if (VRV_GROUP_IDS.has(c.id)) {
+        hex = isHQ ? HQ_ORANGE : GROUP_GREEN; // faint VRV Group presence
+        size = 0.4;
+        alpha = 0.4;
+      } else {
+        hex = "#8AA0AD";
+        size = 0.26;
+        alpha = 0.22;
+      }
+      return { id: c.id, lat: c.coordinates[1], lng: c.coordinates[0], color: rgba(hex, alpha), size, c, inActive };
     });
-    return mapped.sort((a, b) => Number(a.group) - Number(b.group));
-  }, []);
+    return mapped.sort((a, b) => Number(a.inActive) - Number(b.inActive));
+  }, [activeCategory]);
 
+  // HQ pulse when Singapore is emphasised (VRV Group or All — Singapore strongest).
   const rings = useMemo(() => {
-    if (reduce) return [] as any[];
+    if (reduce || (activeCategory !== "vrvGroup" && activeCategory !== "all")) return [] as any[];
     return [{ lat: SG[1], lng: SG[0], maxR: 4.2, speed: 1, period: 1900, color: HQ_ORANGE }];
-  }, [reduce]);
+  }, [reduce, activeCategory]);
 
   const globeMaterial = useMemo(
     () => new THREE.MeshPhongMaterial({ color: t.ocean, shininess: dark ? 8 : 4 }),
@@ -211,48 +338,74 @@ export function AboutGlobe() {
 
   const btn =
     "flex h-9 w-9 items-center justify-center text-ink/70 transition-colors hover:bg-paper hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand";
-  const names = (arr: CommodityCountry[]) => arr.map((c) => c.label).join(", ");
 
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(250px,0.9fr)_1.3fr] lg:items-center lg:gap-12">
-      {/* Side panel — categorised country lists + legend (no per-country selection) */}
-      <aside className="order-2 space-y-5 lg:order-1">
-        <div>
-          <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-label text-brand">
-            <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: HQ_ORANGE }} /> VRV Group
-          </p>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-ink/65">{vrvGroupLocations.map((l) => l.label).join(", ")}</p>
+      {/* Side panel — selectable legend categories + the active category list */}
+      <aside className="order-2 lg:order-1">
+        <p className="text-[11px] font-semibold uppercase tracking-label text-ink/45">Explore by</p>
+        <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Global presence categories">
+          {SELECTOR.map((c) => {
+            const on = c.key === activeCategory;
+            return (
+              <button
+                key={c.key}
+                type="button"
+                aria-pressed={on}
+                onClick={() => setActiveCategory(c.key)}
+                className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[13px] font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ${
+                  on ? "border-transparent text-ink shadow-soft" : "border-line bg-white text-ink/65 hover:border-brand/30 hover:text-ink"
+                }`}
+                style={on ? { backgroundColor: rgba(c.accent, 0.14) } : undefined}
+              >
+                <span
+                  aria-hidden
+                  className="h-2.5 w-2.5 rounded-full"
+                  style={
+                    c.swatch === "multi"
+                      ? { background: `conic-gradient(${GROUP_GREEN} 0deg 90deg, ${SALES_BLUE} 90deg 180deg, ${PURCHASE_BROWN} 180deg 270deg, ${MINING_GOLD} 270deg 360deg)` }
+                      : { backgroundColor: c.swatch }
+                  }
+                />
+                {c.label}
+              </button>
+            );
+          })}
         </div>
-        <div>
-          <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-label" style={{ color: SALES_BLUE }}>
-            <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: SALES_BLUE }} /> Sales Geography
-          </p>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-ink/60">{names(salesCountries)}</p>
-        </div>
-        <div>
-          <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-label" style={{ color: PURCHASE_BROWN }}>
-            <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: PURCHASE_BROWN }} /> Purchase Geography
-          </p>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-ink/60">{names(purchaseCountries)}</p>
-        </div>
-        <div>
-          <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-label text-gold-700">
-            <span aria-hidden className="h-2.5 w-2.5 rotate-45" style={{ backgroundColor: "#B8955B" }} /> Mining Focus
-          </p>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-ink/60">{names(miningFocus)}</p>
-        </div>
-        <div className="flex flex-wrap gap-x-4 gap-y-1.5 border-t border-line pt-4">
-          {[
-            ["Singapore HQ", HQ_ORANGE],
-            ["VRV Group", GROUP_GREEN],
-            ["Sales", SALES_BLUE],
-            ["Purchase", PURCHASE_BROWN],
-          ].map(([label, color]) => (
-            <span key={label} className="flex items-center gap-1.5 text-[11px] text-ink/55">
-              <span aria-hidden className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
-              {label}
-            </span>
-          ))}
+
+        <div className="mt-6 rounded-2xl border border-line bg-paper p-5">
+          {activeCategory === "all" ? (
+            <div className="space-y-4" aria-live="polite">
+              <p className="text-[11px] font-semibold uppercase tracking-label text-ink/55">All presence</p>
+              {CATEGORIES.map((c) => (
+                <div key={c.key}>
+                  <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-label" style={{ color: c.color }}>
+                    <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: c.color }} />
+                    {c.label}
+                  </p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-ink/70">{c.names.join(", ")}</p>
+                </div>
+              ))}
+              <p className="border-t border-line pt-3 text-[12px] text-ink/50">
+                Singapore is the Group HQ (orange). Where a country spans more than one category, its strongest role is shown.
+              </p>
+            </div>
+          ) : (
+            <>
+              <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-label" style={{ color: active!.color }}>
+                <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: active!.color }} />
+                {active!.label}
+              </p>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-ink/70" aria-live="polite">
+                {active!.names.join(", ")}
+              </p>
+              {activeCategory === "vrvGroup" && (
+                <p className="mt-3 border-t border-line pt-3 text-[12px] text-ink/50">
+                  Singapore is the Group HQ (shown in orange); other VRV Group countries share one colour.
+                </p>
+              )}
+            </>
+          )}
         </div>
       </aside>
 
@@ -291,20 +444,16 @@ export function AboutGlobe() {
             }}
             polygonsData={countryFeatures}
             polygonCapColor={(f: any) => {
-              const id = String(f.id);
-              if (id === SINGAPORE_ISO) return t.landHQ;
-              if (vrvGroupIso.has(id)) return t.landGroup;
-              return t.land;
+              const dc = polygonCat(String(f.id));
+              return dc ? t.cat[dc].cap : t.land;
             }}
             polygonSideColor={() => "rgba(0,0,0,0)"}
             polygonStrokeColor={(f: any) => {
-              const id = String(f.id);
-              if (id === SINGAPORE_ISO) return t.hqStroke;
-              if (vrvGroupIso.has(id)) return t.groupStroke;
-              return t.stroke;
+              const dc = polygonCat(String(f.id));
+              return dc ? t.cat[dc].stroke : t.stroke;
             }}
-            polygonAltitude={(f: any) => (vrvGroupIso.has(String(f.id)) ? 0.008 : 0.006)}
-            labelsData={vrvGroupLocations}
+            polygonAltitude={(f: any) => (polygonCat(String(f.id)) ? 0.01 : 0.006)}
+            labelsData={activeCategory === "vrvGroup" || activeCategory === "all" ? vrvGroupLocations : []}
             labelLat="lat"
             labelLng="lng"
             labelText={(d: any) => d.label}
@@ -357,7 +506,7 @@ export function AboutGlobe() {
           </div>
         </div>
         <p className="mt-3 text-[11px] leading-relaxed text-ink/45">
-          Drag to rotate · use the controls to zoom · hover a marker for details. Singapore (HQ) is shown in orange, VRV Group countries in green.
+          Drag to rotate · use the controls to zoom · hover a marker for details. Choose a category to outline its countries; Singapore (HQ) is always shown in orange.
         </p>
       </div>
     </div>
